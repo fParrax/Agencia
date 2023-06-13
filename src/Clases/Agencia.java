@@ -20,7 +20,7 @@ public class Agencia {
     PreparedStatement pst;
     ResultSet rs;
 
-    public Agencia() {
+    public Agencia() {//Esto es un comentarios para hacer prueba
     }
 
     public Agencia(int id, int numTicket, int cupoAnimal, String serialPC, String nombreAgencia, String nameUsuario, String contraseña, String estado, double comision) {
