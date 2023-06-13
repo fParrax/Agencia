@@ -23,7 +23,7 @@ public class Conectar {
      static Connection con = null;
 
      public static  String url = "jdbc:mysql://capsperu.dyndns.org/";
-    String user2 ="sp";//= "xxxxxxx
+    String user2 ="sp";//etc
     String pass2 ="devSoft23#";//="123456";
      
      
