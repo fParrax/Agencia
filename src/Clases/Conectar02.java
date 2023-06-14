@@ -19,7 +19,8 @@ import org.apache.commons.dbcp2.BasicDataSource;
 
 
 
-public class Conectar {
+public class Conectar02 {
+    
      static Connection con = null;
 
      public static  String url = "jdbc:mysql://capsperu.dyndns.org/";
@@ -31,11 +32,11 @@ public class Conectar {
     static BasicDataSource ds = new BasicDataSource();
     static DataSource dataSource;
 
-        public Conectar() {
+        public Conectar02() {
          
     }
 
-    public  Conectar(String dataBase) {
+    public  Conectar02(String dataBase) {
         try {
             ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
             ds.setUrl(url + dataBase);
@@ -48,7 +49,7 @@ public class Conectar {
             ds.setTimeBetweenEvictionRunsMillis(10000);
             ds.setValidationQuery("select 1");
         } catch (Exception ex) {
-            Logger.getLogger(Conectar.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Conectar02.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Error al Conectar con la base de Datos\nPor favor verifique su conexión a internet o contacte al administrador." + ex);
         }
     }
@@ -70,11 +71,10 @@ public class Conectar {
     public Connection getCon() {
          try {
              con = getDataSource().getConnection();
-             return con;
          } catch (SQLException ex) {
-             Logger.getLogger(Conectar.class.getName()).log(Level.SEVERE, null, ex);
-             return null;
+             Logger.getLogger(Conectar02.class.getName()).log(Level.SEVERE, null, ex);
          }
+        return con;
     }
 
     public static Connection getCon2() throws SQLException, Exception {
@@ -164,7 +164,7 @@ public String parsearFecha(String fecha) {
         try {
             temp = new SimpleDateFormat(formato).parse(fechaFinal);
         } catch (ParseException ex) {
-            Logger.getLogger(Conectar.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Conectar02.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, ex);
         }
         
@@ -174,7 +174,7 @@ public String parsearFecha(String fecha) {
 
     private static String tomarFecha() {
         String fecha = "";
-        try (Connection conex = new Conectar("ag").getCon()) {
+        try (Connection conex = new Conectar02("ag").getCon()) {
             String sql = "select replace(CURDATE(),'/','-') as a";
             PreparedStatement s = conex.prepareStatement(sql);
             ResultSet rs = s.executeQuery();
@@ -189,11 +189,11 @@ public String parsearFecha(String fecha) {
                     rs.close();
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(Conectar.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Conectar02.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, ex, "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception e) {
-            Logger.getLogger(Conectar.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(Conectar02.class.getName()).log(Level.SEVERE, null, e);
             JOptionPane.showMessageDialog(null, e);
         }
 
@@ -206,7 +206,7 @@ public String parsearFecha(String fecha) {
             con.close();
             a = 1;
         } catch (SQLException ex) {
-            Logger.getLogger(Conectar.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Conectar02.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, ex, null, 0);
             a = 0;
         }

@@ -41,7 +41,7 @@ public class Resultado {
     public int insert(){
         int rsp=0;
         
-         try (java.sql.Connection con = new Conectar("ag").getCon()) {
+         try (java.sql.Connection con = new Conectar02("ag").getCon()) {
              sql="call `sp.InsertSorteo` (?,?,?,?)";
              pst = con.prepareStatement(sql);
              pst.setString(1,this.fecha);
@@ -61,7 +61,7 @@ public class Resultado {
     
     public ArrayList getResultados(String programax, String fecha01, String fecha02){
         ArrayList<Resultado> resuls = new ArrayList();
-        try (java.sql.Connection con = new Conectar("ag").getCon()) {
+        try (java.sql.Connection con = new Conectar02("ag").getCon()) {
              sql ="call `sp.getResultados` (?,?,?)";
              pst = con.prepareStatement(sql);
              pst.setString(1,programax);

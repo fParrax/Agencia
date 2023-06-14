@@ -40,7 +40,7 @@ public class Ticket {
         ArrayList<Ticket> lista = new ArrayList();
 
         sql = "call `sp.getTicket` (?,?,?)";
-        try (java.sql.Connection con = new Conectar("ag").getCon()) {
+        try (java.sql.Connection con = new Conectar02("ag").getCon()) {
             pst = con.prepareCall(sql);
             pst.setString(1,agenciax);
             pst.setString(2,fecha01);
@@ -81,7 +81,7 @@ public Ticket getTicketBySerial(String serialx) {
 
         sql = "call `sp.getTicketBySerial` (?)";
         
-        try (java.sql.Connection con = new Conectar("ag").getCon()) {
+        try (java.sql.Connection con = new Conectar02("ag").getCon()) {
             pst = con.prepareStatement(sql);
             pst.setString(1,serialx);
             
@@ -115,7 +115,7 @@ public Ticket getTicketByNum(String nameAgencia,String fecha01, int numTicketx) 
 
         sql = "call `sp.getTicketbyNum` (?,?,?)";
         
-        try (java.sql.Connection con = new Conectar("ag").getCon()) {
+        try (java.sql.Connection con = new Conectar02("ag").getCon()) {
             pst = con.prepareStatement(sql);
             pst.setString(1,nameAgencia);
             pst.setString(2,fecha01);
@@ -148,7 +148,7 @@ in totalJugadox double,IN json_str VARCHAR(10000))
         int rstl = 0;
 
         sql = " call `sp.insertTicket` (?,?,?,?)";
-        try (java.sql.Connection con = new Conectar("ag").getCon()) {
+        try (java.sql.Connection con = new Conectar02("ag").getCon()) {
             pst = con.prepareCall(sql);
             pst.setInt(1, numTicketx);
             pst.setString(2, agenciax);
@@ -170,7 +170,7 @@ in totalJugadox double,IN json_str VARCHAR(10000))
     
     public int pagar(int idJugadax){
         int rsp=0;//pagarJugada
-        try (java.sql.Connection con = new Conectar("ag").getCon()) {
+        try (java.sql.Connection con = new Conectar02("ag").getCon()) {
             sql = "call `sp.pagarJugada` (?)";
             pst = con.prepareCall(sql);
             pst.setInt(1, idJugadax);
@@ -188,7 +188,7 @@ in totalJugadox double,IN json_str VARCHAR(10000))
     
  public int anular(int idTicketx) {
      int rsp=0;   
-     try (java.sql.Connection con = new Conectar("ag").getCon()) {
+     try (java.sql.Connection con = new Conectar02("ag").getCon()) {
             sql = "call `sp.anularTicket` (?)";
             pst = con.prepareCall(sql);
             pst.setInt(1, idTicketx);

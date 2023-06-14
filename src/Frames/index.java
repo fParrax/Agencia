@@ -1,7 +1,7 @@
 package Frames;
 
 import Clases.Agencia;
-import Clases.Conectar;
+import Clases.Conectar02;
 import Clases.Configuracion;
 import Clases.Imprimir;
 import Clases.JugadasTicket;
@@ -2254,7 +2254,7 @@ public class index extends javax.swing.JFrame {
     }
 
     private void testCon() {
-        try ( java.sql.Connection con = new Conectar("ag").getCon()) {
+        try ( java.sql.Connection con = new Conectar02("ag").getCon()) {
             System.out.println(con);
         } catch (Exception e) {
             Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
