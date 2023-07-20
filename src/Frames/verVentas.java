@@ -231,6 +231,7 @@ public class verVentas extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
        float porcentaje = (float) (ind.agencia.getComision()/100);
+       
         double vendido =0,premios =0, comision=0,saldo=0;
         String fecha01 = txtFechaDesde.getText()+" 00:00:00",fecha02 = txtFechaHasta.getText()+" 23:59:59";
         
@@ -239,6 +240,7 @@ public class verVentas extends javax.swing.JFrame {
         
         modelo.setRowCount(0);
         for(Ticket ticket:tickets){
+           
             vendido+=ticket.getTotalJugado();
             premios+=ticket.getTotalPremio();
         }

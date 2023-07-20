@@ -27,37 +27,35 @@ public class Imprimir {
                + "Hora:"+hora+" TN:"+numTicket+" SN:"+serial+" NJ:"+numJugadas+"\n"//Linea2
                + "---------------------------";//Linea3
        
-       String sorteoTemp="";
+       String sorteoTemp="-";
        double montoJugado=-1;
        int cont =0;
        int reps=1;
+       
+        
        for(JugadasTicket jugada:jugadas){
+          
            if(montoJugado<0){
               montoJugado=jugada.getMonto(); 
            }
-           if(!jugada.getSorteo().equals(sorteoTemp)){//DIFERENTE SORTEO
-               texto+="\n    "+jugada.getSorteo()+"\n";
-               if(jugada.getMonto()>montoJugado){
-                      texto+="x"+montoJugado+" ";
-                      texto+=jugada.getAnimal().substring(0, 4) +"-";
-                      cont=0;
-               }else{
-                   if(cont>5){
-                       texto+=jugada.getAnimal().substring(0, 4) +"\n";
-                       cont=0;
-                   }else{
-                       texto+=jugada.getAnimal().substring(0, 4) +"-";
-                       cont++;
-                   }
+           if(!jugada.getSorteo().equals(sorteoTemp)  ){//DIFERENTE SORTEO
+               if(!sorteoTemp.equalsIgnoreCase("-")){
+                   texto+="x"+montoJugado+" ";
                }
+               
+               texto+="\n    "+jugada.getSorteo()+"\n";
+               texto+=jugada.getAnimal().substring(0, 4) +"-";
+               cont=1;
+               
+               
            }else{//ES EL MISMO SORTEO
                if(jugada.getMonto()>montoJugado){
                    texto+="x"+montoJugado+" ";
                  texto+=jugada.getAnimal().substring(0, 4) +"-";
                  cont=0;
                }else{
-                   if(cont>5){
-                       texto+=jugada.getAnimal().substring(0, 4) +"\n";
+                   if(cont>4){
+                       texto+="\n"+jugada.getAnimal().substring(0, 4) ;
                        cont =0;
                    }else{
                        texto+=jugada.getAnimal().substring(0, 4) +"-";
@@ -66,13 +64,14 @@ public class Imprimir {
                    
                }
            }
-           if(Float.compare(reps,6)==0 || Float.compare(reps,jugadas.size())==0){
-               texto+=" x "+jugada.getMonto()+"";
-           }
+           
            reps++;
            montoJugado=jugada.getMonto();
            sorteoTemp=jugada.getSorteo();
+           
        }
+        texto+="x"+montoJugado+" ";
+    
        
        texto+= "\n---------------------------\n"
                + "Total Bs: "+total;

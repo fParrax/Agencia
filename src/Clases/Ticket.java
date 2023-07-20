@@ -43,10 +43,10 @@ public class Ticket {
         try (java.sql.Connection con = new Conectar("ag").getCon()) {
             pst = con.prepareCall(sql);
             pst.setString(1,agenciax);
-            pst.setString(2,fecha01);
-            pst.setString(3,fecha02);
+            pst.setString(2,fecha01+" 00:00:01");
+            pst.setString(3,fecha02+" 23:59:59");
             rs = pst.executeQuery();
-             Ticket t = new Ticket();
+            
             while (rs.next()) {
                 Ticket temp = new Ticket(rs.getInt("id"),rs.getString("fecha"),rs.getString("agencia"),
                 rs.getString("serialTicket"),rs.getInt("numTicket"),rs.getString("estado"),rs.getFloat("totalJugado"),
@@ -56,15 +56,18 @@ public class Ticket {
                 rs.getString("programa"),rs.getString("fechaJugada"),rs.getString("sorteo"),
                 rs.getString("animal"),rs.getFloat("montoJugada"),rs.getString("estadoJugada"));
                 
-                t= t!=temp
-                        ? temp
-                        : t;
-                
-                if(!t.getJugadas().contains(j)){
-                    t.addJugada(j);
+                if(!lista.contains(temp)){
+                     temp.addJugada(j);
+                     lista.add(temp); 
+                }else{
+                    int index = lista.indexOf(temp);
+                    
+                    if(!lista.get(index).getJugadas().contains(j)){
+                        lista.get(index).addJugada(j);
+                    }
                 }
+               
                 
-                lista.add(temp);
             }
         } catch (Exception e) {
             Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
@@ -147,6 +150,8 @@ in totalJugadox double,IN json_str VARCHAR(10000))
     public int insert(int numTicketx,String agenciax,double totalJugadox, ArrayList jugadax) {
         int rstl = 0;
 
+        
+        
         sql = " call `sp.insertTicket` (?,?,?,?)";
         try (java.sql.Connection con = new Conectar("ag").getCon()) {
             pst = con.prepareCall(sql);
@@ -267,18 +272,17 @@ in totalJugadox double,IN json_str VARCHAR(10000))
 }
       private String convertJugadasToJSON(ArrayList<JugadasTicket> jugadas){
         JSONArray jsonArray = new JSONArray();
-        JSONObject json = new JSONObject();
+        
         for(JugadasTicket j : jugadas){
-            json.put("id", j.getId());
-            json.put("idTicket", j.getIdTicket());
+            JSONObject json = new JSONObject();
             json.put("programa", j.getPrograma());
-            json.put("fecha", j.getFecha());
             json.put("sorteo", j.getSorteo());
             json.put("animal", j.getAnimal());
             json.put("monto", j.getMonto());
-            json.put("estado", j.getEstado());
+            
             jsonArray.put(json);
         }
+       
         
         return jsonArray.toString();
 }

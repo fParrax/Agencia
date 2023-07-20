@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 public class Agencia {
     
     
-    int id,numTicket, cupoAnimal;
+    int id=-1,numTicket, cupoAnimal;
     String serialPC, nombreAgencia,username,password,estado;
     double comision;
     
@@ -36,7 +36,55 @@ public class Agencia {
     }
     
     
+    public Agencia getAgencia(String nameAgencia) {
+        Agencia my = new Agencia();
+
+        sql = "call `sp.getAgencia` (?)";
+        
+        try (java.sql.Connection con = new Conectar("ag").getCon()) {
+            System.out.println(con);
+            pst = con.prepareStatement(sql);
+            pst.setString(1,nameAgencia);
+            
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                    my = new Agencia(rs.getInt("id"),rs.getInt("numTicket"),rs.getInt("cupoAnimal"),rs.getString("serialPc"),rs.getString("nombreAgencia"),
+                            rs.getString("username"),rs.getString("pasword"),rs.getString("estado"),rs.getDouble("comision"));
+            }
+        } catch (Exception e) {
+            Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, "Error con el manejo de base de datos, contacte con el adm.\n" + e);
+        } finally {
+            cerrar();
+        }
+
+        return my;
+    }
     
+    public int insert(String nameAgenciax, String usernamex, String paswordx ,
+            String seralPcx, int cupoAnimalx, int comisionx){
+        int rsp =0;
+        
+        try (java.sql.Connection con = new Conectar("ag").getCon()) {
+        
+            sql = "call `sp.newAgencia` (?,?,?,?,?,?)";
+            pst = con.prepareStatement(sql);
+            pst.setString(1,nameAgenciax);
+            pst.setString(2,usernamex);
+            pst.setString(3,paswordx);
+            pst.setString(4,seralPcx);
+            pst.setInt(5,cupoAnimalx);
+            pst.setInt(6,comisionx);
+            
+            
+        } catch (Exception e) {
+            Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, "Error con el manejo de base de datos, contacte con el adm.\n" + e);
+        } finally {
+            cerrar();
+        }
+        return rsp;
+    }
     
     
     

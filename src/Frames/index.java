@@ -1,7 +1,6 @@
 package Frames;
 
 import Clases.Agencia;
-import Clases.Conectar;
 import Clases.Configuracion;
 import Clases.Imprimir;
 import Clases.JugadasTicket;
@@ -1883,7 +1882,7 @@ public class index extends javax.swing.JFrame {
         if (txtAnular.getText().length() > 0) {
             int nTicketx = Integer.parseInt(txtAnular.getText());
             Ticket ticket = new Ticket();
-            ticket = new Ticket().getTicketByNum("parra",fechaHoy,nTicketx);
+            ticket = new Ticket().getTicketByNum(agencia.getNombreAgencia(),fechaHoy,nTicketx);
             if (ticket.getId() < 1) {
                 JOptionPane.showMessageDialog(rootPane, "No se encontró ningún ticket con ese número");
             } else {
@@ -2222,6 +2221,7 @@ public class index extends javax.swing.JFrame {
 
     private void iniciar() {
         try {
+            
 
             new Thread(this::testCon).start();
             modelo = (DefaultTableModel) tabla.getModel();
@@ -2254,15 +2254,11 @@ public class index extends javax.swing.JFrame {
     }
 
     private void testCon() {
-        try ( java.sql.Connection con = new Conectar("ag").getCon()) {
-            System.out.println(con);
-        } catch (Exception e) {
-            Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
-            JOptionPane.showMessageDialog(null, "Error con el manejo de base de datos, contacte con el adm.\n" + e);
-        } finally {
-
-        }
+        
+            agencia = new Agencia().getAgencia("parra");
+        
     }
+    
     TimerTask actualizarHoraTT = new TimerTask() {
         public void run() {
             try {
@@ -2714,12 +2710,16 @@ public class index extends javax.swing.JFrame {
                 Double montox = Double.parseDouble(tabla.getValueAt(i, 2).toString());
                 Float montoParseado = Float.parseFloat(tabla.getValueAt(i, 2).toString());
                 totalJugado+=montoParseado;
-                jugadas.add(new JugadasTicket(0, agencia.getNumTicket(), programa,fechaHoy, sorteox, animalx, montoParseado, "Activ o"));
+                jugadas.add(new JugadasTicket(0, agencia.getNumTicket(), programa,fechaHoy, sorteox, animalx, montoParseado, "Activo"));
             }
 
         String hora = new SimpleDateFormat("hh:mm:ss").format(myUltimaHora.getTime());
 
         int rsp = 0;
+        
+        
+        
+        
         rsp = new Ticket().insert(agencia.getNumTicket(),agencia.getNombreAgencia(),
                 totalJugado,jugadas);
         if (rsp > 0) {
@@ -2728,6 +2728,8 @@ public class index extends javax.swing.JFrame {
             //IMPRESION - Organizar un arreglo de Jugadas para Luego imprimir
 
             //Organizamos las jugadas por orden del Monto
+            
+ 
             for (int i = 0; i < jugadas.size(); i++) {
                 for (int j = 0; j < jugadas.size() - 1; j++) {
                     JugadasTicket tempx = new JugadasTicket();
@@ -2738,11 +2740,29 @@ public class index extends javax.swing.JFrame {
                     }
                 }
             }
+            
+            
+            for (int i = 0; i < jugadas.size(); i++) {
+                for (int j = 0; j < jugadas.size() - 1; j++) {
+                    JugadasTicket tempx = new JugadasTicket();
+                    if (jugadas.get(j).getHoradelSorteo() > jugadas.get(j + 1).getHoradelSorteo()) {
+                        tempx = jugadas.get(j);
+                        jugadas.set(j, jugadas.get(j + 1));
+                        jugadas.set(j + 1, tempx);
+                    }
+                }
+            }
+            
+            
 
-            new Imprimir().enviarImpresion(espaciosPrevios, agencia.getNombreAgencia(),
-                    fechaHoy, programa, hora, agencia.getNumTicket()+"", "numSerial", numJugadas, jugadas, totalTicket);
+            new Imprimir().enviarImpresion(
+                    espaciosPrevios, agencia.getNombreAgencia(),
+                    fechaHoy, programa, hora,
+                    agencia.getNumTicket()+"", "numSerial",
+                    numJugadas, jugadas, totalTicket);
 
             //FIN IMPRESION
+            agencia.incrementarTicket();
             resetearBotones();
             resetearSorteos();
             resetearJugadas();

@@ -22,9 +22,9 @@ import org.apache.commons.dbcp2.BasicDataSource;
 public class Conectar {
      static Connection con = null;
 
-     public static  String url = "jdbc:mysql://capsperu.dyndns.org/";
-    String user2 ="sp";//etc
-    String pass2 ="devSoft23#";//="123456";
+     public static  String url = "jdbc:mysql://mainPC/";//"jdbc:mysql://capsperu.dyndns.org/";
+    String user2 ="sp";//"sp";//etc
+    String pass2 ="356200";//"devSoft23#";//="123456";
      
      
     

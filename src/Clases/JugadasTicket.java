@@ -4,6 +4,7 @@ package Clases;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 
 public class JugadasTicket {
@@ -63,7 +64,34 @@ public class JugadasTicket {
     }
     
     
-    
+    public int getHoradelSorteo(){
+        int rsp=0;
+        String separador = Pattern.quote(" ");
+        String [] horaArray = sorteo.split(separador);
+           
+                int temp = Integer.parseInt(horaArray[1]);
+                
+                rsp = temp==1 && horaArray[2].equalsIgnoreCase("pm")
+                    ?  13 
+                    : temp==2 && horaArray[2].equalsIgnoreCase("pm")
+                    ?  14
+                    : temp==3 && horaArray[2].equalsIgnoreCase("pm")
+                    ?  15
+                    : temp==4 && horaArray[2].equalsIgnoreCase("pm")
+                    ?  16
+                    : temp==5 && horaArray[2].equalsIgnoreCase("pm")
+                    ?  17
+                    : temp==6 && horaArray[2].equalsIgnoreCase("pm")
+                    ?  18
+                    : temp==7 && horaArray[2].equalsIgnoreCase("pm")
+                    ?  19
+                    : temp ;
+            
+        
+                
+        
+        return rsp;
+    }
     
     public int getId() {
         return id;

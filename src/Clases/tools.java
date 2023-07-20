@@ -711,7 +711,7 @@ public int restarMinutos(Date horaInicial, Date horaFinal) {
         }
 
         if (correcto == false) {
-            System.out.println("No todos los valores son númericos");
+            //System.out.println("No todos los valores son númericos");
         }
 
         return correcto;

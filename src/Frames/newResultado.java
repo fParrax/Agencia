@@ -192,15 +192,17 @@ public class newResultado extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-       /*
-        pst.setString(1,this.fecha);
-             pst.setString(2,this.programa);
-             pst.setString(3,this.sorteo);
-             pst.setString(4,this.animal);
-        */
-       Resultado resultado = new Resultado(txtFecha.getText(),
-               comboPrograma.getSelectedItem().toString(),
-               comboSorteo.getSelectedItem().toString(),comboResultado.getSelectedItem().toString());
+      
+        String programa = comboPrograma.getSelectedItem().toString();
+        String sorteo = programa+" "+comboSorteo.getSelectedItem().toString().replace(":00", "");
+        String animal =comboResultado.getSelectedItem().toString();
+        
+       Resultado resultado = new Resultado(
+               txtFecha.getText(),
+               programa,
+               sorteo,
+               invertAnimal(animal)+animal
+       );
                int rsp = resultado.insert();
                if(rsp>0){
                    JOptionPane.showMessageDialog(rootPane, "Resultado Ingresado correctamente" );
@@ -393,4 +395,130 @@ public class newResultado extends javax.swing.JFrame {
         }
         return animal;
     }
+    
+    public String invertAnimal(String nombreAnimal) {
+    String animal = "";
+
+    switch (nombreAnimal) {
+        case "Delfin":
+            animal = "0";
+            break;
+        case "Ballena":
+            animal = "-1";
+            break;
+        case "Carnero":
+            animal = "1";
+            break;
+        case "Toro":
+            animal = "2";
+            break;
+        case "Ciempies":
+            animal = "3";
+            break;
+        case "Alacrán":
+            animal = "4";
+            break;
+        case "Leon":
+            animal = "5";
+            break;
+        case "Rana":
+            animal = "6";
+            break;
+        case "Perico":
+            animal = "7";
+            break;
+        case "Ratón":
+            animal = "8";
+            break;
+        case "Aguila":
+            animal = "9";
+            break;
+        case "Tigre":
+            animal = "10";
+            break;
+        case "Gato":
+            animal = "11";
+            break;
+        case "Caballo":
+            animal = "12";
+            break;
+        case "Mono":
+            animal = "13";
+            break;
+        case "Paloma":
+            animal = "14";
+            break;
+        case "Zorro":
+            animal = "15";
+            break;
+        case "Oso":
+            animal = "16";
+            break;
+        case "Pavo":
+            animal = "17";
+            break;
+        case "Burro":
+            animal = "18";
+            break;
+        case "Chivo":
+            animal = "19";
+            break;
+        case "Cochino":
+            animal = "20";
+            break;
+        case "Gallo":
+            animal = "21";
+            break;
+        case "Camello":
+            animal = "22";
+            break;
+        case "Cebra":
+            animal = "23";
+            break;
+        case "Iguana":
+            animal = "24";
+            break;
+        case "Gallina":
+            animal = "25";
+            break;
+        case "Vaca":
+            animal = "26";
+            break;
+        case "Perro":
+            animal = "27";
+            break;
+        case "Zamuro":
+            animal = "28";
+            break;
+        case "Elefante":
+            animal = "29";
+            break;
+        case "Caimán":
+            animal = "30";
+            break;
+        case "Lapa":
+            animal = "31";
+            break;
+        case "Ardilla":
+            animal = "32";
+            break;
+        case "Pescado":
+            animal = "33";
+            break;
+        case "Venado":
+            animal = "34";
+            break;
+        case "Jirafa":
+            animal = "35";
+            break;
+        case "Culebra":
+            animal = "36";
+            break;
+    }
+
+    return animal;
+}
+    
+    
+    
 }
