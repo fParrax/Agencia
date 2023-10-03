@@ -34,7 +34,7 @@ public class Configuracion {
     }
 
     public static void main(String[] args) {
-        System.out.println( new Conectar("agtest"));
+        System.out.println( new ConectarDBLocal("agtest"));
     }
     public Configuracion getDatos(){
         Configuracion c = new Configuracion();
@@ -63,7 +63,7 @@ public class Configuracion {
         int rsp=0;
         sql = "update configuracion set nombreAgencia=?, cupoAnimal=?, tamanoPapel=?,"
                 + "fechaTicket=?, numTicket=?, comision=? where idConfiguracion=?";
-        try (java.sql.Connection con = new Conectar().getCon()) {
+        try (java.sql.Connection con = new ConectarDBLocal().getCon()) {
         pst = con.prepareStatement(sql);
         pst.setString(1,this.nombreAgencia);
         pst.setInt(2,this.cupoAnimal);

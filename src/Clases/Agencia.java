@@ -41,7 +41,7 @@ public class Agencia {
 
         sql = "call `sp.getAgencia` (?)";
         
-        try (java.sql.Connection con = new Conectar("ag").getCon()) {
+        try (java.sql.Connection con = new ConectarDBLocal("ag").getCon()) {
             System.out.println(con);
             pst = con.prepareStatement(sql);
             pst.setString(1,nameAgencia);
@@ -65,7 +65,7 @@ public class Agencia {
             String seralPcx, int cupoAnimalx, int comisionx){
         int rsp =0;
         
-        try (java.sql.Connection con = new Conectar("ag").getCon()) {
+        try (java.sql.Connection con = new ConectarDBLocal("ag").getCon()) {
         
             sql = "call `sp.newAgencia` (?,?,?,?,?,?)";
             pst = con.prepareStatement(sql);

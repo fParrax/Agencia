@@ -7,6 +7,9 @@ package Clases;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Date;
 import java.util.logging.Logger;
 import org.apache.commons.net.ntp.NTPUDPClient;
@@ -42,6 +45,18 @@ public class NTPService {
         //LOGGER.log(Level.WARNING, "No se pudo conectar con servidor, regresando hora local");
         cliente.close();
         return new Date();
+    }
+    
+    public static void main(String[] args) {
+        try(Connection con = new ConectarDBSQLLite().getCon()) {
+            String sql ="select * from cupos";
+            PreparedStatement pst = con.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            while(rs.next()){
+                System.out.println(rs.getString("id"));
+            }
+        } catch (Exception e) {
+        }
     }
     
 }

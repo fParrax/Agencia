@@ -233,7 +233,7 @@ public class tools {
     public static ArrayList getCicloActualPacientes(){
         ArrayList<String>ciclo = new ArrayList();
         
-        String fechaServidor = new Conectar().getFechaServidor();
+        String fechaServidor = new ConectarDBLocal().getFechaServidor();
         
         int dia = Integer.parseInt(fechaServidor.substring(8, 10));
         int mes = Integer.parseInt(fechaServidor.substring(5, 7));

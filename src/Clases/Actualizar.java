@@ -1,199 +1,140 @@
 package Clases;
 
-import java.io.BufferedReader;
+import java.awt.Desktop;
+import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
-public class Actualizar {
+public class Actualizar extends Propiedades{
 
-    String carpetaDownnload = "C:\\DataCaps\\";
-    static String urlProyecto ="https://github.com/fParrax/CapsPacientes2022/raw/main/";
-    static final String nameDataFile ="data.properties";
-    //int len = carpetaDownnload.length();
-     boolean llaveVersion=false;
-     
-     
-     
-    public void descargar(String URLx, String nameArchivox) {
-        //carpetaDownnload = carpetaDownnload.substring(0, len - 1);
-        String nameArchivo = nameArchivox;
+     double versionActual,versionServer;
+    
+     public Actualizar(){
+         super();
+         versionActual = Double.parseDouble(getVersionLocal());
+         versionServer = Double.parseDouble(getVersionServer().replace("version=", ""));
+         
+     }
 
-        try {
-            // Url con la foto
-            URL url = new URL(URLx);
-
-            // establecemos conexion
-            URLConnection urlCon = url.openConnection();
-
-            // Sacamos por pantalla el tipo de fichero
-            System.out.println(urlCon.getContentType());
-
-            // Se obtiene el inputStream de la foto web y se abre el fichero
-            // local.
-            InputStream is = urlCon.getInputStream();
-            FileOutputStream fos = new FileOutputStream(carpetaDownnload + nameArchivo);
-
-            // Lectura de la foto de la web y escritura en fichero local
-            byte[] array = new byte[1000]; // buffer temporal de lectura.
-            int leido = is.read(array);
-            while (leido > 0) {
-                fos.write(array, 0, leido);
-                leido = is.read(array);
-            }
-
-            // cierre de conexion y fichero.
-            is.close();
-            fos.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error descargando actualización \n" + e);
+    public void checkUpdate(){
+        if(!idUpdated()){
+            downloadUpdate();
+        }else{
+           openExcecutable();
         }
-
+        System.exit(0);
     }
 
-    public boolean verificarConexión(String urlx) {
+    private String obtenerContenidoURL(String url) {
+        String contenido = "error";
+        
         try {
-
-            URL urlxx = new URL(urlx);
-            URLConnection con = urlxx.openConnection();
+            URL myUrl = new URL(url);
+            URLConnection con = myUrl.openConnection();
             con.connect();
-            return true;
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error descargando actualización \n" + e);
-            return false;
-        }
-    }
-
-    public String getVersion() {
-        try {
-            URL url = new URL("https://raw.githubusercontent.com/fParrax/CapsPacientes2022/main/version.txt");
-
-            URLConnection con = url.openConnection();
-            con.connect();
-            return obtenerContenidoURL(url);
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error descargando actualización \n" + e);
-            return "-";
-        }
-    }
-
-    public String obtenerContenidoURL(URL url) {
-        String a = "-";
-        try {
-            Scanner s = new Scanner(url.openStream()).useDelimiter("\\Z");
-            a = s.next();
-            return a;
+             
+            Scanner scanner = new Scanner(myUrl.openStream()).useDelimiter("\\Z");
+            contenido = scanner.next();
+            //System.out.println(contenido);
+            return contenido;
         } catch (IOException ex) {
             Logger.getLogger(Actualizar.class.getName()).log(Level.SEVERE, null, ex);
-            return a;
+            return contenido;
         }
 
     }
 
-    public String getVersionActual() {
-       // carpetaDownnload = carpetaDownnload.substring(0, len - 1);
-        String archivo = carpetaDownnload+"data.properties";
-        FileReader f = null;
-        String cadena = "";
-        String valor = "";
+    private String getVersionLocal() {
+        if(!myProperties.isEmpty()){
+            return getPropiedad("version");
+        }else{
+            descargar("properties");
+            return getPropiedad("version");
+        }
+        
+    }
+    
+    public String getVersionServer(){
+        return obtenerContenidoURL(URL_Properties_Cloud);
+    }
+    
+    private void setNewVersion(String version){
+       setPropert("version", version);
+    }
+    
+    public void downloadUpdate(){
+        downloadExecutable();
+        setNewVersion(String.valueOf(versionServer));
+        openExcecutable();
+    }
+    
+    private void downloadExecutable(){
         try {
-
-            File temp = new File(archivo);
-            if(!temp.exists()){
-                crearVersion();
-            }
-            
-            
-            f = new FileReader(archivo);
-            
-            BufferedReader b = new BufferedReader(f);
-            while ((cadena = b.readLine()) != null) {
-                valor = cadena;
-                if(valor.contains("version")){
-                    break;
+            URL url = new URL(URL_Ejecutable_Cloud);
+            File file = new File(LOCATE_PATCH+NAME_EXECUTABLE);
+            String username = "siaceces";
+            String password = "107swUPRu2";
+            Authenticator.setDefault(new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password.toCharArray());
                 }
-            }
-            b.close();
-
-        } catch (FileNotFoundException ex) {
+            });
             
-            if(llaveVersion == false){
-                crearVersion();
-                getVersionActual();
-                llaveVersion=true;
-            }else{
-                Logger.getLogger(Actualizar.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            
+        URLConnection connection = url.openConnection();
+        long size = connection.getContentLengthLong();
+        InputStream inputStream = connection.getInputStream();
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        FileOutputStream outputStream = new FileOutputStream(file);
+        byte[] bytes = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = bufferedInputStream.read(bytes)) != -1) {
+            outputStream.write(bytes, 0, bytesRead);
+        }
+        outputStream.close();
         } catch (IOException ex) {
             Logger.getLogger(Actualizar.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                if(f!=null){
-                    f.close();
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(Actualizar.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return valor;
-    }
-   
-    private void crearVersion(){
-         try {
-        //carpetaDownnload = carpetaDownnload.substring(0, len - 1);
-        String archivo = carpetaDownnload+"data.properties";
-            //String contenido = "0.1";
-            File file = new File(archivo);
-            // Si el archivo no existe es creado
-            if (!file.exists()) {
-                descargar(urlProyecto+nameDataFile, nameDataFile);
-            }
-            
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
     
-    public void setNewVersion(String version){
-        
-        /*
-        Properties p = new Properties();
-        String rutaArchivos= "C:\\DataCaps\\";
-        
-        File temp = new File(rutaArchivos + "version.txt");
-        if (temp.exists()) {
-            try {
-                p.load(new FileReader(rutaArchivos + "version.txt"));
-                p.setProperty("version", version);
-                p.store(new FileWriter(rutaArchivos +"version.txt"),"Guardado");
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(Propiedades.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(Propiedades.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        } else {
-           // obtenerPropierties(rutaArchivos);
-        }
-        */
-        
-        
-        
-        
+    private boolean idUpdated(){
+        return versionServer>versionActual
+                ? false
+                : true;
     }
 
+    public void openExcecutable() {
+        
+        File file_Excecutable = new File(LOCATE_PATCH + NAME_EXECUTABLE);
+        if (!file_Excecutable.exists()) {
+            downloadExecutable();
+            openFile(LOCATE_PATCH + NAME_EXECUTABLE);
+        } else {
+            openFile(LOCATE_PATCH + NAME_EXECUTABLE);
+        }
+    }
+    protected void openFile(String URL) {
+        try {
+            File file = new File(URL);
+            if(!file.exists()){
+                downloadExecutable();
+                Desktop.getDesktop().open(file);
+            }else{
+                Desktop.getDesktop().open(file);
+            }
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Propiedades.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }
