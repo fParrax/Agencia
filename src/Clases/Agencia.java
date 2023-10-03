@@ -182,13 +182,14 @@ public class Agencia {
         this.comision = comision;
     }
 
-    public PreparedStatement getPst() {
-        return pst;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPst(PreparedStatement pst) {
-        this.pst = pst;
+    public void setPassword(String password) {
+        this.password = password;
     }
+
     
     
     

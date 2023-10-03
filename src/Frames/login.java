@@ -68,10 +68,10 @@ public void changeIcon() {
         });
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("img");
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgs/contact.png"))); // NOI18N
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("img");
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgs/password.png"))); // NOI18N
 
         javax.swing.GroupLayout panelCentralLayout = new javax.swing.GroupLayout(panelCentral);
         panelCentral.setLayout(panelCentralLayout);
@@ -132,7 +132,11 @@ public void changeIcon() {
           Agencia ag = new Agencia().getAgencia(name);
           
           if(ag.getId()>0){
-             
+             if(ag.getPassword().equals(pss)){
+                 new index(ag).setVisible(true);
+             }else{
+                 JOptionPane.showMessageDialog(rootPane, "Contraseña Incorrecta");
+             }
           }else{
                JOptionPane.showMessageDialog(rootPane, "Agencia no encontrada");
           }

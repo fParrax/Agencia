@@ -64,7 +64,7 @@ public class index extends javax.swing.JFrame {
     public index(Agencia agencia) {
         initComponents();
         this.agencia=agencia;
-        datos = new Configuracion().getDatos();
+        
         changeIcon();
         new Thread(this::iniciar).start();
         c9am.setVisible(tablero);
@@ -1173,7 +1173,7 @@ public class index extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        panelAyuda.setBackground(new java.awt.Color(204, 204, 255));
+        panelAyuda.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("Pagar Ticket:");
