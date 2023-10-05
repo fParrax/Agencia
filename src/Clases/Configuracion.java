@@ -17,6 +17,8 @@ public class Configuracion {
     int numTicket;
     double comision=0;
     String sql;
+    
+    
     PreparedStatement pst;
     ResultSet rs;
     public Configuracion() {
@@ -33,31 +35,7 @@ public class Configuracion {
         this.comision=comision;
     }
 
-    public static void main(String[] args) {
-        System.out.println( new ConectarDBLocal("agtest"));
-    }
-    public Configuracion getDatos(){
-        Configuracion c = new Configuracion();
-        /*
-         
-        sql = "select * from configuracion";
-        try (java.sql.Connection con = new Conectar().getCon()) {
-        pst =con.prepareStatement(sql);
-        rs=pst.executeQuery();
-        while(rs.next()){
-            c = new Configuracion(rs.getInt("idConfiguracion"),rs.getString("nombreAgencia"),rs.getInt("cupoAnimal"),
-            rs.getString("tamanoPapel"),rs.getString("fechaTicket"),rs.getInt("numTicket"),rs.getDouble("comision"));
-        }
-        } catch (Exception e) {
-            Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
-            JOptionPane.showMessageDialog(null, "Error con el manejo de base de datos, contacte con el adm.\n" + e);
-        } finally {
-            cerrar();
-        }
-        
-        */
-       return c;
-    }
+    
     
     public int update(){
         int rsp=0;

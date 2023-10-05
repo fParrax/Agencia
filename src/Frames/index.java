@@ -1,6 +1,7 @@
 package Frames;
 
 import Clases.Agencia;
+import Clases.ConectarDBCloud;
 import Clases.Configuracion;
 import Clases.Imprimir;
 import Clases.JugadasTicket;
@@ -54,7 +55,7 @@ public class index extends javax.swing.JFrame {
     Agencia agencia;
     public index() {
         initComponents();
-        datos = new Configuracion().getDatos();
+        datos = new Configuracion();
         changeIcon();
         new Thread(this::iniciar).start();
         c9am.setVisible(tablero);
@@ -1107,11 +1108,11 @@ public class index extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Sorteo", "Jugada", "Monto"
+                "Sorteo", "Jugada", "Monto", "Cupo"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -1151,14 +1152,16 @@ public class index extends javax.swing.JFrame {
             .addGroup(panelJugadasLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelJugadasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(panelJugadasLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(panelJugadasLayout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(totalTicketTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
-                        .addComponent(jButton4)
-                        .addContainerGap())))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4)))
+                .addContainerGap())
         );
         panelJugadasLayout.setVerticalGroup(
             panelJugadasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2247,6 +2250,8 @@ public class index extends javax.swing.JFrame {
             agencia= new Agencia();
             agencia.setNombreAgencia("parra");
             agencia.setComision(10);
+            fechaHoy = new ConectarDBCloud("ag").tomarFecha();
+            
 
         } catch (ParseException ex) {
             Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);

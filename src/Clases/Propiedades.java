@@ -84,10 +84,7 @@ public class Propiedades{
                      nameArchivoDescarga = URL_Ejecutable_Cloud;
                       outPutNameFile = NAME_EXECUTABLE;
                     break;
-                case "ico":
-                     nameArchivoDescarga = URL_ICO_Bermudez;
-                      outPutNameFile = NAME_ICO;
-                    break;
+                
             }
             File file = new File(LOCATE_PATCH+outPutNameFile);
             URL url = new URL(nameArchivoDescarga);

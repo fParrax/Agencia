@@ -1,6 +1,7 @@
 
 package Clases;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,9 +42,10 @@ public class Agencia {
 
         sql = "call `sp.getAgencia` (?)";
         
-        try (java.sql.Connection con = new ConectarDBLocal("ag").getCon()) {
-            System.out.println(con);
-            pst = con.prepareStatement(sql);
+        try (Connection con = new ConectarDBCloud("ag").getCon()) {
+            con.setCatalog("ag");
+           
+            pst = con.prepareCall(sql);
             pst.setString(1,nameAgencia);
             
             rs = pst.executeQuery();
@@ -61,11 +63,15 @@ public class Agencia {
         return my;
     }
     
+    public static void main(String[] args) {
+       
+    }
+    
     public int insert(String nameAgenciax, String usernamex, String paswordx ,
             String seralPcx, int cupoAnimalx, int comisionx){
         int rsp =0;
         
-        try (java.sql.Connection con = new ConectarDBLocal("ag").getCon()) {
+        try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
         
             sql = "call `sp.newAgencia` (?,?,?,?,?,?)";
             pst = con.prepareStatement(sql);
