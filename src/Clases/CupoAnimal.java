@@ -1,4 +1,4 @@
-
+ 
 package Clases;
 
 import java.sql.Connection;
@@ -8,9 +8,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import lombok.Data;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -93,7 +91,7 @@ public class CupoAnimal {
             pst = con.prepareStatement(sql);
             pst.setString(1, fechax);
             pst.setString(2, programax);
-            pst.setString(3, sorteox);
+            pst.setString(3, sorteox.replace(" ", ""));
             rs = pst.executeQuery();
             if(rs.next())
             {
@@ -196,47 +194,47 @@ public class CupoAnimal {
                     :  null;
     }
     
-    public double getCupoActual(String animal, double monto){
+    public double getCupoActual(String animal){
         
         switch (animal) {
-            case "00": this.animal_00 += monto; return this.maximo-this.animal_00;
-            case "0": this.animal_0 += monto; return this.maximo-this.animal_0;
-            case "1": this.animal_1 += monto; return this.maximo-this.animal_1;
-            case "2": this.animal_2 += monto; return this.maximo-this.animal_2;
-            case "3": this.animal_3 += monto; return this.maximo-this.animal_3;
-            case "4": this.animal_4 += monto; return this.maximo-this.animal_4;
-            case "5": this.animal_5 += monto; return this.maximo-this.animal_5;
-            case "6": this.animal_6 += monto; return this.maximo-this.animal_6;
-            case "7": this.animal_7 += monto; return this.maximo-this.animal_7;
-            case "8": this.animal_8 += monto; return this.maximo-this.animal_8;
-            case "9": this.animal_9 += monto; return this.maximo-this.animal_9;
-            case "10": this.animal_10 += monto; return this.maximo-this.animal_10;
-            case "11": this.animal_11 += monto; return this.maximo-this.animal_11;
-            case "12": this.animal_12 += monto; return this.maximo-this.animal_12;
-            case "13": this.animal_13 += monto; return this.maximo-this.animal_13;
-            case "14": this.animal_14 += monto; return this.maximo-this.animal_14;
-            case "15": this.animal_15 += monto; return this.maximo-this.animal_15;
-            case "16": this.animal_16 += monto; return this.maximo-this.animal_16;
-            case "17": this.animal_17 += monto; return this.maximo-this.animal_17;
-            case "18": this.animal_18 += monto; return this.maximo-this.animal_18;
-            case "19": this.animal_19 += monto; return this.maximo-this.animal_19;
-            case "20": this.animal_20 += monto; return this.maximo-this.animal_20;
-            case "21": this.animal_21 += monto; return this.maximo-this.animal_21;
-            case "22": this.animal_22 += monto; return this.maximo-this.animal_22;
-            case "23": this.animal_23 += monto; return this.maximo-this.animal_23;
-            case "24": this.animal_24 += monto; return this.maximo-this.animal_24;
-            case "25": this.animal_25 += monto; return this.maximo-this.animal_25;
-            case "26": this.animal_26 += monto; return this.maximo-this.animal_26;
-            case "27": this.animal_27 += monto; return this.maximo-this.animal_27;
-            case "28": this.animal_28 += monto; return this.maximo-this.animal_28;
-            case "29": this.animal_29 += monto; return this.maximo-this.animal_29;
-            case "30": this.animal_30 += monto; return this.maximo-this.animal_30;
-            case "31": this.animal_31 += monto; return this.maximo-this.animal_31;
-            case "32": this.animal_32 += monto; return this.maximo-this.animal_32;
-            case "33": this.animal_33 += monto; return this.maximo-this.animal_33;
-            case "34": this.animal_34 += monto; return this.maximo-this.animal_34;
-            case "35": this.animal_35 += monto; return this.maximo-this.animal_35;
-            case "36": this.animal_36 += monto; return this.maximo-this.animal_36;
+            case "00":return this.maximo-this.animal_00;
+            case "0": return this.maximo-this.animal_0;
+            case "1": return this.maximo-this.animal_1;
+            case "2": return this.maximo-this.animal_2;
+            case "3": return this.maximo-this.animal_3;
+            case "4": return this.maximo-this.animal_4;
+            case "5": return this.maximo-this.animal_5;
+            case "6": return this.maximo-this.animal_6;
+            case "7": return this.maximo-this.animal_7;
+            case "8": return this.maximo-this.animal_8;
+            case "9": return this.maximo-this.animal_9;
+            case "10": return this.maximo-this.animal_10;
+            case "11": return this.maximo-this.animal_11;
+            case "12": return this.maximo-this.animal_12;
+            case "13": return this.maximo-this.animal_13;
+            case "14": return this.maximo-this.animal_14;
+            case "15": return this.maximo-this.animal_15;
+            case "16": return this.maximo-this.animal_16;
+            case "17": return this.maximo-this.animal_17;
+            case "18": return this.maximo-this.animal_18;
+            case "19": return this.maximo-this.animal_19;
+            case "20": return this.maximo-this.animal_20;
+            case "21": return this.maximo-this.animal_21;
+            case "22": return this.maximo-this.animal_22;
+            case "23": return this.maximo-this.animal_23;
+            case "24": return this.maximo-this.animal_24;
+            case "25": return this.maximo-this.animal_25;
+            case "26": return this.maximo-this.animal_26;
+            case "27": return this.maximo-this.animal_27;
+            case "28": return this.maximo-this.animal_28;
+            case "29": return this.maximo-this.animal_29;
+            case "30": return this.maximo-this.animal_30;
+            case "31": return this.maximo-this.animal_31;
+            case "32": return this.maximo-this.animal_32;
+            case "33": return this.maximo-this.animal_33;
+            case "34": return this.maximo-this.animal_34;
+            case "35": return this.maximo-this.animal_35;
+            case "36": return this.maximo-this.animal_36;
             default: return 0.0;
         }
         
@@ -244,10 +242,4 @@ public class CupoAnimal {
     
      
     
-    public static void main(String[] args) {
-        for (int i = 0; i < 43; i++) {
-             System.out.println("rs.getString("+i+")"+",");
-        }
-       
-    }
 }

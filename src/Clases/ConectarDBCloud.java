@@ -167,49 +167,4 @@ public class ConectarDBCloud {
         return a;
     }
     
-    public static void main(String[] args) {
-        ArrayList<CupoAnimal> cupos = new ArrayList();
-        cupos.add(new CupoAnimal().get("2023-01-31", "LottoActivo", "9am"));
-        cupos.add(new CupoAnimal().get("2023-01-31", "LottoActivo", "10am"));
-        cupos.add(new CupoAnimal().get("2023-01-31", "LottoActivo", "11am"));
-        
-            System.out.println("Cupo Restante: "+
-                    cupos
-                .stream()
-                .filter( t -> t.getFecha().equalsIgnoreCase("2023-01-31") &&
-                              t.getPrograma().equalsIgnoreCase("LottoActivo")&&
-                              t.getSorteo().equalsIgnoreCase("9am")
-                       )
-                .findFirst().get().getCupoActual("1", 5)
-            );
-            
-            System.out.println(cupos
-                .stream()
-                .filter( t -> t.getFecha().equalsIgnoreCase("2023-01-31") &&
-                              t.getPrograma().equalsIgnoreCase("LottoActivo")&&
-                              t.getSorteo().equalsIgnoreCase("9am")
-                       )
-                .findFirst().get().toString());
-            
-            System.out.println("Cupo Restante: "+
-                    cupos
-                .stream()
-                .filter( t -> t.getFecha().equalsIgnoreCase("2023-01-31") &&
-                              t.getPrograma().equalsIgnoreCase("LottoActivo")&&
-                              t.getSorteo().equalsIgnoreCase("9am")
-                       )
-                .findFirst().get().getCupoActual("1", 5)
-            );
-            
-            System.out.println(cupos
-                .stream()
-                .filter( t -> t.getFecha().equalsIgnoreCase("2023-01-31") &&
-                              t.getPrograma().equalsIgnoreCase("LottoActivo")&&
-                              t.getSorteo().equalsIgnoreCase("9am")
-                       )
-                .findFirst().get().toString());
-                    
-                    
-                    
-    }
 }
