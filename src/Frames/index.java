@@ -2608,11 +2608,7 @@ public class index extends javax.swing.JFrame {
 
     private void jugar() {
         
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
         
         if (validarSorteos()) {
             if (validarAnimal()) {
