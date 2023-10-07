@@ -35,7 +35,8 @@ public class index extends javax.swing.JFrame {
     VerTickets verTickets;
     verResultados verResul;
     verVentas vVentas;
-    CupoAnimal cupos = new CupoAnimal();
+    ArrayList<CupoAnimal> cuposRegistrados = new ArrayList();
+    //CupoAnimal cupos = new CupoAnimal();
     public Configuracion datos;
 
     ArrayList<JToggleButton> animales = new ArrayList();
@@ -130,7 +131,7 @@ public class index extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         animalTxt = new javax.swing.JTextField();
         montoTxt = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        btnGenerarJugada = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         c7pm = new javax.swing.JCheckBox();
         c6pm = new javax.swing.JCheckBox();
@@ -884,10 +885,10 @@ public class index extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("->");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnGenerarJugada.setText("->");
+        btnGenerarJugada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnGenerarJugadaActionPerformed(evt);
             }
         });
 
@@ -907,7 +908,7 @@ public class index extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(montoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
+                .addComponent(btnGenerarJugada)
                 .addGap(0, 48, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -921,7 +922,7 @@ public class index extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(animalTxt)
                     .addComponent(montoTxt)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnGenerarJugada, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -1619,10 +1620,18 @@ public class index extends javax.swing.JFrame {
     }//GEN-LAST:event_a36ActionPerformed
 
     private void montoTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_montoTxtKeyPressed
-
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            jugar();
-        }
+        
+        
+        new Thread(() -> {
+            boolean desocupado = true;
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER && desocupado) {
+                desocupado = false;
+                btnGenerarJugada.setEnabled(false);
+                jugar();
+                btnGenerarJugada.setEnabled(true);
+                desocupado = true;
+            }
+        }).start();
 
     }//GEN-LAST:event_montoTxtKeyPressed
 
@@ -1634,9 +1643,20 @@ public class index extends javax.swing.JFrame {
         new tools().soloDoubleyCantidadDigitos(evt, montoTxt, 2);
     }//GEN-LAST:event_montoTxtKeyTyped
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        jugar();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void btnGenerarJugadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarJugadaActionPerformed
+
+        new Thread(() -> {
+            try {
+                btnGenerarJugada.setEnabled(false);
+                jugar();
+                btnGenerarJugada.setEnabled(true);
+            } catch (Exception e) {
+                Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, e);
+
+            }
+        }).start();
+        
+    }//GEN-LAST:event_btnGenerarJugadaActionPerformed
 
     private void animalTxtKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_animalTxtKeyTyped
         new tools().soloDoubleyCantidadDigitos(evt, animalTxt, 1);
@@ -1648,14 +1668,20 @@ public class index extends javax.swing.JFrame {
     }//GEN-LAST:event_BorrarJugadasActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        
+        if(JOptionPane.showConfirmDialog(archivoMenu, "Desea borrar las jugadas?") == JOptionPane.OK_OPTION){
         resetearJugadas();
         resetearBotones();
         resetearSorteos();
+        animalTxt.requestFocus();
+        }
+        
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         if (modelo.getRowCount() > 0) {
-            imprimir();
+            new Thread(this::imprimir).start();
         } else {
             JOptionPane.showMessageDialog(rootPane, "No hay jugadas realizadas para imprimir");
         }
@@ -1684,7 +1710,7 @@ public class index extends javax.swing.JFrame {
 
         if (evt.getKeyCode() == KeyEvent.VK_ADD) {
             if (modelo.getRowCount() > 0) {
-                imprimir();
+               new Thread(this::imprimir).start();
             } else {
                 JOptionPane.showMessageDialog(rootPane, "No hay jugadas realziadas para imprimir");
             }
@@ -2005,15 +2031,59 @@ public class index extends javax.swing.JFrame {
                 String rsp = "0";
                 rsp = JOptionPane.showInputDialog("Ingrese nuevo monto");
                 double newMonto = 0;
+                
                 try {
                     newMonto = Double.parseDouble(rsp);
                     totalTicket -= montD;
-                    totalTicket += newMonto;
-                    totalTicketTxt.setText(totalTicket + "");
+                    
+                    
+                    
+                    
                     for (int i = 0; i < tabla.getRowCount(); i++) {
                         if (Float.compare(i, row) == 0) {
-                            tabla.setValueAt(newMonto, row, 2);
-                            break;
+                            String sorteoCompleto = tabla.getValueAt(row, 0).toString();
+                            String separador = Pattern.quote(" ");
+                            String[] sorteoSeparado = sorteoCompleto.split(separador);
+                            
+                            String programa = sorteoSeparado[0];
+                            String sorteo =sorteoSeparado[1]+sorteoSeparado[2].toLowerCase();
+                            
+                            
+                            String animalCompleto = tabla.getValueAt(row, 1).toString();
+                            String animalReducido = "";
+                            
+                            for (int j = 0; j < animalCompleto.length(); j++) {
+                                    if(new tools().ComprobarNumeros(animalCompleto.substring(j, (j+1)))){
+                                        animalReducido += animalCompleto.substring(j, (j+1));
+                                    }else{
+                                        break;
+                                    }
+                            }
+                            
+                            
+                           
+                            
+                            CupoAnimal cupoJugada = cuposRegistrados.stream()
+                                            .filter(t-> 
+                                                t.getFecha().equalsIgnoreCase(fechaHoy) &&
+                                                t.getPrograma().equalsIgnoreCase(programa) &&
+                                                t.getSorteo().equalsIgnoreCase(sorteo)
+                                            ).findFirst().orElse(
+                                                    insertCupo(fechaHoy,programa,sorteo)
+                                            );
+                                    
+                                    double cupoAnimalJugado = cupoJugada.getCupoActual(animalReducido);
+                            
+                            System.out.println("cupo: "+cupoAnimalJugado);
+                            
+                            double nuevoTotal = newMonto>cupoAnimalJugado
+                                    ?cupoAnimalJugado
+                                    :newMonto;
+                            
+                            tabla.setValueAt(nuevoTotal, row, 2);
+                            totalTicket += nuevoTotal;
+                            totalTicketTxt.setText(totalTicket + "");
+                              break;
                         }
                     }
 
@@ -2077,6 +2147,7 @@ public class index extends javax.swing.JFrame {
                 }
             }
         }
+     animalTxt.requestFocus();
     }//GEN-LAST:event_checkLottoItemStateChanged
 
     private void checkGranjitaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkGranjitaItemStateChanged
@@ -2093,6 +2164,7 @@ public class index extends javax.swing.JFrame {
                 }
             }
         }
+         animalTxt.requestFocus();
     }//GEN-LAST:event_checkGranjitaItemStateChanged
 
     /**
@@ -2175,6 +2247,7 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JMenu archivoMenu;
     private javax.swing.ButtonGroup bg1;
     private javax.swing.JButton btnAnular;
+    private javax.swing.JButton btnGenerarJugada;
     private javax.swing.JButton btnPagar;
     private javax.swing.JButton btnRepetir;
     private javax.swing.JCheckBox c10am;
@@ -2190,7 +2263,6 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JCheckBox c9am;
     private javax.swing.JCheckBox checkGranjita;
     private javax.swing.JCheckBox checkLotto;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
@@ -2535,6 +2607,13 @@ public class index extends javax.swing.JFrame {
     }
 
     private void jugar() {
+        
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         if (validarSorteos()) {
             if (validarAnimal()) {
                 for (JCheckBox sorteo : sorteos) {
@@ -2546,7 +2625,7 @@ public class index extends javax.swing.JFrame {
                             String[] programas = sorteo.getText().split(separador);
                             for (String programa : programas) {
                                 if (programa.equalsIgnoreCase("lottoactivo") || programa.equalsIgnoreCase("granjita")) {
-                                    programa += " " + sorteo.getName();
+                                    String programaYsorteo = programa+ " " + sorteo.getName();
                                     for (JToggleButton animal : animales) {
                                         if (animal.isSelected()) {
                                             String anmx = animal.getName().equals("00") ? "-1" : animal.getName();
@@ -2555,8 +2634,19 @@ public class index extends javax.swing.JFrame {
                                             String animalJugado = anmx.equals("-1") ? "00" : anmx;
                                             String jugada = animalJugado + "" + animString;
 
-                                            double cupoAnimalJugado = cupos.get(fechaHoy, programa, sorteo.getName())
-                                                    .getCupoActual(animalJugado);
+                                            CupoAnimal cupoJugada = cuposRegistrados
+                                                    .stream()
+                                                    .filter( t-> 
+                                                        t.getFecha().equalsIgnoreCase(fechaHoy) &&
+                                                        t.getPrograma().equalsIgnoreCase(programa) &&
+                                                        t.getSorteo().equalsIgnoreCase(sorteo.getName().toLowerCase().replace(" ", ""))
+                                                    )
+                                                    .findFirst()
+                                                    .orElse(
+                                                        insertCupo(fechaHoy,programa,sorteo.getName().toLowerCase().replace(" ", ""))
+                                                    );
+                                    
+                                            double cupoAnimalJugado = cupoJugada.getCupoActual(animalJugado);
 
                                             if (tabla.getRowCount() > 0) {//Ya existen jugadas
                                                 boolean flag = false;
@@ -2565,7 +2655,7 @@ public class index extends javax.swing.JFrame {
                                                 for (int i = 0; i < tabla.getRowCount(); i++) {
                                                     String sorteox = tabla.getValueAt(i, 0).toString();
                                                     String jugadax = tabla.getValueAt(i, 1).toString();
-                                                    if (programa.equalsIgnoreCase(sorteox) && jugada.equalsIgnoreCase(jugadax)) {
+                                                    if (programaYsorteo.equalsIgnoreCase(sorteox) && jugada.equalsIgnoreCase(jugadax)) {
                                                         montoTabla = Double.parseDouble(tabla.getValueAt(i, 2).toString());
                                                         flag = true;
                                                         filax = i;
@@ -2578,7 +2668,7 @@ public class index extends javax.swing.JFrame {
                                                     totalTicket += totalJugada;
                                                     //String cupoRestante = cupos.g
                                                     modelo.addRow(new Object[]{
-                                                        programa, jugada, totalJugada, cupoAnimalJugado
+                                                        programaYsorteo, jugada, totalJugada, cupoAnimalJugado
                                                     });
                                                     totalTicketTxt.setText(totalTicket + "");
                                                 } else {//si hay jugadas iguales
@@ -2598,7 +2688,7 @@ public class index extends javax.swing.JFrame {
                                                 totalTicket += totalJugada;
                                                 //String cupoRestante = cupos.g
                                                 modelo.addRow(new Object[]{
-                                                    programa, jugada, totalJugada, cupoAnimalJugado
+                                                    programaYsorteo, jugada, totalJugada, cupoAnimalJugado
                                                 });
                                                 totalTicketTxt.setText(totalTicket + "");
                                             }
@@ -2613,15 +2703,27 @@ public class index extends javax.swing.JFrame {
                             String[] programas = sorteo.getText().split(separador);
                             for (String programa : programas) {
                                 if (programa.equalsIgnoreCase("lottoActivo") || programa.equalsIgnoreCase("granjita")) {
-                                    programa += " " + sorteo.getName();
+                                    String programaYsorteo = programa +" " + sorteo.getName();
                                     String animalSeleccionado = animalTxt.getText().equals("00") ? "-1" : animalTxt.getText();
                                     int anim = Integer.parseInt(animalSeleccionado);
                                     String animString = getAnimal(anim);
                                     String animalJugado = animalSeleccionado.equals("-1") ? "00" : animalSeleccionado;
                                     String jugada = animalJugado + "" + animString;
 
-                                    double cupoAnimalJugado = cupos.get(fechaHoy, programa, sorteo.getName())
-                                            .getCupoActual(animalJugado);
+                                    
+                                    
+                                    
+                                    CupoAnimal cupoJugada = cuposRegistrados.stream()
+                                            .filter(t-> 
+                                                t.getFecha().equalsIgnoreCase(fechaHoy) &&
+                                                t.getPrograma().equalsIgnoreCase(programa) &&
+                                                t.getSorteo().equalsIgnoreCase(sorteo.getName().toLowerCase().replace(" ", ""))
+                                            ).findFirst().orElse(
+                                                    insertCupo(fechaHoy,programa,sorteo.getName().toLowerCase().replace(" ", ""))
+                                            );
+                                    
+                                    double cupoAnimalJugado = cupoJugada.getCupoActual(animalJugado);
+                                    
 
                                     if (tabla.getRowCount() > 0) {//Ya existen jugadas
                                         boolean flag = false;
@@ -2630,7 +2732,7 @@ public class index extends javax.swing.JFrame {
                                         for (int i = 0; i < tabla.getRowCount(); i++) {
                                             String sorteox = tabla.getValueAt(i, 0).toString();
                                             String jugadax = tabla.getValueAt(i, 1).toString();
-                                            if (programa.equalsIgnoreCase(sorteox) && jugada.equalsIgnoreCase(jugadax)) {
+                                            if (programaYsorteo.equalsIgnoreCase(sorteox) && jugada.equalsIgnoreCase(jugadax)) {
                                                 montoTabla = Double.parseDouble(tabla.getValueAt(i, 2).toString());
                                                 flag = true;
                                                 filax = i;
@@ -2643,7 +2745,7 @@ public class index extends javax.swing.JFrame {
                                             totalTicket += totalJugada;
                                             //String cupoRestante = cupos.g
                                             modelo.addRow(new Object[]{
-                                                programa, jugada, totalJugada, cupoAnimalJugado
+                                                programaYsorteo, jugada, totalJugada, cupoAnimalJugado
                                             });
                                             totalTicketTxt.setText(totalTicket + "");
                                         } else {//si hay jugadas iguales
@@ -2663,7 +2765,7 @@ public class index extends javax.swing.JFrame {
                                         totalTicket += totalJugada;
                                         //String cupoRestante = cupos.g
                                         modelo.addRow(new Object[]{
-                                            programa, jugada, totalJugada, cupoAnimalJugado
+                                            programaYsorteo, jugada, totalJugada, cupoAnimalJugado
                                         });
                                         totalTicketTxt.setText(totalTicket + "");
                                     }
@@ -2684,6 +2786,11 @@ public class index extends javax.swing.JFrame {
 
     }
 
+    private CupoAnimal insertCupo(String fecha, String programa, String sorteo){
+        CupoAnimal temp = new CupoAnimal().get(fecha, programa, sorteo);
+        cuposRegistrados.add(temp);
+        return temp;
+    }
     private boolean validarSorteos() {
         boolean llave = false;
         for (JCheckBox sorteo : sorteos) {
@@ -2731,6 +2838,7 @@ public class index extends javax.swing.JFrame {
         totalTicketTxt.setText("0");
         modelo.setRowCount(0);
         totalTicket = 0.0;
+        cuposRegistrados.clear();
     }
 
     private void imprimir() {
@@ -2743,23 +2851,60 @@ public class index extends javax.swing.JFrame {
                 String sorteox = tabla.getValueAt(i, 0).toString();
                 String []sorteoYprograma = sorteox.split(separador);
                 String programa = sorteoYprograma[0];
-                String sorteo = sorteoYprograma[1];
-                String animalx = tabla.getValueAt(i, 1).toString();
-                Double montox = Double.parseDouble(tabla.getValueAt(i, 2).toString());
+                String sorteoReducido = sorteoYprograma[1];
+                String sorteoCompleto = sorteoYprograma[1]+sorteoYprograma[2].toLowerCase();
+                String animalCompleto = tabla.getValueAt(i, 1).toString();
+                Double montoJugado = Double.parseDouble(tabla.getValueAt(i, 2).toString());
+                
+                 String animalReducido = "";
+
+                for (int j = 0; j < animalCompleto.length(); j++) {
+                    if (new tools().ComprobarNumeros(animalCompleto.substring(j, (j + 1)))) {
+                        animalReducido += animalCompleto.substring(j, (j + 1));
+                    } else {
+                        break;
+                    }
+                }
+                final String animalJugada = animalReducido;
+                
+                try {
+                    new Thread(()->{
+                        CupoAnimal jugadaTabla = cuposRegistrados.stream()
+                                .filter(t ->
+                                    t.getPrograma().equalsIgnoreCase(programa) &&
+                                    t.getSorteo().equalsIgnoreCase(sorteoCompleto) &&
+                                    t.getFecha().equalsIgnoreCase(fechaHoy)
+                                )
+                                .findFirst()
+                                .get();
+//a
+                        jugadaTabla.setVendido(animalJugada, montoJugado);
+                        jugadaTabla.updateCupo();
+                    
+                        System.out.println("Actualizado: "+jugadaTabla.toString());
+                    }).start();
+                } catch (Exception e) {
+                    Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, e);
+                }
+                
+                
+                
+                
+                
                 Float montoParseado = Float.parseFloat(tabla.getValueAt(i, 2).toString());
                 totalJugado+=montoParseado;
-                jugadas.add(new JugadasTicket(0, agencia.getNumTicket(), programa,fechaHoy, sorteox, animalx, montoParseado, "Activo"));
+                jugadas.add(new JugadasTicket(0, agencia.getNumTicket(), programa,fechaHoy, sorteox, animalCompleto, montoParseado, "Activo"));
             }
 
         String hora = new SimpleDateFormat("hh:mm:ss").format(myUltimaHora.getTime());
-
         int rsp = 0;
         
-        
-        
-        
-        rsp = new Ticket().insert(agencia.getNumTicket(),agencia.getNombreAgencia(),
-                totalJugado,jugadas);
+        rsp = new Ticket().insert(
+            agencia.getNumTicket(),
+            agencia.getNombreAgencia(),
+            totalJugado,
+            jugadas
+        );
         if (rsp > 0) {
             
             String numJugadas = jugadas.size() + "";/////////////////////////
