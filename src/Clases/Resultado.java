@@ -41,7 +41,8 @@ public class Resultado {
     public int insert(){
         int rsp=0;
         
-         try (java.sql.Connection con = new ConectarDBLocal("ag").getCon()) {
+         try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
+             con.setCatalog("ag");
              sql="call `sp.InsertSorteo` (?,?,?,?)";
              pst = con.prepareStatement(sql);
              pst.setString(1,this.fecha);
@@ -61,19 +62,21 @@ public class Resultado {
     
     public ArrayList getResultados(String programax, String fecha01, String fecha02){
         ArrayList<Resultado> resuls = new ArrayList();
-        try (java.sql.Connection con = new ConectarDBLocal("ag").getCon()) {
-             sql ="call `sp.getResultados` (?,?,?)";
+        try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
+            con.setCatalog("ag");
+             sql ="call `sp.getResultados` (?,?)";
              pst = con.prepareStatement(sql);
-             pst.setString(1,programax);
-             pst.setString(2,fecha01);
-             pst.setString(3,fecha02);
+             //pst.setString(1,programax);
+             pst.setString(1,fecha01);
+             pst.setString(2,fecha02);
              rs = pst.executeQuery();
              while(rs.next()){
+                 System.out.println("x");
                  resuls.add(new Resultado(rs.getInt("idresultado"),rs.getString("fechaSorteo"),rs.getString("programa"),
                  rs.getString("sorteo"),rs.getString("animal"),rs.getString("estado")));
              }
         } catch (Exception e) {
-            Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(Resultado.class.getName()).log(Level.SEVERE, null, e);
             JOptionPane.showMessageDialog(null, "Error con el manejo de base de datos, contacte con el adm.\n" + e);
         } finally {
             cerrar();

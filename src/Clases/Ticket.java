@@ -40,7 +40,8 @@ public class Ticket {
         ArrayList<Ticket> lista = new ArrayList();
 
         sql = "call `sp.getTicket` (?,?,?)";
-        try (java.sql.Connection con = new ConectarDBLocal("ag").getCon()) {
+        try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
+            con.setCatalog("ag");
             pst = con.prepareCall(sql);
             pst.setString(1,agenciax);
             pst.setString(2,fecha01+" 00:00:01");
@@ -79,12 +80,13 @@ public class Ticket {
         return lista;
     }
 
-public Ticket getTicketBySerial(String serialx) {
+    public Ticket getTicketBySerial(String serialx) {
         Ticket my = new Ticket();
 
         sql = "call `sp.getTicketBySerial` (?)";
         
-        try (java.sql.Connection con = new ConectarDBLocal("ag").getCon()) {
+        try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
+            con.setCatalog("ag");
             pst = con.prepareStatement(sql);
             pst.setString(1,serialx);
             
@@ -112,13 +114,13 @@ public Ticket getTicketBySerial(String serialx) {
         return my;
     }
 
-
-public Ticket getTicketByNum(String nameAgencia,String fecha01, int numTicketx) {
+    public Ticket getTicketByNum(String nameAgencia,String fecha01, int numTicketx) {
         Ticket my = new Ticket();
 
         sql = "call `sp.getTicketbyNum` (?,?,?)";
         
-        try (java.sql.Connection con = new ConectarDBLocal("ag").getCon()) {
+        try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
+            con.setCatalog("ag");
             pst = con.prepareStatement(sql);
             pst.setString(1,nameAgencia);
             pst.setString(2,fecha01);
@@ -140,20 +142,14 @@ public Ticket getTicketByNum(String nameAgencia,String fecha01, int numTicketx) 
         return my;
     }
 
-
-/*
-
-sp.insertTicket`(in numTicketx varchar(45),in agenciax varchar(45),
-in totalJugadox double,IN json_str VARCHAR(10000))
-*/
-
     public int insert(int numTicketx,String agenciax,double totalJugadox, ArrayList jugadax) {
         int rstl = 0;
 
         
         
         sql = " call `sp.insertTicket` (?,?,?,?)";
-        try (java.sql.Connection con = new ConectarDBLocal("ag").getCon()) {
+        try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
+            con.setCatalog("ag");
             pst = con.prepareCall(sql);
             pst.setInt(1, numTicketx);
             pst.setString(2, agenciax);
@@ -169,13 +165,10 @@ in totalJugadox double,IN json_str VARCHAR(10000))
         }
         return rstl;
     }
-
-  
-
     
     public int pagar(int idJugadax){
         int rsp=0;//pagarJugada
-        try (java.sql.Connection con = new ConectarDBLocal("ag").getCon()) {
+        try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
             sql = "call `sp.pagarJugada` (?)";
             pst = con.prepareCall(sql);
             pst.setInt(1, idJugadax);
@@ -190,10 +183,10 @@ in totalJugadox double,IN json_str VARCHAR(10000))
         return rsp;
     }
     
-    
- public int anular(int idTicketx) {
+    public int anular(int idTicketx) {
      int rsp=0;   
-     try (java.sql.Connection con = new ConectarDBLocal("ag").getCon()) {
+     try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
+         con.setCatalog("ag");
             sql = "call `sp.anularTicket` (?)";
             pst = con.prepareCall(sql);
             pst.setInt(1, idTicketx);
@@ -270,7 +263,8 @@ in totalJugadox double,IN json_str VARCHAR(10000))
         
         return jsonArray.toString();
 }
-      private String convertJugadasToJSON(ArrayList<JugadasTicket> jugadas){
+    
+    private String convertJugadasToJSON(ArrayList<JugadasTicket> jugadas){
         JSONArray jsonArray = new JSONArray();
         
         for(JugadasTicket j : jugadas){

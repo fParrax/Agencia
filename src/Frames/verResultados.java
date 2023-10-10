@@ -19,7 +19,7 @@ public class verResultados extends javax.swing.JFrame {
     String programa = "LottoActivo";
     String fecha="2022-11-01";
     DefaultTableModel modelo;
-    ArrayList<Resultado> resultados;
+    ArrayList<Resultado> resultados = new ArrayList();
     public verResultados() {
         initComponents();
         iniciarDatos();
@@ -193,7 +193,9 @@ public verResultados(index ind) {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String fechaSeleccionada = txtFecha.getText();
         modelo.setRowCount(0);
+        resultados.clear();
         resultados = (ArrayList) new Resultado().getResultados("", fecha, fecha).clone();
+        System.out.println("Resultados: "+resultados.size());
         for(Resultado resultado:resultados){
             modelo.addRow(new Object[]{
             resultado.getPrograma()+" "+resultado.getSorteo(),resultado.getAnimal()

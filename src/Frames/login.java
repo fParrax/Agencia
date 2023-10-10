@@ -7,6 +7,7 @@ package Frames;
 import Clases.Agencia;
 import Clases.PlaceHolder;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -42,7 +43,7 @@ public void changeIcon() {
         panelCentral = new javax.swing.JPanel();
         txtUsername = new javax.swing.JTextField();
         txtPässword = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
+        btnIngresar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
@@ -57,13 +58,18 @@ public void changeIcon() {
         txtPässword.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         txtPässword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtPässword.setToolTipText("");
+        txtPässword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPässwordKeyPressed(evt);
+            }
+        });
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        jButton1.setText("Ingresar");
-        jButton1.setToolTipText("");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnIngresar.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        btnIngresar.setText("Ingresar");
+        btnIngresar.setToolTipText("");
+        btnIngresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnIngresarActionPerformed(evt);
             }
         });
 
@@ -91,7 +97,7 @@ public void changeIcon() {
                         .addContainerGap(112, Short.MAX_VALUE))
                     .addGroup(panelCentralLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(174, 174, 174))))
         );
         panelCentralLayout.setVerticalGroup(
@@ -106,7 +112,7 @@ public void changeIcon() {
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtPässword, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE))
                 .addGap(36, 36, 36)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(68, Short.MAX_VALUE))
         );
 
@@ -125,13 +131,15 @@ public void changeIcon() {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
       if(validarCampos()){
           String name = txtUsername.getText();
-          String pss = txtPässword.getPassword().toString();
+          String pss = txtPässword.getText();
           Agencia ag = new Agencia().getAgencia(name);
           
           if(ag.getId()>0){
+              System.out.println(ag.getPassword());
+              System.out.println(pss);
              if(ag.getPassword().equals(pss)){
                  new index(ag).setVisible(true);
              }else{
@@ -143,7 +151,13 @@ public void changeIcon() {
       }else{
           JOptionPane.showMessageDialog(rootPane, "Usuario y contraseña no deben estar vacios");
       }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnIngresarActionPerformed
+
+    private void txtPässwordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPässwordKeyPressed
+       if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+           btnIngresar.doClick();
+       }
+    }//GEN-LAST:event_txtPässwordKeyPressed
 
     /**
      * @param args the command line arguments
@@ -181,7 +195,7 @@ public void changeIcon() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnIngresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel panelCentral;

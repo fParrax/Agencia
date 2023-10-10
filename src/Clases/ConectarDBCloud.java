@@ -129,6 +129,8 @@ public class ConectarDBCloud {
     public  String tomarFecha() {
         String fecha = "";
         try (Connection conex = new ConectarDBCloud("ag").getCon()) {
+                
+con.setCatalog("ag");
             String sql = "select replace(CURDATE(),'/','-') as a";
             PreparedStatement s = conex.prepareStatement(sql);
             ResultSet rs = s.executeQuery();
