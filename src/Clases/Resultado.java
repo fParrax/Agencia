@@ -60,13 +60,12 @@ public class Resultado {
         return rsp;
     }
     
-    public ArrayList getResultados(String programax, String fecha01, String fecha02){
+    public ArrayList getResultados(String fecha01, String fecha02){
         ArrayList<Resultado> resuls = new ArrayList();
         try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
             con.setCatalog("ag");
              sql ="call `sp.getResultados` (?,?)";
              pst = con.prepareStatement(sql);
-             //pst.setString(1,programax);
              pst.setString(1,fecha01);
              pst.setString(2,fecha02);
              rs = pst.executeQuery();

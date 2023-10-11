@@ -112,10 +112,12 @@ public verResultados(index ind) {
         tabla.setColorBackgoundHead(new java.awt.Color(0, 51, 153));
         tabla.setColorBordeFilas(new java.awt.Color(255, 255, 255));
         tabla.setColorFilasBackgound2(new java.awt.Color(255, 255, 255));
+        tabla.setColorFilasForeground1(new java.awt.Color(0, 0, 0));
+        tabla.setColorFilasForeground2(new java.awt.Color(0, 0, 0));
         tabla.setColorSelBackgound(new java.awt.Color(0, 102, 102));
-        tabla.setFuenteFilas(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        tabla.setFuenteFilasSelect(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        tabla.setFuenteHead(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        tabla.setFuenteFilas(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        tabla.setFuenteFilasSelect(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        tabla.setFuenteHead(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         tabla.setGridColor(new java.awt.Color(0, 0, 0));
         tabla.setSelectionBackground(new java.awt.Color(0, 102, 102));
         tabla.setShowGrid(true);
@@ -194,11 +196,11 @@ public verResultados(index ind) {
         String fechaSeleccionada = txtFecha.getText();
         modelo.setRowCount(0);
         resultados.clear();
-        resultados = (ArrayList) new Resultado().getResultados("", fecha, fecha).clone();
+        resultados = (ArrayList) new Resultado().getResultados( fechaSeleccionada, fechaSeleccionada).clone();
         System.out.println("Resultados: "+resultados.size());
         for(Resultado resultado:resultados){
             modelo.addRow(new Object[]{
-            resultado.getPrograma()+" "+resultado.getSorteo(),resultado.getAnimal()
+            resultado.getSorteo(),resultado.getAnimal()
             });
         }
     }//GEN-LAST:event_btnBuscarActionPerformed

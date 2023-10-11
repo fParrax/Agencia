@@ -5,6 +5,7 @@
 package Frames;
 
 import Clases.Agencia;
+import Clases.ConectarDBCloud;
 import Clases.PlaceHolder;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
@@ -24,7 +25,8 @@ public class login extends javax.swing.JFrame {
         initComponents();
         changeIcon();
         new PlaceHolder("Ingrese nombre Usuario",txtUsername);
-        new PlaceHolder("Ingrese contraseña",txtPässword);
+        new PlaceHolder("Ingrese contraseña",txtPassword);
+        new Thread(this::testCon).start();
     }
 public void changeIcon() {
         Image icon = new ImageIcon(getClass().getResource("/imgs/chip.png")).getImage();
@@ -42,10 +44,11 @@ public void changeIcon() {
 
         panelCentral = new javax.swing.JPanel();
         txtUsername = new javax.swing.JTextField();
-        txtPässword = new javax.swing.JPasswordField();
+        txtPassword = new javax.swing.JPasswordField();
         btnIngresar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        lbAviso = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ingreso de Credenciales - Agencia de Loterias");
@@ -54,13 +57,18 @@ public void changeIcon() {
 
         txtUsername.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         txtUsername.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-
-        txtPässword.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        txtPässword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtPässword.setToolTipText("");
-        txtPässword.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtUsername.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtPässwordKeyPressed(evt);
+                txtUsernameKeyPressed(evt);
+            }
+        });
+
+        txtPassword.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        txtPassword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtPassword.setToolTipText("");
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyPressed(evt);
             }
         });
 
@@ -79,6 +87,9 @@ public void changeIcon() {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgs/password.png"))); // NOI18N
 
+        lbAviso.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbAviso.setText("Verificando conexión con la base de datos");
+
         javax.swing.GroupLayout panelCentralLayout = new javax.swing.GroupLayout(panelCentral);
         panelCentral.setLayout(panelCentralLayout);
         panelCentralLayout.setHorizontalGroup(
@@ -93,12 +104,16 @@ public void changeIcon() {
                         .addGap(18, 18, 18)
                         .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtUsername)
-                            .addComponent(txtPässword, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
+                            .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
                         .addContainerGap(112, Short.MAX_VALUE))
                     .addGroup(panelCentralLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(174, 174, 174))))
+            .addGroup(panelCentralLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbAviso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         panelCentralLayout.setVerticalGroup(
             panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,10 +125,12 @@ public void changeIcon() {
                 .addGap(33, 33, 33)
                 .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtPässword, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE))
+                    .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE))
                 .addGap(36, 36, 36)
                 .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addComponent(lbAviso)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -134,13 +151,12 @@ public void changeIcon() {
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
       if(validarCampos()){
           String name = txtUsername.getText();
-          String pss = txtPässword.getText();
+          String pss = txtPassword.getText();
           Agencia ag = new Agencia().getAgencia(name);
           
           if(ag.getId()>0){
-              System.out.println(ag.getPassword());
-              System.out.println(pss);
              if(ag.getPassword().equals(pss)){
+                 this.dispose();
                  new index(ag).setVisible(true);
              }else{
                  JOptionPane.showMessageDialog(rootPane, "Contraseña Incorrecta");
@@ -153,11 +169,17 @@ public void changeIcon() {
       }
     }//GEN-LAST:event_btnIngresarActionPerformed
 
-    private void txtPässwordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPässwordKeyPressed
+    private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
            btnIngresar.doClick();
        }
-    }//GEN-LAST:event_txtPässwordKeyPressed
+    }//GEN-LAST:event_txtPasswordKeyPressed
+
+    private void txtUsernameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsernameKeyPressed
+      if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+          txtPassword.requestFocus();
+      }
+    }//GEN-LAST:event_txtUsernameKeyPressed
 
     /**
      * @param args the command line arguments
@@ -198,20 +220,24 @@ public void changeIcon() {
     private javax.swing.JButton btnIngresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel lbAviso;
     private javax.swing.JPanel panelCentral;
-    private javax.swing.JPasswordField txtPässword;
+    private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
 
 private boolean validarCampos(){
-    if(!txtUsername.getText().isEmpty() && !txtPässword.getText().isEmpty()){
+    if(!txtUsername.getText().isEmpty() && !txtPassword.getText().isEmpty()){
         return true;
     }else{
         return false;
     }
 }
 
-
+private void testCon(){
+    System.out.println(new ConectarDBCloud("ag").getCon());
+    lbAviso.setText("Conexión Lista");
+}
 
 }

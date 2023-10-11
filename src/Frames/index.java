@@ -69,6 +69,7 @@ public class index extends javax.swing.JFrame {
     public index(Agencia agencia) {
         initComponents();
         this.agencia=agencia;
+        setTitle(getTitle()+" - "+agencia.getNombreAgencia());
         
         changeIcon();
         new Thread(this::iniciar).start();
@@ -166,6 +167,7 @@ public class index extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         txtRepetir = new javax.swing.JTextField();
         btnRepetir = new javax.swing.JButton();
+        lbMensajeSistema = new javax.swing.JLabel();
         panelPrograma = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         checkLotto = new javax.swing.JCheckBox();
@@ -1294,6 +1296,9 @@ public class index extends javax.swing.JFrame {
             }
         });
 
+        lbMensajeSistema.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbMensajeSistema.setText("Esperando algún mensaje del sistema.");
+
         javax.swing.GroupLayout panelAyudaLayout = new javax.swing.GroupLayout(panelAyuda);
         panelAyuda.setLayout(panelAyudaLayout);
         panelAyudaLayout.setHorizontalGroup(
@@ -1321,7 +1326,9 @@ public class index extends javax.swing.JFrame {
                 .addComponent(txtRepetir, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRepetir)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addComponent(lbMensajeSistema, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         panelAyudaLayout.setVerticalGroup(
             panelAyudaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1338,7 +1345,8 @@ public class index extends javax.swing.JFrame {
                     .addComponent(jSeparator2)
                     .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtRepetir, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRepetir, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE))
+                    .addComponent(btnRepetir, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+                    .addComponent(lbMensajeSistema, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -2333,6 +2341,7 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel lbAvisoLt8am;
+    private javax.swing.JLabel lbMensajeSistema;
     private javax.swing.JMenuBar menuMain;
     private javax.swing.JTextField montoTxt;
     private javax.swing.JPopupMenu opcionesTabla;
@@ -2356,9 +2365,11 @@ public class index extends javax.swing.JFrame {
 
     private void iniciar() {
         try {
+            lbMensajeSistema.setText("Cargando fecha del servidor");
             lbAvisoLt8am.setVisible(false);
-fechaHoy = new ConectarDBCloud("ag").tomarFecha();
+            fechaHoy = new ConectarDBCloud("ag").tomarFecha();
            
+            lbMensajeSistema.setText("Cargando placeHolder");
             modelo = (DefaultTableModel) tabla.getModel();
             new PlaceHolder("Jugada", animalTxt);
             new PlaceHolder("Monto", montoTxt);
@@ -2366,10 +2377,13 @@ fechaHoy = new ConectarDBCloud("ag").tomarFecha();
             new PlaceHolder("# Ticket", txtAnular);
             new PlaceHolder("# Ticket", txtRepetir);
 
+            lbMensajeSistema.setText("Cargando Botones");
             agregarBotones();
+            lbMensajeSistema.setText("Cargando sorteos");
             agregarSorteos();
             programas.add("LottoActivo");
             programas.add("Granjita");
+            lbMensajeSistema.setText("Cargando Cupos");
             new Thread(this::crearCupos).start();
             animalTxt.requestFocus();
 
@@ -2382,6 +2396,7 @@ fechaHoy = new ConectarDBCloud("ag").tomarFecha();
             verResul = new verResultados(this);
             vVentas = new verVentas(this);
             //new Timer().scheduleAtFixedRate(desactivarSorteosTT, 10000, 10000);
+            lbMensajeSistema.setText("Cargando información de Ag.");
             agencia= new Agencia();
             agencia.setNombreAgencia("parra");
             agencia.setComision(10);
@@ -2390,17 +2405,13 @@ fechaHoy = new ConectarDBCloud("ag").tomarFecha();
             
             
             
-            
+            lbMensajeSistema.setText("Sistema Listo. Esperando Novedades");
         } catch (ParseException ex) {
             Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void testCon() {
-        
-            agencia = new Agencia().getAgencia("parra");
-        
-    }
+   
     
     TimerTask actualizarHoraTT = new TimerTask() {
         public void run() {

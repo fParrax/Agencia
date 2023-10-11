@@ -2039,7 +2039,9 @@
                       <Component id="txtRepetir" min="-2" pref="82" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnRepetir" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                      <Component id="lbMensajeSistema" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -2059,6 +2061,7 @@
                           <Component id="jLabel6" alignment="0" max="32767" attributes="0"/>
                           <Component id="txtRepetir" alignment="0" max="32767" attributes="0"/>
                           <Component id="btnRepetir" alignment="0" pref="42" max="32767" attributes="0"/>
+                          <Component id="lbMensajeSistema" alignment="1" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -2181,6 +2184,14 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRepetirActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lbMensajeSistema">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="14" style="0"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Esperando alg&#xfa;n mensaje del sistema."/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>

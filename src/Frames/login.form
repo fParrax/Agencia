@@ -55,7 +55,7 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="txtUsername" max="32767" attributes="0"/>
-                              <Component id="txtPässword" pref="256" max="32767" attributes="0"/>
+                              <Component id="txtPassword" pref="256" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace pref="112" max="32767" attributes="0"/>
                       </Group>
@@ -65,6 +65,11 @@
                           <EmptySpace min="-2" pref="174" max="-2" attributes="0"/>
                       </Group>
                   </Group>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="lbAviso" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -79,11 +84,13 @@
                   <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="jLabel2" max="32767" attributes="0"/>
-                      <Component id="txtPässword" pref="46" max="32767" attributes="0"/>
+                      <Component id="txtPassword" pref="46" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                   <Component id="btnIngresar" min="-2" pref="39" max="-2" attributes="0"/>
-                  <EmptySpace pref="68" max="32767" attributes="0"/>
+                  <EmptySpace pref="46" max="32767" attributes="0"/>
+                  <Component id="lbAviso" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -96,8 +103,11 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtUsernameKeyPressed"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JPasswordField" name="txtP&#xe4;ssword">
+        <Component class="javax.swing.JPasswordField" name="txtPassword">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="15" style="0"/>
@@ -106,7 +116,7 @@
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
           <Events>
-            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtP&#xe4;sswordKeyPressed"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPasswordKeyPressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnIngresar">
@@ -135,6 +145,12 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/imgs/password.png"/>
             </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbAviso">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="text" type="java.lang.String" value="Verificando conexi&#xf3;n con la base de datos"/>
           </Properties>
         </Component>
       </SubComponents>
