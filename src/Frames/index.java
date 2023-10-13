@@ -12,6 +12,9 @@ import Clases.Ticket;
 import Clases.tools;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +39,7 @@ public class index extends javax.swing.JFrame {
     VerTickets verTickets;
     verResultados verResul;
     verVentas vVentas;
-    ArrayList<CupoAnimal> cuposRegistrados = new ArrayList();
+    ArrayList<CupoAnimal> animalesVendidos = new ArrayList();
     //CupoAnimal cupos = new CupoAnimal();
     public Configuracion datos;
 
@@ -50,7 +53,9 @@ public class index extends javax.swing.JFrame {
     long tInicio, tFinal;
     int myNumTicket = 0;
     int espaciosPrevios = 0;
-
+    boolean isConnected=false;
+    private String myUrl="https://www.google.com";
+    
     Calendar myHoraActual = Calendar.getInstance();
     public Calendar myUltimaHora = Calendar.getInstance();
 
@@ -73,6 +78,8 @@ public class index extends javax.swing.JFrame {
         
         changeIcon();
         new Thread(this::iniciar).start();
+       
+        
        
 
     }
@@ -1707,20 +1714,27 @@ public class index extends javax.swing.JFrame {
     }//GEN-LAST:event_BorrarJugadasActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        
+/*
         if(JOptionPane.showConfirmDialog(archivoMenu, "Desea borrar las jugadas?","Limpiar",JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION){
         resetearJugadas();
         resetearBotones();
         resetearSorteos();
         animalTxt.requestFocus();
         }
-        
+         
+        */        
+        System.out.println(isConnected);
         
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         if (modelo.getRowCount() > 0) {
-            new Thread(this::imprimir).start();
+            if(isConnected){
+                new Thread(this::imprimir).start(); 
+            }else{
+                 JOptionPane.showMessageDialog(rootPane, "No hay conexión con el servidor, revise su conexión a internet o contacte con el administrador para ver la conexión del servidor.");
+            }
+           
         } else {
             JOptionPane.showMessageDialog(rootPane, "No hay jugadas realizadas para imprimir");
         }
@@ -2102,7 +2116,7 @@ public class index extends javax.swing.JFrame {
                             
                            
                             
-                            CupoAnimal cupoJugada = cuposRegistrados.stream()
+                            CupoAnimal cupoJugada = animalesVendidos.stream()
                                             .filter(t-> 
                                                 t.getFecha().equalsIgnoreCase(fechaHoy) &&
                                                 t.getPrograma().equalsIgnoreCase(programa) &&
@@ -2364,6 +2378,31 @@ public class index extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void iniciar() {
+        new Thread(()->{
+             while (true) {
+                try {
+                    URL url = new URL(myUrl);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");
+                    connection.connect();
+                    isConnected = connection.getResponseCode() == 200
+                            ? true
+                            : false;
+                lbMensajeSistema.setText("Conexión Estable. Esperando Novedades");    
+                } catch (IOException e) {
+                   isConnected=false;
+                   lbMensajeSistema.setText("Ups. Hay problemas de Conexión."); 
+                }
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                }
+            }
+        }).start();
+        
+        
+        
         try {
             lbMensajeSistema.setText("Cargando fecha del servidor");
             lbAvisoLt8am.setVisible(false);
@@ -2397,9 +2436,7 @@ public class index extends javax.swing.JFrame {
             vVentas = new verVentas(this);
             //new Timer().scheduleAtFixedRate(desactivarSorteosTT, 10000, 10000);
             lbMensajeSistema.setText("Cargando información de Ag.");
-            agencia= new Agencia();
-            agencia.setNombreAgencia("parra");
-            agencia.setComision(10);
+            
             
             
             
@@ -2708,7 +2745,7 @@ public class index extends javax.swing.JFrame {
                                                 String animalJugado = anmx.equals("-1") ? "00" : anmx;
                                                 String jugada = animalJugado + "" + animString;
 
-                                                CupoAnimal cupoJugada = cuposRegistrados
+                                                CupoAnimal cupoJugada = animalesVendidos
                                                         .stream()
                                                         .filter(t
                                                                 -> t.getFecha().equalsIgnoreCase(fechaHoy)
@@ -2785,8 +2822,8 @@ public class index extends javax.swing.JFrame {
                                         String animString = getAnimal(anim);
                                         String animalJugado = animalSeleccionado.equals("-1") ? "00" : animalSeleccionado;
                                         String jugada = animalJugado + "" + animString;
-
-                                        CupoAnimal cupoJugada = cuposRegistrados.stream()
+                             //           System.out.println(sorteo.getName().toLowerCase().replace(" ", ""));
+                                        CupoAnimal cupoJugada = animalesVendidos.stream()
                                                 .filter(t
                                                         -> t.getFecha().equalsIgnoreCase(fechaHoy)
                                                 && t.getPrograma().equalsIgnoreCase(programa)
@@ -2861,7 +2898,7 @@ public class index extends javax.swing.JFrame {
 
     private CupoAnimal insertCupo(String fecha, String programa, String sorteo){
         CupoAnimal temp = new CupoAnimal().get(fecha, programa, sorteo);
-        cuposRegistrados.add(temp);
+//        cuposRegistrados.add(temp);
         return temp;
     }
     
@@ -2929,32 +2966,6 @@ public class index extends javax.swing.JFrame {
                 totalTicket -= montoJugado;
                 totalTicketTxt.setText(totalTicket + "");
                 modelo.removeRow(filas[i - 1]);
-                
-                String animalReducido = "";
-
-                for (int j = 0; j < animalCompleto.length(); j++) {
-                    if (new tools().ComprobarNumeros(animalCompleto.substring(j, (j + 1)))) {
-                        animalReducido += animalCompleto.substring(j, (j + 1));
-                    } else {
-                        break;
-                    }
-                }
-                final String animalJugada = animalReducido;
-                
-                
-                      CupoAnimal jugadaTabla = cuposRegistrados.stream()
-                        .filter(t
-                                -> t.getPrograma().equalsIgnoreCase(programa)
-                        && t.getSorteo().equalsIgnoreCase(sorteoCompleto)
-                        && t.getFecha().equalsIgnoreCase(fechaHoy)
-                        )
-                        .findFirst()
-                        .get();
-                    cuposRegistrados.remove(jugadaTabla);
-                    System.out.println("cuposRegistrados.size: "+cuposRegistrados.size());
-                
-                
-                
             }
         } else {
             JOptionPane.showMessageDialog(rootPane, "Debe seleccionar 1 o más jugadas a borrar");
@@ -2965,122 +2976,132 @@ public class index extends javax.swing.JFrame {
         totalTicketTxt.setText("0");
         modelo.setRowCount(0);
         totalTicket = 0.0;
-        cuposRegistrados.clear();
+        animalesVendidos.clear();
     }
 
     private void imprimir() {
-       
 
-       double totalJugado=0.0;
+        double totalJugado = 0.0;
         ArrayList<JugadasTicket> jugadas = new ArrayList();/////////////////////////
-            for (int i = 0; i < tabla.getRowCount(); i++) {
+        
+        //Procesando la información de las jugadas.    
+        for (int i = 0; i < tabla.getRowCount(); i++) {
+            Double montoJugado = Double.parseDouble(tabla.getValueAt(i, 2).toString());
+            if (montoJugado > 0) {
                 String separador = Pattern.quote(" ");
                 String sorteox = tabla.getValueAt(i, 0).toString();
-                String []sorteoYprograma = sorteox.split(separador);
+                String[] sorteoYprograma = sorteox.split(separador);
                 String programa = sorteoYprograma[0];
-                String sorteoReducido = sorteoYprograma[1];
-                String sorteoCompleto = sorteoYprograma[1]+sorteoYprograma[2].toLowerCase();
+                String sorteoJugado = sorteoYprograma[1] + sorteoYprograma[2].toLowerCase();
                 String animalCompleto = tabla.getValueAt(i, 1).toString();
-                Double montoJugado = Double.parseDouble(tabla.getValueAt(i, 2).toString());
-                
-                 String animalReducido = "";
+                String animalJugado = "";
 
                 for (int j = 0; j < animalCompleto.length(); j++) {
                     if (new tools().ComprobarNumeros(animalCompleto.substring(j, (j + 1)))) {
-                        animalReducido += animalCompleto.substring(j, (j + 1));
+                        animalJugado += animalCompleto.substring(j, (j + 1));
                     } else {
                         break;
                     }
                 }
-                final String animalJugada = animalReducido;
-                
-                try {
-                    new Thread(()->{
-                        CupoAnimal jugadaTabla = cuposRegistrados.stream()
-                                .filter(t ->
-                                    t.getPrograma().equalsIgnoreCase(programa) &&
-                                    t.getSorteo().equalsIgnoreCase(sorteoCompleto) &&
-                                    t.getFecha().equalsIgnoreCase(fechaHoy)
-                                )
-                                .findFirst()
-                                .get();
-//a
-                        jugadaTabla.setVendido(animalJugada, montoJugado);
-                        jugadaTabla.updateCupo();
-                    
-                        System.out.println("Actualizado: "+jugadaTabla.toString());
-                    }).start();
-                } catch (Exception e) {
-                    Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, e);
-                }
-                
-                
-                
-                
-                
+
+                animalesVendidos.add(new CupoAnimal(
+                                programa,
+                                sorteoJugado,
+                                fechaHoy,
+                                animalJugado,
+                                montoJugado
+                        ));
+
+               
                 Float montoParseado = Float.parseFloat(tabla.getValueAt(i, 2).toString());
-                totalJugado+=montoParseado;
-                jugadas.add(new JugadasTicket(0, agencia.getNumTicket(), programa,fechaHoy, sorteox, animalCompleto, montoParseado, "Activo"));
+                totalJugado += montoParseado;
+                jugadas.add(new JugadasTicket(0,
+                        agencia.getNumTicket(),
+                        programa,
+                        fechaHoy,
+                        sorteox,
+                        animalCompleto,
+                        montoParseado,
+                        "Activo")
+                );
             }
-
-        String hora = new SimpleDateFormat("hh:mm:ss").format(myUltimaHora.getTime());
-        int rsp = 0;
-        
-        rsp = new Ticket().insert(
-            agencia.getNumTicket(),
-            agencia.getNombreAgencia(),
-            totalJugado,
-            jugadas
-        );
-        if (rsp > 0) {
-            
-            String numJugadas = jugadas.size() + "";/////////////////////////
-            //IMPRESION - Organizar un arreglo de Jugadas para Luego imprimir
-
-            //Organizamos las jugadas por orden del Monto
-            
- 
-            for (int i = 0; i < jugadas.size(); i++) {
-                for (int j = 0; j < jugadas.size() - 1; j++) {
-                    JugadasTicket tempx = new JugadasTicket();
-                    if (jugadas.get(j).getMonto() > jugadas.get(j + 1).getMonto()) {
-                        tempx = jugadas.get(j);
-                        jugadas.set(j, jugadas.get(j + 1));
-                        jugadas.set(j + 1, tempx);
-                    }
-                }
-            }
-            
-            
-            for (int i = 0; i < jugadas.size(); i++) {
-                for (int j = 0; j < jugadas.size() - 1; j++) {
-                    JugadasTicket tempx = new JugadasTicket();
-                    if (jugadas.get(j).getHoradelSorteo() > jugadas.get(j + 1).getHoradelSorteo()) {
-                        tempx = jugadas.get(j);
-                        jugadas.set(j, jugadas.get(j + 1));
-                        jugadas.set(j + 1, tempx);
-                    }
-                }
-            }
-            
-            
-
-            new Imprimir().enviarImpresion(
-                    espaciosPrevios, agencia.getNombreAgencia(),
-                    fechaHoy, programa, hora,
-                    agencia.getNumTicket()+"", "numSerial",
-                    numJugadas, jugadas, totalTicket);
-
-            //FIN IMPRESION
-            agencia.incrementarTicket();
-            resetearBotones();
-            resetearSorteos();
-            resetearJugadas();
-            limpiarJugada();
-            new rojerusan.RSNotifyFade("Ticket Impreso", "Se realizó la impresión del ticket, en caso contrario contacte al Administrador.", 4,
-                    RSNotifyFade.PositionNotify.BottomRight, RSNotifyFade.TypeNotify.SUCCESS).setVisible(true);
-
         }
+        
+        String hora = new SimpleDateFormat("hh:mm:ss").format(myUltimaHora.getTime());
+        String serialTicket = "";
+
+        if (!jugadas.isEmpty()) {
+            serialTicket = new Ticket().insert(
+                    agencia.getNumTicket(),
+                    agencia.getNombreAgencia(),
+                    totalJugado,
+                    jugadas
+            );
+            // System.out.println("serialTicket: "+serialTicket);
+            if (!serialTicket.equalsIgnoreCase("error")) {
+
+                String numJugadas = jugadas.size() + "";/////////////////////////
+                //IMPRESION - Organizar un arreglo de Jugadas para Luego imprimir
+
+                //Organizamos las jugadas por orden del Monto
+                for (int i = 0; i < jugadas.size(); i++) {
+                    for (int j = 0; j < jugadas.size() - 1; j++) {
+                        JugadasTicket tempx = new JugadasTicket();
+                        if (jugadas.get(j).getMonto() > jugadas.get(j + 1).getMonto()) {
+                            tempx = jugadas.get(j);
+                            jugadas.set(j, jugadas.get(j + 1));
+                            jugadas.set(j + 1, tempx);
+                        }
+                    }
+                }
+                
+                //Organizamos jugadas por hora del sorteo
+                for (int i = 0; i < jugadas.size(); i++) {
+                    for (int j = 0; j < jugadas.size() - 1; j++) {
+                        JugadasTicket tempx = new JugadasTicket();
+                        if (jugadas.get(j).getHoradelSorteo() > jugadas.get(j + 1).getHoradelSorteo()) {
+                            tempx = jugadas.get(j);
+                            jugadas.set(j, jugadas.get(j + 1));
+                            jugadas.set(j + 1, tempx);
+                        }
+                    }
+                }
+
+                new Thread(() -> {//Actualizar los cupos de los animales que fueron seleccionados para la venta
+                    animalesVendidos.forEach(animal -> 
+                            animal.setVendido(
+                                    animal.getAnimalVendido(),
+                                    animal.getMontoVendido()
+                            ).updateCupo()
+                    );
+                }).start();
+
+                new Imprimir().enviarImpresion(
+                        espaciosPrevios, agencia.getNombreAgencia(),
+                        fechaHoy, programa, hora,
+                        agencia.getNumTicket() + "", serialTicket,
+                        numJugadas, jugadas, totalJugado);
+
+                //FIN IMPRESION
+                agencia.incrementarTicket();
+                resetearBotones();
+                resetearSorteos();
+                resetearJugadas();
+                limpiarJugada();
+                new rojerusan.RSNotifyFade(
+                        "Ticket Impreso",
+                        "Se realizó la impresión del ticket, en caso contrario contacte al Administrador.",
+                        4,
+                        RSNotifyFade.PositionNotify.BottomRight,
+                        RSNotifyFade.TypeNotify.SUCCESS
+                ).setVisible(true);
+            }else{
+                //Imprimir error si no se logra insertar el ticket
+            }
+        } else {
+            JOptionPane.showMessageDialog(archivoMenu, "No existen jugadas disponibles que posean cupos.");
+        }
+
     }
 
     private void esperar(int mill) {
@@ -3149,6 +3170,7 @@ public class index extends javax.swing.JFrame {
         }
         long fin = System.currentTimeMillis();
         long duracion = (fin - inicio)*100;
+         lbMensajeSistema.setText("Sistema Listo. Esperando Novedades.");
     }
 
 }

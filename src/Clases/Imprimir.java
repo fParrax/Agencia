@@ -14,7 +14,9 @@ import javax.print.SimpleDoc;
 public class Imprimir {
     
     
-  
+    public static void main(String[] args) {
+        
+    }
     
     public void enviarImpresion(int espaciosPrevios,String agencia,String fecha, String programa,String hora,
     String numTicket,String serial,String numJugadas,ArrayList<JugadasTicket> jugadas,double total){
@@ -23,8 +25,8 @@ public class Imprimir {
             espacios+="\n";
         }
        print(espacios);
-       String texto =agencia+" "+fecha+" ("+programa+")\n" //Linea1
-               + "Hora:"+hora+" TN:"+numTicket+" SN:"+serial+" NJ:"+numJugadas+"\n"//Linea2
+       String texto =agencia+" "+fecha+" "+hora+"\n" //Linea1
+               + ""+" TN:"+numTicket+" SN:"+serial.toUpperCase()+" "+" \n"//Linea2
                + "---------------------------";//Linea3
        
        String sorteoTemp="-";
@@ -73,7 +75,7 @@ public class Imprimir {
         texto+="x"+montoJugado+" ";
     
        
-       texto+= "\n---------------------------\n"
+       texto+= "\n-------------xpf------------\n"
                + "Total Bs: "+total;
        
        

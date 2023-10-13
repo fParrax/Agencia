@@ -17,16 +17,23 @@ import lombok.ToString;
 public class CupoAnimal {
 
     int id = -1;
-    String fecha, programa, sorteo;
+    String fecha, programa, sorteo,animalVendido;
     double maximo, animal_0, animal_00,
             animal_1, animal_2, animal_3, animal_4, animal_5, animal_6, animal_7, animal_8, animal_9, animal_10,
             animal_11, animal_12, animal_13, animal_14, animal_15, animal_16, animal_17, animal_18, animal_19, animal_20,
             animal_21, animal_22, animal_23, animal_24, animal_25, animal_26, animal_27, animal_28, animal_29, animal_30,
-            animal_31, animal_32, animal_33, animal_34, animal_35, animal_36;
+            animal_31, animal_32, animal_33, animal_34, animal_35, animal_36,montoVendido;
     PreparedStatement pst;
     ResultSet rs;
 
     public CupoAnimal() {
+    }
+    public CupoAnimal(String programa,String sorteo,String fecha,String animalVendido,double montoVendido){
+        this.programa=programa;
+        this.sorteo=sorteo;
+        this.fecha=fecha;
+        this.animalVendido=animalVendido;
+        this.montoVendido=montoVendido;
     }
 
     public CupoAnimal(int id, String fecha, String programa, String sorteo, double maximo, double animal_0, double animal_00, double animal_1, double animal_2, double animal_3, double animal_4, double animal_5, double animal_6, double animal_7, double animal_8, double animal_9, double animal_10, double animal_11, double animal_12, double animal_13, double animal_14, double animal_15, double animal_16, double animal_17, double animal_18, double animal_19, double animal_20, double animal_21, double animal_22, double animal_23, double animal_24, double animal_25, double animal_26, double animal_27, double animal_28, double animal_29, double animal_30, double animal_31, double animal_32, double animal_33, double animal_34, double animal_35, double animal_36) {
@@ -267,7 +274,7 @@ public class CupoAnimal {
 
     }
 
-    public void setVendido(String animal,double monto) {
+    public CupoAnimal setVendido(String animal,double monto) {
 
         switch (animal) {
             case "00":this.animal_00+=monto;break;
@@ -310,8 +317,9 @@ public class CupoAnimal {
             case "36":this.animal_36+=monto;break;
             
         }
-
+        return this;
     }
+    
     public void updateCupo() {
 
         String sql = "update cupo_animal set animal_00=?,"

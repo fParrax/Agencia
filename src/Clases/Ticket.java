@@ -142,8 +142,8 @@ public class Ticket {
         return my;
     }
 
-    public int insert(int numTicketx,String agenciax,double totalJugadox, ArrayList jugadax) {
-        int rstl = 0;
+    public String insert(int numTicketx,String agenciax,double totalJugadox, ArrayList jugadax) {
+        String serialTicket = "error";
 
         
         
@@ -155,7 +155,12 @@ public class Ticket {
             pst.setString(2, agenciax);
             pst.setDouble(3, totalJugadox);
             pst.setString(4, convertJugadasToJSON(jugadax));
-            rstl = pst.executeUpdate();
+            rs = pst.executeQuery();
+            while(rs.next()){
+                serialTicket = rs.getString("serial");
+            }
+            
+            //rstl = pst.executeUpdate();
             
         } catch (Exception e) {
             Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
@@ -163,7 +168,7 @@ public class Ticket {
         } finally {
             cerrar();
         }
-        return rstl;
+        return serialTicket;
     }
     
     public int pagar(int idJugadax){
