@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -54,6 +55,7 @@ public class index extends javax.swing.JFrame {
     int myNumTicket = 0;
     int espaciosPrevios = 0;
     boolean isConnected=false;
+    boolean firstRun = true;
     private String myUrl="https://www.google.com";
     
     Calendar myHoraActual = Calendar.getInstance();
@@ -1104,7 +1106,7 @@ public class index extends javax.swing.JFrame {
             panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelSorteosLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(c8am, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
                     .addComponent(lbAvisoLt8am, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -2191,9 +2193,13 @@ public class index extends javax.swing.JFrame {
             JCheckBox c8amSorteo = sorteos.stream()
                     .filter(t-> t.getName().equals("8 AM"))
                     .findFirst().get();
-            c8amSorteo.setSelected(false);
-            c8amSorteo.setEnabled(false);
-            lbAvisoLt8am.setVisible(true);
+            if(c8amSorteo.isVisible()){
+                c8amSorteo.setSelected(false);
+                c8amSorteo.setEnabled(false);
+                lbAvisoLt8am.setVisible(true);
+            }
+            
+            
          
          for (JCheckBox sorteo : sorteos) {
                 if (!sorteo.getText().toLowerCase().contains("lottoactivo") && !sorteo.getName().equalsIgnoreCase("8 am")) {
@@ -2434,7 +2440,7 @@ public class index extends javax.swing.JFrame {
             verTickets = new VerTickets(this);
             verResul = new verResultados(this);
             vVentas = new verVentas(this);
-            //new Timer().scheduleAtFixedRate(desactivarSorteosTT, 10000, 10000);
+            new Timer().scheduleAtFixedRate(desactivarSorteosTT, 10000, 10000);
             lbMensajeSistema.setText("Cargando información de Ag.");
             
             
@@ -2454,7 +2460,7 @@ public class index extends javax.swing.JFrame {
         public void run() {
             try {
 
-                String capturaHora = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new NTPService().getNTPDate());
+                String capturaHora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new NTPService().getNTPDate());
                 myHoraActual.setTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(capturaHora));
 
                 if (myHoraActual.compareTo(myUltimaHora) >= 0) {
@@ -2484,23 +2490,25 @@ public class index extends javax.swing.JFrame {
         public void run() {
             try {
                 int minutos = 0;
-                for (JCheckBox sorteo : sorteos) {
-                    minutos = 0;
-                    String myHorax = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.UK).format(myUltimaHora.getTime());
-                    Calendar myHora = Calendar.getInstance();
-                    myHora.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.UK).parse(myHorax));
+                String myHorax = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK).format(myUltimaHora.getTime());
+                Calendar myHora = Calendar.getInstance();
+                myHora.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK).parse(myHorax));
 
-                    String horaSorteo = fechaHoy + " " + sorteo.getName() + ":00";
-                    Calendar mySorteo = Calendar.getInstance();
-                    myHora.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.UK).parse(horaSorteo));
-                    minutos = new tools().restarMinutos(mySorteo.getTime(), myHora.getTime());
-                    if (minutos < 3) {
-                        sorteo.setVisible(false);
-                    } else {
-                        sorteo.setVisible(true);
+                if (myHora.get(Calendar.MINUTE) > 56 || firstRun) {
+                    firstRun = false;
+                    for (JCheckBox sorteo : sorteos) {
+                        minutos = 0;
+                        String horaObtenido = sorteo.getName().toLowerCase().replace(" am", "").replace(" pm", "");
+                        String horaSorteo = fechaHoy + " " + new JugadasTicket().getHoradelSorteo(horaObtenido) + ":00:00";
+                        Calendar mySorteo = Calendar.getInstance();
+                        mySorteo.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK).parse(horaSorteo));
+                        minutos = new tools().restarMinutos(myHora.getTime(), mySorteo.getTime());
+
+                        sorteo.setVisible(minutos < 3 ? false : true);
                     }
+                } else {
+                    System.out.println("Aun no es hora");
                 }
-
             } catch (ParseException ex) {
                 Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
             }

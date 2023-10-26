@@ -45,7 +45,6 @@ public verResultados(index ind) {
         btnBuscar = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         tabla = new rojerusan.RSTableMetro();
-        btnAgregarResultado = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Resultado de Animalitos");
@@ -128,14 +127,6 @@ public verResultados(index ind) {
         });
         jScrollPane4.setViewportView(tabla);
 
-        btnAgregarResultado.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnAgregarResultado.setText("Agregar Resultado");
-        btnAgregarResultado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarResultadoActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout panelCentralLayout = new javax.swing.GroupLayout(panelCentral);
         panelCentral.setLayout(panelCentralLayout);
         panelCentralLayout.setHorizontalGroup(
@@ -149,8 +140,6 @@ public verResultados(index ind) {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnAgregarResultado)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelCentralLayout.createSequentialGroup()
                         .addContainerGap()
@@ -164,9 +153,8 @@ public verResultados(index ind) {
                 .addGap(29, 29, 29)
                 .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
                     .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnAgregarResultado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
                         .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
@@ -197,18 +185,12 @@ public verResultados(index ind) {
         modelo.setRowCount(0);
         resultados.clear();
         resultados = (ArrayList) new Resultado().getResultados( fechaSeleccionada, fechaSeleccionada).clone();
-        System.out.println("Resultados: "+resultados.size());
         for(Resultado resultado:resultados){
             modelo.addRow(new Object[]{
             resultado.getSorteo(),resultado.getAnimal()
             });
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
-
-    private void btnAgregarResultadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarResultadoActionPerformed
-
-       new newResultado().setVisible(true);
-    }//GEN-LAST:event_btnAgregarResultadoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -246,7 +228,6 @@ public verResultados(index ind) {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgregarResultado;
     public javax.swing.JButton btnBuscar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

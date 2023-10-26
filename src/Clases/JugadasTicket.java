@@ -68,7 +68,6 @@ public class JugadasTicket {
         int rsp=0;
         String separador = Pattern.quote(" ");
         String [] horaArray = sorteo.split(separador);
-           System.out.println("this.sorteo: "+sorteo);
                 int temp = Integer.parseInt(horaArray[1]);
                 
                 rsp = temp==1 //&& horaArray[2].equalsIgnoreCase("pm")
@@ -87,7 +86,30 @@ public class JugadasTicket {
                     ?  19
                     : temp ;
             
-        System.out.println("rsp: "+rsp);
+                
+        
+        return rsp;
+    }
+     public int getHoradelSorteo(String hora){
+        int rsp=0;
+                int temp = Integer.parseInt(hora);
+                
+                rsp = temp==1 //&& horaArray[2].equalsIgnoreCase("pm")
+                    ?  13 
+                    : temp==2 //&& horaArray[2].equalsIgnoreCase("pm")
+                    ?  14
+                    : temp==3 //&& horaArray[2].equalsIgnoreCase("pm")
+                    ?  15
+                    : temp==4 //&& horaArray[2].equalsIgnoreCase("pm")
+                    ?  16
+                    : temp==5 //&& horaArray[2].equalsIgnoreCase("pm")
+                    ?  17
+                    : temp==6 //&& horaArray[2].equalsIgnoreCase("pm")
+                    ?  18
+                    : temp==7 //&& horaArray[2].equalsIgnoreCase("pm")
+                    ?  19
+                    : temp ;
+            
                 
         
         return rsp;
