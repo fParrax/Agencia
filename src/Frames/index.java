@@ -188,6 +188,8 @@ public class index extends javax.swing.JFrame {
         verTicketsItem = new javax.swing.JMenuItem();
         resultadosItem = new javax.swing.JMenuItem();
         ventasItem = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -221,7 +223,7 @@ public class index extends javax.swing.JFrame {
         a00.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a00.setForeground(new java.awt.Color(255, 255, 255));
         a00.setText("00");
-        a00.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a00.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a00.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a00.setIconTextGap(0);
         a00.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -238,7 +240,7 @@ public class index extends javax.swing.JFrame {
         a0.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a0.setForeground(new java.awt.Color(255, 255, 255));
         a0.setText("0");
-        a0.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a0.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a0.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a0.setIconTextGap(0);
         a0.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -255,7 +257,7 @@ public class index extends javax.swing.JFrame {
         a3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a3.setForeground(new java.awt.Color(255, 255, 255));
         a3.setText("3");
-        a3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a3.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a3.setIconTextGap(0);
         a3.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -272,7 +274,7 @@ public class index extends javax.swing.JFrame {
         a1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a1.setForeground(new java.awt.Color(255, 255, 255));
         a1.setText("1");
-        a1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a1.setIconTextGap(0);
         a1.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -289,7 +291,7 @@ public class index extends javax.swing.JFrame {
         a2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a2.setForeground(new java.awt.Color(255, 255, 255));
         a2.setText("2");
-        a2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a2.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a2.setIconTextGap(0);
         a2.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -306,7 +308,7 @@ public class index extends javax.swing.JFrame {
         a5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a5.setForeground(new java.awt.Color(255, 255, 255));
         a5.setText("5");
-        a5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a5.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a5.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a5.setIconTextGap(0);
         a5.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -323,7 +325,7 @@ public class index extends javax.swing.JFrame {
         a4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a4.setForeground(new java.awt.Color(255, 255, 255));
         a4.setText("4");
-        a4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a4.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a4.setIconTextGap(0);
         a4.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -340,7 +342,7 @@ public class index extends javax.swing.JFrame {
         a6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a6.setForeground(new java.awt.Color(255, 255, 255));
         a6.setText("6");
-        a6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a6.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a6.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a6.setIconTextGap(0);
         a6.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -357,7 +359,7 @@ public class index extends javax.swing.JFrame {
         a7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a7.setForeground(new java.awt.Color(255, 255, 255));
         a7.setText("7");
-        a7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a7.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a7.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a7.setIconTextGap(0);
         a7.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -374,7 +376,7 @@ public class index extends javax.swing.JFrame {
         a8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a8.setForeground(new java.awt.Color(255, 255, 255));
         a8.setText("8");
-        a8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a8.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a8.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a8.setIconTextGap(0);
         a8.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -391,7 +393,7 @@ public class index extends javax.swing.JFrame {
         a9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a9.setForeground(new java.awt.Color(255, 255, 255));
         a9.setText("9");
-        a9.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a9.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a9.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a9.setIconTextGap(0);
         a9.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -408,7 +410,7 @@ public class index extends javax.swing.JFrame {
         a12.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a12.setForeground(new java.awt.Color(255, 255, 255));
         a12.setText("12");
-        a12.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a12.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a12.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a12.setIconTextGap(0);
         a12.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -425,7 +427,7 @@ public class index extends javax.swing.JFrame {
         a11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a11.setForeground(new java.awt.Color(255, 255, 255));
         a11.setText("11");
-        a11.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a11.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a11.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a11.setIconTextGap(0);
         a11.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -442,7 +444,7 @@ public class index extends javax.swing.JFrame {
         a10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a10.setForeground(new java.awt.Color(255, 255, 255));
         a10.setText("10");
-        a10.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a10.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a10.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a10.setIconTextGap(0);
         a10.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -459,7 +461,7 @@ public class index extends javax.swing.JFrame {
         a21.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a21.setForeground(new java.awt.Color(255, 255, 255));
         a21.setText("21");
-        a21.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a21.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a21.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a21.setIconTextGap(0);
         a21.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -476,7 +478,7 @@ public class index extends javax.swing.JFrame {
         a20.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a20.setForeground(new java.awt.Color(255, 255, 255));
         a20.setText("20");
-        a20.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a20.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a20.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a20.setIconTextGap(0);
         a20.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -493,7 +495,7 @@ public class index extends javax.swing.JFrame {
         a23.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a23.setForeground(new java.awt.Color(255, 255, 255));
         a23.setText("23");
-        a23.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a23.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a23.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a23.setIconTextGap(0);
         a23.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -510,7 +512,7 @@ public class index extends javax.swing.JFrame {
         a22.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a22.setForeground(new java.awt.Color(255, 255, 255));
         a22.setText("22");
-        a22.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a22.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a22.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a22.setIconTextGap(0);
         a22.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -527,7 +529,7 @@ public class index extends javax.swing.JFrame {
         a24.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a24.setForeground(new java.awt.Color(255, 255, 255));
         a24.setText("24");
-        a24.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a24.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a24.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a24.setIconTextGap(0);
         a24.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -544,7 +546,7 @@ public class index extends javax.swing.JFrame {
         a19.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a19.setForeground(new java.awt.Color(255, 255, 255));
         a19.setText("19");
-        a19.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a19.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a19.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a19.setIconTextGap(0);
         a19.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -561,7 +563,7 @@ public class index extends javax.swing.JFrame {
         a16.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a16.setForeground(new java.awt.Color(255, 255, 255));
         a16.setText("16");
-        a16.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a16.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a16.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a16.setIconTextGap(0);
         a16.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -578,7 +580,7 @@ public class index extends javax.swing.JFrame {
         a17.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a17.setForeground(new java.awt.Color(255, 255, 255));
         a17.setText("17");
-        a17.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a17.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a17.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a17.setIconTextGap(0);
         a17.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -595,7 +597,7 @@ public class index extends javax.swing.JFrame {
         a18.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a18.setForeground(new java.awt.Color(255, 255, 255));
         a18.setText("18");
-        a18.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a18.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a18.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a18.setIconTextGap(0);
         a18.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -612,7 +614,7 @@ public class index extends javax.swing.JFrame {
         a15.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a15.setForeground(new java.awt.Color(255, 255, 255));
         a15.setText("15");
-        a15.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a15.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a15.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a15.setIconTextGap(0);
         a15.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -629,7 +631,7 @@ public class index extends javax.swing.JFrame {
         a14.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a14.setForeground(new java.awt.Color(255, 255, 255));
         a14.setText("14");
-        a14.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a14.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a14.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a14.setIconTextGap(0);
         a14.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -646,7 +648,7 @@ public class index extends javax.swing.JFrame {
         a13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a13.setForeground(new java.awt.Color(255, 255, 255));
         a13.setText("13");
-        a13.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a13.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a13.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a13.setIconTextGap(0);
         a13.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -663,7 +665,7 @@ public class index extends javax.swing.JFrame {
         a25.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a25.setForeground(new java.awt.Color(255, 255, 255));
         a25.setText("25");
-        a25.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a25.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a25.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a25.setIconTextGap(0);
         a25.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -680,7 +682,7 @@ public class index extends javax.swing.JFrame {
         a35.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a35.setForeground(new java.awt.Color(255, 255, 255));
         a35.setText("35");
-        a35.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a35.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a35.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a35.setIconTextGap(0);
         a35.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -697,7 +699,7 @@ public class index extends javax.swing.JFrame {
         a29.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a29.setForeground(new java.awt.Color(255, 255, 255));
         a29.setText("29");
-        a29.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a29.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a29.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a29.setIconTextGap(0);
         a29.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -714,7 +716,7 @@ public class index extends javax.swing.JFrame {
         a31.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a31.setForeground(new java.awt.Color(255, 255, 255));
         a31.setText("31");
-        a31.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a31.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a31.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a31.setIconTextGap(0);
         a31.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -731,7 +733,7 @@ public class index extends javax.swing.JFrame {
         a33.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a33.setForeground(new java.awt.Color(255, 255, 255));
         a33.setText("33");
-        a33.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a33.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a33.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a33.setIconTextGap(0);
         a33.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -748,7 +750,7 @@ public class index extends javax.swing.JFrame {
         a26.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a26.setForeground(new java.awt.Color(255, 255, 255));
         a26.setText("26");
-        a26.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a26.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a26.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a26.setIconTextGap(0);
         a26.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -765,7 +767,7 @@ public class index extends javax.swing.JFrame {
         a30.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a30.setForeground(new java.awt.Color(255, 255, 255));
         a30.setText("30");
-        a30.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a30.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a30.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a30.setIconTextGap(0);
         a30.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -782,7 +784,7 @@ public class index extends javax.swing.JFrame {
         a36.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a36.setForeground(new java.awt.Color(255, 255, 255));
         a36.setText("36");
-        a36.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a36.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a36.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a36.setIconTextGap(0);
         a36.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -799,7 +801,7 @@ public class index extends javax.swing.JFrame {
         a32.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a32.setForeground(new java.awt.Color(255, 255, 255));
         a32.setText("32");
-        a32.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a32.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a32.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a32.setIconTextGap(0);
         a32.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -816,7 +818,7 @@ public class index extends javax.swing.JFrame {
         a28.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a28.setForeground(new java.awt.Color(255, 255, 255));
         a28.setText("28");
-        a28.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a28.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a28.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a28.setIconTextGap(0);
         a28.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -833,7 +835,7 @@ public class index extends javax.swing.JFrame {
         a34.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a34.setForeground(new java.awt.Color(255, 255, 255));
         a34.setText("34");
-        a34.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a34.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a34.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a34.setIconTextGap(0);
         a34.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -850,7 +852,7 @@ public class index extends javax.swing.JFrame {
         a27.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         a27.setForeground(new java.awt.Color(255, 255, 255));
         a27.setText("27");
-        a27.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a27.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         a27.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         a27.setIconTextGap(0);
         a27.setMargin(new java.awt.Insets(2, 0, 2, 0));
@@ -937,7 +939,7 @@ public class index extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnGenerarJugada, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE))
+                    .addComponent(btnGenerarJugada, javax.swing.GroupLayout.PREFERRED_SIZE, 114, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -1204,7 +1206,7 @@ public class index extends javax.swing.JFrame {
             .addGroup(panelJugadasLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelJugadasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2)
                     .addGroup(panelJugadasLayout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1492,6 +1494,18 @@ public class index extends javax.swing.JFrame {
         ticketMenu.add(ventasItem);
 
         menuMain.add(ticketMenu);
+
+        jMenu1.setText("Herramientas");
+
+        jMenuItem2.setText("Actualizar Cupo");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        menuMain.add(jMenu1);
 
         setJMenuBar(menuMain);
 
@@ -2250,6 +2264,10 @@ public class index extends javax.swing.JFrame {
       }
     }//GEN-LAST:event_cbTodosItemStateChanged
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+     chequearcup();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2355,7 +2373,9 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
@@ -3179,6 +3199,10 @@ public class index extends javax.swing.JFrame {
         long fin = System.currentTimeMillis();
         long duracion = (fin - inicio)*100;
          lbMensajeSistema.setText("Sistema Listo. Esperando Novedades.");
+    }
+
+    private void chequearcup() {
+
     }
 
 }
