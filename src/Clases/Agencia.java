@@ -36,7 +36,6 @@ public class Agencia {
         this.comision = comision;
     }
     
-    
     public Agencia getAgencia(String nameAgencia) {
         Agencia my = new Agencia();
 
@@ -64,22 +63,7 @@ public class Agencia {
         return my;
     }
     
-    public static void main(String[] args) {
-       String fecha="2023-10-04";
-       String programa ="LottoActivo";
-       String sorteo="10am";
-       CupoAnimal cupo = new CupoAnimal().get(fecha, programa, sorteo);
-       cupo.setAnimal_0(10);
-       
-      // cupo.updateCupo(fecha, programa, sorteo);
-       
-       /*
-         for (int i = 0; i < 37; i++) {
-            System.out.println("pst.setFloat("+(i+2)+",(float)(maximo-animal_"+i+"));");
-        }
-       */
-      
-    }
+    
     
     public int insert(String nameAgenciax, String usernamex, String paswordx ,
             String seralPcx, int cupoAnimalx, int comisionx){

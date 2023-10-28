@@ -82,7 +82,7 @@ public class CupoAnimal {
         this.animal_36 = animal_36;
     }
 
-    public CupoAnimal get(String fechax, String programax, String sorteox) {
+    public CupoAnimal get(String fechax, String programax, String sorteox, double cupoTotal) {
         String sql = "select * from cupo_animal where fecha=? and lower (programa) like lower ('%"+programax+"%') and sorteo=?";
 
         try ( Connection con = new ConectarDBSQLLite().getCon()) {
@@ -138,7 +138,7 @@ public class CupoAnimal {
                         rs.getDouble(43));
 
             } else{
-                return insert(fechax, programax, sorteox);
+                return insert(fechax, programax, sorteox,cupoTotal);
             }
             
             
@@ -158,15 +158,16 @@ public class CupoAnimal {
 
     }
 
-    private CupoAnimal insert(String fechax, String programax, String sorteox) {
+    private CupoAnimal insert(String fechax, String programax, String sorteox,double cupoTotal) {
         int resultado = 0;
-        String sql = "insert into cupo_animal (fecha,programa,sorteo) values (?,?,?)";
+        String sql = "insert into cupo_animal (fecha,programa,sorteo,maximo) values (?,?,?,?)";
 
         try ( Connection con = new ConectarDBSQLLite().getCon()) {
             pst = con.prepareStatement(sql);
             pst.setString(1, fechax);
             pst.setString(2, programax);
             pst.setString(3, sorteox);
+            pst.setDouble(4, cupoTotal);
 
             resultado = pst.executeUpdate();
 
@@ -185,7 +186,7 @@ public class CupoAnimal {
         }
 
         return resultado > 0
-                ? get(fechax, programax, sorteox)
+                ? get(fechax, programax, sorteox,cupoTotal)
                 : null;
     }
 
@@ -414,4 +415,32 @@ public class CupoAnimal {
         }
     }
 
+    public boolean updateMaximo(double monto){
+       
+
+        try ( Connection con = new ConectarDBSQLLite().getCon()) {
+             String sql = "ALTER TABLE cupo_animal DROP  maximo";
+            pst = con.prepareStatement(sql);
+            pst.executeQuery();
+
+            
+             sql = "ALTER TABLE cupo_animal ADD COLUMN maximo REAL DEFAULT "+monto;
+            pst = con.prepareStatement(sql);
+            pst.executeQuery();
+
+            return true;
+        } catch (Exception e) {
+            Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
+            return false;
+        } finally {
+            try {
+                pst.close();
+                rs.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        }
+    }
 }

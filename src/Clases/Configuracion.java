@@ -1,6 +1,7 @@
 
 package Clases;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,6 +37,88 @@ public class Configuracion {
     }
 
     
+    
+    public int getNumTicket(String fecha){
+        
+        try ( Connection con = new ConectarDBSQLLite().getCon()) {
+            sql ="select * from ticketAgencia where fecha = ?";
+            pst = con.prepareStatement(sql);
+            pst.setString(1,fecha);
+            rs = pst.executeQuery();
+            if(rs.next()){
+                this.numTicket = rs.getInt("numTicket");
+                return this.numTicket;
+            }else{
+                insert(fecha);
+                return 0;
+            }
+        }catch (Exception e) {
+            Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
+            return 1;
+        } finally {
+            try {
+                pst.close();
+                rs.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        }
+    }
+    
+    private boolean insert(String fecha){
+        try ( Connection con = new ConectarDBSQLLite().getCon()) {
+            sql ="insert into ticketAgencia (fecha) values (?)";
+            pst = con.prepareStatement(sql);
+            pst.setString(1,fecha);
+            
+            if(pst.executeUpdate() > 0){
+                return true;
+            }else{
+                return false;
+            }
+        }catch (Exception e) {
+            Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
+            return false;
+        } finally {
+            try {
+                pst.close();
+                rs.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        }
+    }
+    
+    public boolean increaseTicket(int numTicket , String fecha){
+        try ( Connection con = new ConectarDBSQLLite().getCon()) {
+            sql ="update  ticketAgencia set numTicket=? where fecha=?";
+            pst = con.prepareStatement(sql);
+            pst.setInt(1,numTicket);
+            pst.setString(2,fecha);
+            
+            if(pst.executeUpdate() > 0){
+                return true;
+            }else{
+                return false;
+            }
+        }catch (Exception e) {
+            Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
+            return false;
+        } finally {
+            try {
+                pst.close();
+                rs.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        }
+    }
     
     public int update(){
         int rsp=0;

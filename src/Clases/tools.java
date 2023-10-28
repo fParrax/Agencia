@@ -37,6 +37,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
 import java.nio.charset.*;
+import java.time.ZoneId;
 import java.util.*;
 public class tools {
 
@@ -55,6 +56,20 @@ public class tools {
     public String getMesString() {
         return new SimpleDateFormat("MMMM").format(new Date());
     }
+    
+    public long getDiasDiferencia(Date fInicial , Date fFinal){
+        long dias = 0;
+        
+        LocalDate fecha1LocalDate = fInicial.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate fecha2LocalDate = fFinal.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+         dias = fecha2LocalDate.toEpochDay() - fecha1LocalDate.toEpochDay();
+
+        
+        return dias;
+    }
+   
+    
     public int getMesInteger() {
         
         String c = new SimpleDateFormat("MM").format(new Date());
