@@ -20,8 +20,8 @@ public class Actualizar extends Propiedades{
     
      public Actualizar(){
          super();
-         versionActual = Double.parseDouble(getVersionLocal());
-         versionServer = Double.parseDouble(getVersionServer().replace("version=", ""));
+        // versionActual = Double.parseDouble(getVersionLocal());
+         //versionServer = Double.parseDouble(getVersionServer().replace("version=", ""));
          
      }
 
@@ -105,7 +105,39 @@ public class Actualizar extends Propiedades{
             Logger.getLogger(Actualizar.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+    public void downloadConfigDB(){
+        try {
+            URL url = new URL(URL_DB_Cloud);
+            File file = new File(LOCATE_PATCH+"/config.db");
+            System.out.println(file.getAbsolutePath());
+            /*
+            String username = "siaceces";
+            String password = "107swUPRu2";
+            Authenticator.setDefault(new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password.toCharArray());
+                }
+            });
+            */
+            
+            
+            
+        URLConnection connection = url.openConnection();
+        long size = connection.getContentLengthLong();
+        InputStream inputStream = connection.getInputStream();
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        FileOutputStream outputStream = new FileOutputStream(file);
+        byte[] bytes = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = bufferedInputStream.read(bytes)) != -1) {
+            outputStream.write(bytes, 0, bytesRead);
+        }
+        outputStream.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Actualizar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     private boolean idUpdated(){
         return versionServer>versionActual
                 ? false

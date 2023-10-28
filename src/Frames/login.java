@@ -4,11 +4,13 @@
  */
 package Frames;
 
+import Clases.Actualizar;
 import Clases.Agencia;
 import Clases.ConectarDBCloud;
 import Clases.PlaceHolder;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -236,8 +238,18 @@ private boolean validarCampos(){
 }
 
 private void testCon(){
-    System.out.println(new ConectarDBCloud("ag").getCon());
+   
     lbAviso.setText("Conexión Lista");
+    
+    File file = new File(System.getProperty("user.dir")+"/config.db");
+    System.out.println(!file.exists()+" - "+file.getAbsolutePath());
+    if(!file.exists()){
+        new Actualizar().downloadConfigDB();
+        System.out.println("F");
+    }else{
+        System.out.println("V");
+    }
+     System.out.println(new ConectarDBCloud("ag").getCon());
 }
 
 }

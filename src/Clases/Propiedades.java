@@ -27,6 +27,7 @@ public class Propiedades{
     static final String URL_PROJECT="http://bermudez.cgesucre.gob.ve/siacesucre/ChequeoEmpleadosPublicos/";
     public final String LOCATE_PATCH = System.getProperty("user.dir");
     public static final String URL_Ejecutable_Cloud = "http://siacetest.cgesucre.gob.ve/ConsultaApp-J8.jar";
+    public static final String URL_DB_Cloud = "https://github.com/fParrax/Agencia/raw/produccion/distribution/config.db";
     public static final String URL_Properties_Cloud = "http://siacetest.cgesucre.gob.ve/version.properties";
     
     public static final String NAME_EXECUTABLE = "AppConsulta.jar";
@@ -38,7 +39,7 @@ public class Propiedades{
     BufferedWriter bw;
     
     public Propiedades(){
-        openProperties();
+        //openProperties();
     }
    
     
