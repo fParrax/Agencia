@@ -2549,7 +2549,6 @@ public class index extends javax.swing.JFrame {
                 String myHorax = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK).format(myUltimaHora.getTime());
                 Calendar myHora = Calendar.getInstance();
                 myHora.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK).parse(myHorax));
-
                 if (myHora.get(Calendar.MINUTE) > 56 || firstRun) {
                     firstRun = false;
                     for (JCheckBox sorteo : sorteos) {
@@ -2999,6 +2998,9 @@ public class index extends javax.swing.JFrame {
     private boolean validarAnimal() {
         boolean llave = false;
         double animalJugado = 37;
+        if(tablero){
+            llave=true;
+        }else{
         if(animalTxt.getText().length() >0 ){
             animalJugado = Double.parseDouble(animalTxt.getText());
         }
@@ -3008,6 +3010,8 @@ public class index extends javax.swing.JFrame {
         }else{
             JOptionPane.showMessageDialog(archivoMenu, "Debe seleccionar un animal del tablero o agregarlo manualmente\nVerifique que el campo no esté vacio y que el número ingreso sea 00, o del 0 al 36");
         }
+    }
+        
 
         return llave;
     }
