@@ -25,7 +25,9 @@ public class Configuracion {
     public Configuracion() {
         
     }
-
+ public Configuracion(String fecha) {
+        search(fecha);
+    }
     public Configuracion(int id, String nombreAgencia, int cupoAnimal, String tamanoPapel, String fechaTicket, int numTicket,double comision) {
         this.id = id;
         this.nombreAgencia = nombreAgencia;
@@ -37,6 +39,29 @@ public class Configuracion {
     }
 
     
+    public void search(String fecha){
+        try ( Connection con = new ConectarDBSQLLite().getCon()) {
+            sql = " select * from ticketAgencia where fecha =?";
+            pst = con.prepareStatement(sql);
+            pst.setString(1,fecha);
+            rs = pst.executeQuery();
+            
+            if(!rs.next()){
+                insert(fecha);
+            }
+        }catch (Exception e) {
+            Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                pst.close();
+                rs.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        }
+    }
     
     public int getNumTicket(String fecha){
         
@@ -46,11 +71,11 @@ public class Configuracion {
             pst.setString(1,fecha);
             rs = pst.executeQuery();
             if(rs.next()){
-                this.numTicket = rs.getInt("numTicket");
-                return this.numTicket;
+                this.numTicket = (rs.getInt("numTicket"))+1;
+                return rs.getInt("numTicket");
             }else{
                 insert(fecha);
-                return 0;
+                return 1;
             }
         }catch (Exception e) {
             Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, e);

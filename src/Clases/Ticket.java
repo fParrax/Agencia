@@ -93,7 +93,7 @@ public class Ticket {
             rs = pst.executeQuery();
             while (rs.next()) {
                     my = new Ticket(rs.getInt("id"),rs.getString("fecha"),rs.getString("agencia"),
-                rs.getString("serial"),rs.getInt("numTicket"),rs.getString("estado"),rs.getFloat("totalJugado"),
+                rs.getString("serialTicket"),rs.getInt("numTicket"),rs.getString("estado"),rs.getFloat("totalJugado"),
                 rs.getFloat("totalPremio"),rs.getFloat("montoPagado"));
 
                     JugadasTicket jugada = new JugadasTicket(rs.getInt("idJugada"),rs.getInt("idTicket"),
@@ -114,7 +114,7 @@ public class Ticket {
         return my;
     }
 
-    public Ticket getTicketByNum(String nameAgencia,String fecha01, int numTicketx) {
+    public Ticket getTicketByNum(int idAgencia,String fecha01, int numTicketx) {
         Ticket my = new Ticket();
 
         sql = "call `sp.getTicketbyNum` (?,?,?)";
@@ -122,14 +122,14 @@ public class Ticket {
         try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
             con.setCatalog("ag");
             pst = con.prepareStatement(sql);
-            pst.setString(1,nameAgencia);
+            pst.setInt(1,idAgencia);
             pst.setString(2,fecha01);
             pst.setInt(3,numTicketx);
             
             rs = pst.executeQuery();
             while (rs.next()) {
                     my = new Ticket(rs.getInt("id"),rs.getString("fecha"),rs.getString("agencia"),
-                rs.getString("serial"),rs.getInt("numTicket"),rs.getString("estado"),rs.getFloat("totalJugado"),
+                rs.getString("serialTicket"),rs.getInt("numTicket"),rs.getString("estado"),rs.getFloat("totalJugado"),
                 rs.getFloat("totalPremio"),rs.getFloat("montoPagado"));
             }
         } catch (Exception e) {
@@ -142,19 +142,19 @@ public class Ticket {
         return my;
     }
 
-    public String insert(int numTicketx,String agenciax,double totalJugadox, ArrayList jugadax) {
+    public String insert(int numTicketx,int idAgencia,String agenciax,double totalJugadox, ArrayList jugadax) {
         String serialTicket = "error";
 
         
         
-        sql = " call `sp.insertTicket` (?,?,?,?)";
+        sql = " call `sp.insertTicket` (?,?,?,?,?)";
         try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
-            con.setCatalog("ag");
             pst = con.prepareCall(sql);
             pst.setInt(1, numTicketx);
-            pst.setString(2, agenciax);
-            pst.setDouble(3, totalJugadox);
-            pst.setString(4, convertJugadasToJSON(jugadax));
+            pst.setInt(2, idAgencia);
+            pst.setString(3, agenciax);
+            pst.setDouble(4, totalJugadox);
+            pst.setString(5, convertJugadasToJSON(jugadax));
             rs = pst.executeQuery();
             while(rs.next()){
                 serialTicket = rs.getString("serial");
@@ -174,6 +174,7 @@ public class Ticket {
     public int pagar(int idJugadax){
         int rsp=0;//pagarJugada
         try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
+            con.setCatalog("ag");
             sql = "call `sp.pagarJugada` (?)";
             pst = con.prepareCall(sql);
             pst.setInt(1, idJugadax);

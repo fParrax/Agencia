@@ -56,38 +56,37 @@ public class index extends javax.swing.JFrame {
     int myNumTicket = 0;
     int cupoMaximo = 50;
     int espaciosPrevios = 0;
-    boolean isConnected=false;
+    boolean isConnected = false;
     boolean firstRun = true;
-    private String myUrl="capsperu.dyndns.org";
-    
+    boolean imprimiendo = false;
+    private String myUrl = "capsperu.dyndns.org";
+
     Calendar myHoraActual = Calendar.getInstance();
     public Calendar myUltimaHora = Calendar.getInstance();
 
     public String fechaHoy = "2022-11-01";
 
     Agencia agencia;
+
     public index() {
         initComponents();
-        datos = new Configuracion();
+
         changeIcon();
         new Thread(this::iniciar).start();
-        
 
     }
 
     public index(Agencia agencia) {
         initComponents();
-        this.agencia=agencia;
+        this.agencia = agencia;
         datos = new Configuracion();
-        setTitle(getTitle()+" - "+agencia.getNombreAgencia());
-        
+        setTitle(getTitle() + " - " + agencia.getNombreAgencia());
+
         changeIcon();
         new Thread(this::iniciar).start();
-       
-        
-       
 
     }
+
     public void changeIcon() {
         Image icon = new ImageIcon(getClass().getResource("/imgs/chip.png")).getImage();
         setIconImage(icon);
@@ -1696,7 +1695,7 @@ public class index extends javax.swing.JFrame {
     private void montoTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_montoTxtKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 
-             jugar();
+            jugar();
         }
 
 
@@ -1714,15 +1713,15 @@ public class index extends javax.swing.JFrame {
 
         new Thread(() -> {
             try {
-               // btnGenerarJugada.setEnabled(false);
+                // btnGenerarJugada.setEnabled(false);
                 jugar();
-             //   btnGenerarJugada.setEnabled(true);
+                //   btnGenerarJugada.setEnabled(true);
             } catch (Exception e) {
                 Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, e);
 
             }
         }).start();
-        
+
     }//GEN-LAST:event_btnGenerarJugadaActionPerformed
 
     private void animalTxtKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_animalTxtKeyTyped
@@ -1735,27 +1734,26 @@ public class index extends javax.swing.JFrame {
     }//GEN-LAST:event_BorrarJugadasActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-/*
-        if(JOptionPane.showConfirmDialog(archivoMenu, "Desea borrar las jugadas?","Limpiar",JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION){
-        resetearJugadas();
-        resetearBotones();
-        resetearSorteos();
-        animalTxt.requestFocus();
+
+        if (JOptionPane.showConfirmDialog(archivoMenu, "Desea borrar las jugadas?", "Limpiar", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+            resetearJugadas();
+            resetearBotones();
+            resetearSorteos();
+            animalTxt.requestFocus();
         }
-         
-        */        
-        System.out.println(isConnected);
-        
+
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         if (modelo.getRowCount() > 0) {
-            if(isConnected){
-                new Thread(this::imprimir).start(); 
-            }else{
-                 JOptionPane.showMessageDialog(rootPane, "No hay conexión con el servidor, revise su conexión a internet o contacte con el administrador para ver la conexión del servidor.");
+            if (isConnected && !imprimiendo) {
+                //new Thread(this::imprimir).start();
+                imprimir();
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "No hay conexión con el servidor, revise su conexión a internet o contacte con el administrador para ver la conexión del servidor.");
             }
-           
+
         } else {
             JOptionPane.showMessageDialog(rootPane, "No hay jugadas realizadas para imprimir");
         }
@@ -1780,11 +1778,13 @@ public class index extends javax.swing.JFrame {
     private void animalTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_animalTxtKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             montoTxt.requestFocus();
+            montoTxt.setSelectionStart(0);
+            montoTxt.setSelectionEnd(3);
         }
 
         if (evt.getKeyCode() == KeyEvent.VK_ADD) {
             if (modelo.getRowCount() > 0) {
-               new Thread(this::imprimir).start();
+               imprimir();
             } else {
                 JOptionPane.showMessageDialog(rootPane, "No hay jugadas realziadas para imprimir");
             }
@@ -1940,12 +1940,15 @@ public class index extends javax.swing.JFrame {
     private void animalTxtKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_animalTxtKeyReleased
         if (animalTxt.getText().length() == 2) {
             montoTxt.requestFocus();
+            montoTxt.setSelectionStart(0);
+            montoTxt.setSelectionEnd(3);
+            
         }
 
     }//GEN-LAST:event_animalTxtKeyReleased
 
     private void txtPagarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPagarKeyTyped
-        new tools().soloDoubleyCantidadDigitos(evt, txtPagar, 4);
+        //  new tools().soloDoubleyCantidadDigitos(evt, txtPagar, 4);
     }//GEN-LAST:event_txtPagarKeyTyped
 
     private void btnPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarActionPerformed
@@ -1957,15 +1960,14 @@ public class index extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "No se encontró ningún ticket con ese serial");
         } else {
             if (ticket.getEstado().equalsIgnoreCase("premiado")) {
-               double premios=0.0;
-                for(JugadasTicket jugada : ticket.getJugadas()){
-                    if(jugada.getEstado().equalsIgnoreCase("premiado")){
-                        premios+=jugada.getMonto();
+                double premios = 0.0;
+                for (JugadasTicket jugada : ticket.getJugadas()) {
+                    if (jugada.getEstado().equalsIgnoreCase("premiado")) {
+                        premios += (jugada.getMonto() * 30);
                         ticket.pagar(jugada.getId());
                     }
                 }
-                JOptionPane.showMessageDialog(archivoMenu, "Jugadas marcadas premiadas. Pague Bs. "+premios);
-                
+                JOptionPane.showMessageDialog(archivoMenu, "Jugadas marcadas premiadas. Pague Bs. " + premios);
 
             } else if (ticket.getEstado().equalsIgnoreCase("pagado")) {
                 JOptionPane.showMessageDialog(rootPane, "Ticket ya fue pagado");
@@ -1975,7 +1977,7 @@ public class index extends javax.swing.JFrame {
         }
         txtPagar.setText("");
         animalTxt.requestFocus();
-        
+
     }//GEN-LAST:event_btnPagarActionPerformed
 
     private void txtAnularKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAnularKeyTyped
@@ -1987,13 +1989,13 @@ public class index extends javax.swing.JFrame {
         if (txtAnular.getText().length() > 0) {
             int nTicketx = Integer.parseInt(txtAnular.getText());
             Ticket ticket = new Ticket();
-            ticket = new Ticket().getTicketByNum(agencia.getNombreAgencia(),fechaHoy,nTicketx);
+            ticket = new Ticket().getTicketByNum(agencia.getId(), fechaHoy, nTicketx);
             if (ticket.getId() < 1) {
                 JOptionPane.showMessageDialog(rootPane, "No se encontró ningún ticket con ese número");
             } else {
                 if (validarMinutos(ticket, 3)) {
                     if (JOptionPane.showConfirmDialog(rootPane, "¿Seguro Desea eliminar Ticket?") == 0) {
-                        int rsp = new Ticket().anular(nTicketx);
+                        int rsp = new Ticket().anular(ticket.getId());
                         if (rsp > 0) {
                             new rojerusan.RSNotifyFade("Ticket Anulado", "Se anuló correctamente el ticket ingresado.", 4,
                                     RSNotifyFade.PositionNotify.BottomRight, RSNotifyFade.TypeNotify.SUCCESS).setVisible(true);
@@ -2009,8 +2011,8 @@ public class index extends javax.swing.JFrame {
         }
 
         txtAnular.setText("");
-        
-        
+
+
     }//GEN-LAST:event_btnAnularActionPerformed
 
     private void txtRepetirKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRepetirKeyTyped
@@ -2018,7 +2020,7 @@ public class index extends javax.swing.JFrame {
     }//GEN-LAST:event_txtRepetirKeyTyped
 
     private void btnRepetirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepetirActionPerformed
-/*
+        /*
         if (txtRepetir.getText().length() > 0) {
 
             Ticket ticket = new Ticket();
@@ -2068,8 +2070,8 @@ public class index extends javax.swing.JFrame {
         }
 
         txtRepetir.setText("");
-        */
-        
+         */
+
     }//GEN-LAST:event_btnRepetirActionPerformed
 
     private void txtRepetirKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRepetirKeyReleased
@@ -2105,64 +2107,57 @@ public class index extends javax.swing.JFrame {
                 String rsp = "0";
                 rsp = JOptionPane.showInputDialog("Ingrese nuevo monto");
                 double newMonto = 0;
-                
+
                 try {
                     newMonto = Double.parseDouble(rsp);
                     totalTicket -= montD;
-                    
-                    
-                    
-                    
+
                     for (int i = 0; i < tabla.getRowCount(); i++) {
                         if (Float.compare(i, row) == 0) {
                             String sorteoCompleto = tabla.getValueAt(row, 0).toString();
                             String separador = Pattern.quote(" ");
                             String[] sorteoSeparado = sorteoCompleto.split(separador);
-                            
+
                             String programa = sorteoSeparado[0];
-                            String sorteo =sorteoSeparado[1]+sorteoSeparado[2].toLowerCase();
-                            
-                            
+                            String sorteo = sorteoSeparado[1] + sorteoSeparado[2].toLowerCase();
+
                             String animalCompleto = tabla.getValueAt(row, 1).toString();
                             String animalReducido = "";
-                            
+
                             for (int j = 0; j < animalCompleto.length(); j++) {
-                                    if(new tools().ComprobarNumeros(animalCompleto.substring(j, (j+1)))){
-                                        animalReducido += animalCompleto.substring(j, (j+1));
-                                    }else{
-                                        break;
-                                    }
+                                if (new tools().ComprobarNumeros(animalCompleto.substring(j, (j + 1)))) {
+                                    animalReducido += animalCompleto.substring(j, (j + 1));
+                                } else {
+                                    break;
+                                }
                             }
-                            
-                            
-                           
-                            
+
                             CupoAnimal cupoJugada = animalesVendidos.stream()
-                                            .filter(t-> 
-                                                t.getFecha().equalsIgnoreCase(fechaHoy) &&
-                                                t.getPrograma().equalsIgnoreCase(programa) &&
-                                                t.getSorteo().equalsIgnoreCase(sorteo)
-                                            ).findFirst().orElse(
-                                                    insertCupo(
-                                                            fechaHoy,
-                                                            programa,
-                                                            sorteo,
-                                                            cupoMaximo
-                                                    )
-                                            );
-                                    
-                                    double cupoAnimalJugado = cupoJugada.getCupoActual(animalReducido);
-                            
-                            System.out.println("cupo: "+cupoAnimalJugado);
-                            
-                            double nuevoTotal = newMonto>cupoAnimalJugado
-                                    ?cupoAnimalJugado
-                                    :newMonto;
-                            
+                                    .filter(t
+                                            -> t.getFecha().equalsIgnoreCase(fechaHoy)
+                                    && t.getPrograma().equalsIgnoreCase(programa)
+                                    && t.getSorteo().equalsIgnoreCase(sorteo)
+                                    ).findFirst().orElse(
+                                            insertCupo(
+                                                    fechaHoy,
+                                                    programa,
+                                                    sorteo,
+                                                    cupoMaximo
+                                            )
+                                    );
+
+                            double cupoAnimalJugado = cupoJugada.getCupoActual(animalReducido);
+
+                            System.out.println("cupo: " + cupoAnimalJugado);
+
+                            double nuevoTotal = newMonto > cupoAnimalJugado
+                                    ? cupoAnimalJugado
+                                    : newMonto;
+
                             tabla.setValueAt(nuevoTotal, row, 2);
                             totalTicket += nuevoTotal;
                             totalTicketTxt.setText(totalTicket + "");
-                              break;
+                            break;
                         }
                     }
 
@@ -2205,51 +2200,49 @@ public class index extends javax.swing.JFrame {
     }//GEN-LAST:event_ventasItemActionPerformed
 
     private void checkLottoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkLottoActionPerformed
-        
+
     }//GEN-LAST:event_checkLottoActionPerformed
 
     private void checkGranjitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkGranjitaActionPerformed
-      
+
     }//GEN-LAST:event_checkGranjitaActionPerformed
 
     private void checkLottoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkLottoItemStateChanged
-     if (checkLotto.isSelected()) {
+        if (checkLotto.isSelected()) {
             JCheckBox c8amSorteo = sorteos.stream()
-                    .filter(t-> t.getName().equals("8 AM"))
+                    .filter(t -> t.getName().equals("8 AM"))
                     .findFirst().get();
-            if(c8amSorteo.isVisible()){
+            if (c8amSorteo.isVisible()) {
                 c8amSorteo.setSelected(false);
                 c8amSorteo.setEnabled(false);
                 lbAvisoLt8am.setVisible(true);
             }
-            
-            
-         
-         for (JCheckBox sorteo : sorteos) {
+
+            for (JCheckBox sorteo : sorteos) {
                 if (!sorteo.getText().toLowerCase().contains("lottoactivo") && !sorteo.getName().equalsIgnoreCase("8 am")) {
                     sorteo.setText("LottoActivo" + " " + sorteo.getText());
                 }
             }
         } else {
-         JCheckBox c8amSorteo = sorteos.stream()
-                    .filter(t-> t.getName().equals("8 AM"))
+            JCheckBox c8amSorteo = sorteos.stream()
+                    .filter(t -> t.getName().equals("8 AM"))
                     .findFirst().get();
             lbAvisoLt8am.setVisible(false);
             c8amSorteo.setEnabled(true);
-            
+
             for (JCheckBox sorteo : sorteos) {
                 if (sorteo.getText().toLowerCase().contains("lottoactivo") && !sorteo.getName().equalsIgnoreCase("8 am")) {
                     sorteo.setText(sorteo.getText().replace("LottoActivo ", ""));
                 }
             }
         }
-     animalTxt.requestFocus();
+        animalTxt.requestFocus();
     }//GEN-LAST:event_checkLottoItemStateChanged
 
     private void checkGranjitaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkGranjitaItemStateChanged
-         if (checkGranjita.isSelected()) {
-            
-             for (JCheckBox sorteo : sorteos) {
+        if (checkGranjita.isSelected()) {
+
+            for (JCheckBox sorteo : sorteos) {
                 if (!sorteo.getText().toLowerCase().contains("granjita")) {
                     sorteo.setText("Granjita" + " " + sorteo.getText());
                 }
@@ -2261,7 +2254,7 @@ public class index extends javax.swing.JFrame {
                 }
             }
         }
-         animalTxt.requestFocus();
+        animalTxt.requestFocus();
     }//GEN-LAST:event_checkGranjitaItemStateChanged
 
     private void c8amActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c8amActionPerformed
@@ -2269,13 +2262,15 @@ public class index extends javax.swing.JFrame {
     }//GEN-LAST:event_c8amActionPerformed
 
     private void cbTodosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbTodosItemStateChanged
-      for (JCheckBox sorteo : sorteos) {
-          sorteo.setSelected(cbTodos.isSelected());
-      }
+        for (JCheckBox sorteo : sorteos) {
+            sorteo.setSelected(cbTodos.isSelected());
+        }
     }//GEN-LAST:event_cbTodosItemStateChanged
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-     chequearcup();
+        new Thread(() -> {
+            crearCupos(true);
+        }).start();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
@@ -2414,42 +2409,15 @@ public class index extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void iniciar() {
-        /*
-         new Thread(()->{
-             while (true) {
-                try {
-                    URL url = new URL(myUrl);
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("GET");
-                    connection.connect();
-                    System.out.println("connection.getResponseCode(): "+connection.getResponseCode());
-                    isConnected = connection.getResponseCode() == 200
-                            ? true
-                            : false;
-                lbMensajeSistema.setText("Conexión Estable. Esperando Novedades");    
-                } catch (IOException e) {
-                   isConnected=false;
-                   lbMensajeSistema.setText("Ups. Hay problemas de Conexión."); 
-                }
 
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                }
-            }
-        }).start();
-        */
-       
-        
-        
-        
         try {
+            fechaHoy = new ConectarDBCloud("ag").tomarFecha();
+            datos = new Configuracion(fechaHoy);
             getNumTicket();
-            
+
             lbMensajeSistema.setText("Cargando fecha del servidor");
             lbAvisoLt8am.setVisible(false);
-            fechaHoy = new ConectarDBCloud("ag").tomarFecha();
-           
+
             lbMensajeSistema.setText("Cargando placeHolder");
             modelo = (DefaultTableModel) tabla.getModel();
             new PlaceHolder("Jugada", animalTxt);
@@ -2465,7 +2433,7 @@ public class index extends javax.swing.JFrame {
             programas.add("LottoActivo");
             programas.add("Granjita");
             lbMensajeSistema.setText("Cargando Cupos");
-            new Thread(this::crearCupos).start();
+
             animalTxt.requestFocus();
 
             myHoraActual.setTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2022-01-01 00:00:00"));
@@ -2476,15 +2444,14 @@ public class index extends javax.swing.JFrame {
             verTickets = new VerTickets(this);
             verResul = new verResultados(this);
             vVentas = new verVentas(this);
-            new Timer().scheduleAtFixedRate(desactivarSorteosTT, 10000, 10000);
+            new Timer().scheduleAtFixedRate(desactivarSorteosTT, 1000, 10000);
             new Timer().scheduleAtFixedRate(validarConeccion, 1000, 1000);
             lbMensajeSistema.setText("Cargando información de Ag.");
-            
-            
-            
-            
-            
-            
+
+            new Thread(() -> {
+                crearCupos(false);
+            }).start();
+
             lbMensajeSistema.setText("Sistema Listo. Esperando Novedades");
         } catch (ParseException ex) {
             Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
@@ -2496,12 +2463,12 @@ public class index extends javax.swing.JFrame {
             while (true) {
                 try {
                     InetAddress address = InetAddress.getByName("capsperu.dyndns.org");
-             isConnected = address.isReachable(1000);
-                   
-                lbMensajeSistema.setText("Conexión Estable. Esperando Novedades");    
+                    isConnected = address.isReachable(1000);
+
+                    lbMensajeSistema.setText("Conexión Estable. Esperando Novedades");
                 } catch (IOException e) {
-                   isConnected=false;
-                   lbMensajeSistema.setText("Ups. Hay problemas de Conexión."); 
+                    isConnected = false;
+                    lbMensajeSistema.setText("Ups. Hay problemas de Conexión.");
                 }
 
                 try {
@@ -2511,7 +2478,7 @@ public class index extends javax.swing.JFrame {
             }
         }
     };
-    
+
     TimerTask actualizarHoraTT = new TimerTask() {
         public void run() {
             try {
@@ -2549,8 +2516,8 @@ public class index extends javax.swing.JFrame {
                 String myHorax = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK).format(myUltimaHora.getTime());
                 Calendar myHora = Calendar.getInstance();
                 myHora.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK).parse(myHorax));
-                if (myHora.get(Calendar.MINUTE) > 56 || firstRun) {
-                    firstRun = false;
+                //if (myHora.get(Calendar.MINUTE) > 56 || firstRun) {
+                //    firstRun = false;
                     for (JCheckBox sorteo : sorteos) {
                         minutos = 0;
                         String horaObtenido = sorteo.getName().toLowerCase().replace(" am", "").replace(" pm", "");
@@ -2561,9 +2528,7 @@ public class index extends javax.swing.JFrame {
 
                         sorteo.setVisible(minutos < 3 ? false : true);
                     }
-                } else {
-                    System.out.println("Aun no es hora");
-                }
+              //  }
             } catch (ParseException ex) {
                 Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -2771,6 +2736,8 @@ public class index extends javax.swing.JFrame {
                 animalTxt.setEnabled(false);
                 animalTxt.setText("Tablero");
                 montoTxt.requestFocus();
+                montoTxt.setSelectionStart(0);
+                 montoTxt.setSelectionEnd(3);
                 tablero = true;
                 break;
             }
@@ -2783,17 +2750,16 @@ public class index extends javax.swing.JFrame {
     }
 
     private void jugar() {
-    
+
         try {
             if (validarSorteos()) {
                 if (validarAnimal()) {
-                    
+
                     for (JCheckBox sorteo : sorteos) {
                         if (sorteo.isSelected() && sorteo.isShowing()) {//Usaremos solo el sorteo activo
                             String monto = montoTxt.getText();
                             double montoDouble = Double.parseDouble(monto);
-                            
-                            
+
                             if (tablero == true) {//Varios animales
                                 String separador = Pattern.quote(" ");
                                 String[] programas = sorteo.getText().split(separador);
@@ -2819,8 +2785,8 @@ public class index extends javax.swing.JFrame {
                                                         .orElse(
                                                                 insertCupo(
                                                                         fechaHoy,
-                                                                        programa
-                                                                        , sorteo.getName().toLowerCase().replace(" ", ""),
+                                                                        programa,
+                                                                         sorteo.getName().toLowerCase().replace(" ", ""),
                                                                         cupoMaximo
                                                                 )
                                                         );
@@ -2877,8 +2843,6 @@ public class index extends javax.swing.JFrame {
                                     }
                                 }
 
-                                
-                                
                             } else {// Solo un animal
                                 String separador = Pattern.quote(" ");
                                 String[] programas = sorteo.getText().split(separador);
@@ -2890,7 +2854,7 @@ public class index extends javax.swing.JFrame {
                                         String animString = getAnimal(anim);
                                         String animalJugado = animalSeleccionado.equals("-1") ? "00" : animalSeleccionado;
                                         String jugada = animalJugado + "" + animString;
-                             //           System.out.println(sorteo.getName().toLowerCase().replace(" ", ""));
+                                        //           System.out.println(sorteo.getName().toLowerCase().replace(" ", ""));
                                         CupoAnimal cupoJugada = animalesVendidos.stream()
                                                 .filter(t
                                                         -> t.getFecha().equalsIgnoreCase(fechaHoy)
@@ -2946,12 +2910,11 @@ public class index extends javax.swing.JFrame {
                                                     : montoDouble;
                                             totalTicket += totalJugada;
                                             //String cupoRestante = cupos.g
-                                            
+
                                             modelo.addRow(new Object[]{
                                                 programaYsorteo, jugada, totalJugada, cupoAnimalJugado
                                             });
-                                            
-                                            
+
                                             totalTicketTxt.setText(totalTicket + "");
                                         }
                                     }
@@ -2962,18 +2925,18 @@ public class index extends javax.swing.JFrame {
                     }
                     limpiarJugada(true);
                 }
-            } 
+            }
         } catch (Exception e) {
             Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, e);
         }
 
     }
-    
-    private CupoAnimal insertCupo(String fecha, String programa, String sorteo, double monto){
-     return new CupoAnimal().get(fecha, programa, sorteo,monto);
-      
+
+    private CupoAnimal insertCupo(String fecha, String programa, String sorteo, double monto) {
+        return new CupoAnimal().get(fecha, programa, sorteo, monto);
+
     }
-    
+
     private boolean validarSorteos() {
         boolean llave = false;
         for (JCheckBox sorteo : sorteos) {
@@ -2982,14 +2945,14 @@ public class index extends javax.swing.JFrame {
                 break;
             }
         }
-        if(llave){
-           if(checkGranjita.isSelected() || checkLotto.isSelected()){
-               llave=true;
-           }else{
-               llave=false;
-               JOptionPane.showMessageDialog(archivoMenu, "Debe seleccionar al menos 1 Programa entre los disponibles");
-           }    
-        }else{
+        if (llave) {
+            if (checkGranjita.isSelected() || checkLotto.isSelected()) {
+                llave = true;
+            } else {
+                llave = false;
+                JOptionPane.showMessageDialog(archivoMenu, "Debe seleccionar al menos 1 Programa entre los disponibles");
+            }
+        } else {
             JOptionPane.showMessageDialog(archivoMenu, "Debe seleccionar al menos 1 sorteo");
         }
         return llave;
@@ -2998,28 +2961,29 @@ public class index extends javax.swing.JFrame {
     private boolean validarAnimal() {
         boolean llave = false;
         double animalJugado = 37;
-        if(tablero){
-            llave=true;
-        }else{
-        if(animalTxt.getText().length() >0 ){
-            animalJugado = Double.parseDouble(animalTxt.getText());
-        }
-        
-        if ( (animalTxt.getText().length() > 0 && animalJugado<37) ) {//animalTxt.getText().equalsIgnoreCase("tablero") ||
+        if (tablero) {
             llave = true;
-        }else{
-            JOptionPane.showMessageDialog(archivoMenu, "Debe seleccionar un animal del tablero o agregarlo manualmente\nVerifique que el campo no esté vacio y que el número ingreso sea 00, o del 0 al 36");
+        } else {
+            if (animalTxt.getText().length() > 0) {
+                animalJugado = Double.parseDouble(animalTxt.getText());
+            }
+
+            if ((animalTxt.getText().length() > 0 && animalJugado < 37)) {//animalTxt.getText().equalsIgnoreCase("tablero") ||
+                llave = true;
+            } else {
+                JOptionPane.showMessageDialog(archivoMenu, "Debe seleccionar un animal del tablero o agregarlo manualmente\nVerifique que el campo no esté vacio y que el número ingreso sea 00, o del 0 al 36");
+            }
         }
-    }
-        
 
         return llave;
     }
 
     private void limpiarJugada(boolean fromJugada) {
-        
-        if(!fromJugada)montoTxt.setText("");
-        
+
+        if (!fromJugada) {
+            montoTxt.setText("");
+        }
+
         tablero = false;
         resetearBotones();
         animalTxt.setText("");
@@ -3031,17 +2995,16 @@ public class index extends javax.swing.JFrame {
         int[] filas = tabla.getSelectedRows();
         if (filas.length > 0) {
             for (int i = filas.length; i > 0; i--) {
-                
 
                 String separador = Pattern.quote(" ");
                 String sorteox = tabla.getValueAt(i, 0).toString();
-                String []sorteoYprograma = sorteox.split(separador);
+                String[] sorteoYprograma = sorteox.split(separador);
                 String programa = sorteoYprograma[0];
                 String sorteoReducido = sorteoYprograma[1];
-                String sorteoCompleto = sorteoYprograma[1]+sorteoYprograma[2].toLowerCase();
+                String sorteoCompleto = sorteoYprograma[1] + sorteoYprograma[2].toLowerCase();
                 String animalCompleto = tabla.getValueAt(i, 1).toString();
-                Double montoJugado = Double.parseDouble(tabla.getValueAt(i-1, 2).toString());                 
-                
+                Double montoJugado = Double.parseDouble(tabla.getValueAt(i - 1, 2).toString());
+
                 totalTicket -= montoJugado;
                 totalTicketTxt.setText(totalTicket + "");
                 modelo.removeRow(filas[i - 1]);
@@ -3060,135 +3023,146 @@ public class index extends javax.swing.JFrame {
 
     private void imprimir() {
 
-        double totalJugado = 0.0;
-        ArrayList<JugadasTicket> jugadas = new ArrayList();/////////////////////////
-        
-        //Procesando la información de las jugadas.    
-        for (int i = 0; i < tabla.getRowCount(); i++) {
-            Double montoJugado = Double.parseDouble(tabla.getValueAt(i, 2).toString());
-            if (montoJugado > 0) {
-                String separador = Pattern.quote(" ");
-                String sorteox = tabla.getValueAt(i, 0).toString();
-                String[] sorteoYprograma = sorteox.split(separador);
-                String programa = sorteoYprograma[0];
-                String sorteoJugado = sorteoYprograma[1] + sorteoYprograma[2].toLowerCase();
-                String animalCompleto = tabla.getValueAt(i, 1).toString();
-                String animalJugado = "";
+        try {
+            imprimiendo=true;
+            double totalJugado = 0.0;
+            ArrayList<JugadasTicket> jugadas = new ArrayList();
 
-                for (int j = 0; j < animalCompleto.length(); j++) {
-                    if (new tools().ComprobarNumeros(animalCompleto.substring(j, (j + 1)))) {
-                        animalJugado += animalCompleto.substring(j, (j + 1));
-                    } else {
-                        break;
-                    }
-                }
+            //Procesando la información de las jugadas.    
+            for (int i = 0; i < tabla.getRowCount(); i++) {
+                Double montoJugado = Double.parseDouble(tabla.getValueAt(i, 2).toString());
+                if (montoJugado > 0) {
+                    String separador = Pattern.quote(" ");
+                    String sorteox = tabla.getValueAt(i, 0).toString();
+                    String[] sorteoYprograma = sorteox.split(separador);
+                    String programa = sorteoYprograma[0];
+                    String sorteoJugado = sorteoYprograma[1] + sorteoYprograma[2].toLowerCase();
+                    String animalCompleto = tabla.getValueAt(i, 1).toString();
+                    String animalJugado = "";
 
-                animalesVendidos.add(new CupoAnimal(
-                                programa,
-                                sorteoJugado,
-                                fechaHoy,
-                                animalJugado,
-                                montoJugado
-                        ));
-
-               
-                Float montoParseado = Float.parseFloat(tabla.getValueAt(i, 2).toString());
-                totalJugado += montoParseado;
-                jugadas.add(new JugadasTicket(0,
-                        agencia.getNumTicket(),
-                        programa,
-                        fechaHoy,
-                        sorteox,
-                        animalCompleto,
-                        montoParseado,
-                        "Activo")
-                );
-            }
-        }
-        
-        String hora = new SimpleDateFormat("hh:mm:ss").format(myUltimaHora.getTime());
-        String serialTicket = "";
-
-        if (!jugadas.isEmpty()) {
-            serialTicket = new Ticket().insert(
-                    myNumTicket,
-                    agencia.getNombreAgencia(),
-                    totalJugado,
-                    jugadas
-            );
-            // System.out.println("serialTicket: "+serialTicket);
-            if (!serialTicket.equalsIgnoreCase("error")) {
-
-                String numJugadas = jugadas.size() + "";/////////////////////////
-                //IMPRESION - Organizar un arreglo de Jugadas para Luego imprimir
-
-                //Organizamos las jugadas por orden del Monto
-                for (int i = 0; i < jugadas.size(); i++) {
-                    for (int j = 0; j < jugadas.size() - 1; j++) {
-                        JugadasTicket tempx = new JugadasTicket();
-                        if (jugadas.get(j).getMonto() > jugadas.get(j + 1).getMonto()) {
-                            tempx = jugadas.get(j);
-                            jugadas.set(j, jugadas.get(j + 1));
-                            jugadas.set(j + 1, tempx);
+                    for (int j = 0; j < animalCompleto.length(); j++) {
+                        if (new tools().ComprobarNumeros(animalCompleto.substring(j, (j + 1)))) {
+                            animalJugado += animalCompleto.substring(j, (j + 1));
+                        } else {
+                            break;
                         }
                     }
-                }
-                
-                //Organizamos jugadas por hora del sorteo
-                for (int i = 0; i < jugadas.size(); i++) {
-                    for (int j = 0; j < jugadas.size() - 1; j++) {
-                        JugadasTicket tempx = new JugadasTicket();
-                        if (jugadas.get(j).getHoradelSorteo() > jugadas.get(j + 1).getHoradelSorteo()) {
-                            tempx = jugadas.get(j);
-                            jugadas.set(j, jugadas.get(j + 1));
-                            jugadas.set(j + 1, tempx);
-                        }
-                    }
-                }
 
-                new Thread(() -> {//Actualizar los cupos de los animales que fueron seleccionados para la venta
-                    animalesVendidos.forEach(animal -> 
-                            animal.setVendido(
-                                    animal.getAnimalVendido(),
-                                    animal.getMontoVendido()
-                            ).updateCupo()
+                    CupoAnimal temp = new CupoAnimal().get(fechaHoy, programa, sorteoJugado, cupoMaximo);
+
+                    animalesVendidos.add(new CupoAnimal(
+                            programa,
+                            sorteoJugado,
+                            fechaHoy,
+                            animalJugado,
+                            montoJugado
+                    ));
+
+                    Float montoParseado = Float.parseFloat(tabla.getValueAt(i, 2).toString());
+                    totalJugado += montoParseado;
+                    jugadas.add(new JugadasTicket(0,
+                            agencia.getNumTicket(),
+                            programa,
+                            fechaHoy,
+                            sorteox,
+                            animalCompleto,
+                            montoParseado,
+                            "Activo")
                     );
-                }).start();
-
-                new Imprimir().enviarImpresion(
-                        espaciosPrevios,
-                        agencia.getNombreAgencia(),
-                        fechaHoy,
-                        programa,
-                        hora,
-                        String.valueOf(myNumTicket),
-                        serialTicket,
-                        numJugadas,
-                        jugadas,
-                        totalJugado);
-
-                //FIN IMPRESION
-                
-                datos.increaseTicket(
-                        myNumTicket,
-                        fechaHoy
-                );
-                resetearBotones();
-                resetearSorteos();
-                resetearJugadas();
-                limpiarJugada(false);
-                new rojerusan.RSNotifyFade(
-                        "Ticket Impreso",
-                        "Se realizó la impresión del ticket, en caso contrario contacte al Administrador.",
-                        4,
-                        RSNotifyFade.PositionNotify.BottomRight,
-                        RSNotifyFade.TypeNotify.SUCCESS
-                ).setVisible(true);
-            }else{
-                //Imprimir error si no se logra insertar el ticket
+                }
             }
-        } else {
-            JOptionPane.showMessageDialog(archivoMenu, "No existen jugadas disponibles que posean cupos.");
+
+            String hora = new SimpleDateFormat("hh:mm:ss").format(myUltimaHora.getTime());
+            String serialTicket = "";
+
+            if (!jugadas.isEmpty()) {
+                serialTicket = new Ticket().insert(
+                        myNumTicket,
+                        agencia.getId(),
+                        agencia.getNombreAgencia(),
+                        totalJugado,
+                        jugadas
+                );
+                if (!serialTicket.equalsIgnoreCase("error")) {
+
+                    String numJugadas = jugadas.size() + "";/////////////////////////
+                    //IMPRESION - Organizar un arreglo de Jugadas para Luego imprimir
+
+                    //Organizamos las jugadas por orden del Monto
+                    for (int i = 0; i < jugadas.size(); i++) {
+                        for (int j = 0; j < jugadas.size() - 1; j++) {
+                            JugadasTicket tempx = new JugadasTicket();
+                            if (jugadas.get(j).getMonto() > jugadas.get(j + 1).getMonto()) {
+                                tempx = jugadas.get(j);
+                                jugadas.set(j, jugadas.get(j + 1));
+                                jugadas.set(j + 1, tempx);
+                            }
+                        }
+                    }
+
+                    //Organizamos jugadas por hora del sorteo
+                    for (int i = 0; i < jugadas.size(); i++) {
+                        for (int j = 0; j < jugadas.size() - 1; j++) {
+                            JugadasTicket tempx = new JugadasTicket();
+                            if (jugadas.get(j).getHoradelSorteo() > jugadas.get(j + 1).getHoradelSorteo()) {
+                                tempx = jugadas.get(j);
+                                jugadas.set(j, jugadas.get(j + 1));
+                                jugadas.set(j + 1, tempx);
+                            }
+                        }
+                    }
+
+                    new Thread(() -> {//Actualizar los cupos de los animales que fueron seleccionados para la venta
+                        animalesVendidos.forEach(animal
+                                -> animal.setVendido(
+                                        animal.getAnimalVendido(),
+                                        animal.getMontoVendido()
+                                ).updateCupo()
+                        );
+                    }).start();
+
+                    ++myNumTicket;
+                    new Imprimir().enviarImpresion(
+                            espaciosPrevios,
+                            agencia.getNombreAgencia(),
+                            fechaHoy,
+                            programa,
+                            hora,
+                            String.valueOf(myNumTicket),
+                            serialTicket,
+                            numJugadas,
+                            jugadas,
+                            totalJugado);
+
+                    //FIN IMPRESION
+                    datos.increaseTicket(
+                            myNumTicket,
+                            fechaHoy
+                    );
+
+                    resetearBotones();
+                    resetearSorteos();
+                    resetearJugadas();
+                    limpiarJugada(false);
+                    new rojerusan.RSNotifyFade(
+                            "Ticket Impreso",
+                            "Se realizó la impresión del ticket, en caso contrario contacte al Administrador.",
+                            4,
+                            RSNotifyFade.PositionNotify.BottomRight,
+                            RSNotifyFade.TypeNotify.SUCCESS
+                    ).setVisible(true);
+                } else {
+                    //Imprimir error si no se logra insertar el ticket
+                    imprimiendo=false;
+                }
+            } else {
+                imprimiendo=false;
+                JOptionPane.showMessageDialog(archivoMenu, "No existen jugadas disponibles que posean cupos.");
+            }
+            imprimiendo=false;
+        } catch (Exception ex) {
+            Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex);
         }
 
     }
@@ -3236,12 +3210,13 @@ public class index extends javax.swing.JFrame {
     }
 
     private void getNumTicket() {
-        myNumTicket = datos.getNumTicket(fechaHoy)+1;
-        
+        myNumTicket = datos.getNumTicket(fechaHoy);
+        System.out.println("myNumTicket: " + myNumTicket);
+
     }
 
-    private void crearCupos() {
-        
+    private void crearCupos(boolean fromMenu) {
+
         ArrayList<CupoAgencia> cupos = (ArrayList) new CupoAgencia().getCupos(agencia.getId()).clone();
 
         if (cupos.isEmpty()) {
@@ -3300,12 +3275,15 @@ public class index extends javax.swing.JFrame {
         }
 
         lbMensajeSistema.setText("Cupos Cargados.");
-    }
-
-    
-
-    private void chequearcup() {
-
+        if (fromMenu) {
+            new rojerusan.RSNotifyFade(
+                    "Cupos Actualizados",
+                    "Se actualizaron los cupos correctamente, recuerde debe ser cambiado primero por el administrador.",
+                    4,
+                    RSNotifyFade.PositionNotify.BottomRight,
+                    RSNotifyFade.TypeNotify.SUCCESS
+            ).setVisible(true);
+        }
     }
 
 }
