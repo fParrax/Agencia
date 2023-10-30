@@ -2960,7 +2960,7 @@ public class index extends javax.swing.JFrame {
                         }
 
                     }
-                    limpiarJugada();
+                    limpiarJugada(true);
                 }
             } 
         } catch (Exception e) {
@@ -3016,9 +3016,11 @@ public class index extends javax.swing.JFrame {
         return llave;
     }
 
-    private void limpiarJugada() {
+    private void limpiarJugada(boolean fromJugada) {
+        
+        if(!fromJugada)montoTxt.setText("");
+        
         tablero = false;
-        montoTxt.setText("");
         resetearBotones();
         animalTxt.setText("");
         animalTxt.setEnabled(true);
@@ -3174,7 +3176,7 @@ public class index extends javax.swing.JFrame {
                 resetearBotones();
                 resetearSorteos();
                 resetearJugadas();
-                limpiarJugada();
+                limpiarJugada(false);
                 new rojerusan.RSNotifyFade(
                         "Ticket Impreso",
                         "Se realizó la impresión del ticket, en caso contrario contacte al Administrador.",
