@@ -36,14 +36,14 @@ public class Ticket {
         this.montoPagado = montoPagado;
     }
 
-    public ArrayList getTickets(String agenciax, String fecha01, String fecha02) {
+    public ArrayList getTickets(int agenciax, String fecha01, String fecha02) {
         ArrayList<Ticket> lista = new ArrayList();
 
         sql = "call `sp.getTicket` (?,?,?)";
         try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
             con.setCatalog("ag");
             pst = con.prepareCall(sql);
-            pst.setString(1,agenciax);
+            pst.setInt(1,agenciax);
             pst.setString(2,fecha01+" 00:00:01");
             pst.setString(3,fecha02+" 23:59:59");
             rs = pst.executeQuery();

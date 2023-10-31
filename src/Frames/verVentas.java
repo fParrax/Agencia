@@ -236,13 +236,14 @@ public class verVentas extends javax.swing.JFrame {
         String fecha01 = txtFechaDesde.getText()+" 00:00:00",fecha02 = txtFechaHasta.getText()+" 23:59:59";
         
         
-        tickets = (ArrayList) new Ticket().getTickets(ind.agencia.getNombreAgencia(),fecha01, fecha02).clone();
+        tickets = (ArrayList) new Ticket().getTickets(ind.agencia.getId(),fecha01, fecha02).clone();
         
         modelo.setRowCount(0);
         for(Ticket ticket:tickets){
-           
-            vendido+=ticket.getTotalJugado();
+           if(!ticket.getEstado().equalsIgnoreCase("anulado")){
+               vendido+=ticket.getTotalJugado();
             premios+=ticket.getTotalPremio();
+           }
         }
         comision= (vendido*porcentaje);
         String comi = new DecimalFormat("#.##").format(comision);

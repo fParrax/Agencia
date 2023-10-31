@@ -80,6 +80,10 @@ public class VerTickets extends javax.swing.JFrame {
         tablaTickets = new rojerusan.RSTableMetro();
         jScrollPane4 = new javax.swing.JScrollPane();
         tablaJugadas = new rojerusan.RSTableMetro();
+        jLabel3 = new javax.swing.JLabel();
+        lbTotalVendido = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        lbTotalAnulado = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Visualización de Tickets");
@@ -330,13 +334,33 @@ public class VerTickets extends javax.swing.JFrame {
         });
         jScrollPane4.setViewportView(tablaJugadas);
 
+        jLabel3.setText("Total Vendido:");
+
+        lbTotalVendido.setText("#");
+
+        jLabel6.setText("Total En ticket Anulados:");
+
+        lbTotalAnulado.setText("#");
+
         javax.swing.GroupLayout panelResultadosLayout = new javax.swing.GroupLayout(panelResultados);
         panelResultados.setLayout(panelResultadosLayout);
         panelResultadosLayout.setHorizontalGroup(
             panelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelResultadosLayout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelResultadosLayout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(panelResultadosLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lbTotalVendido, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lbTotalAnulado, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(panelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelInfoTicket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
@@ -344,13 +368,20 @@ public class VerTickets extends javax.swing.JFrame {
         );
         panelResultadosLayout.setVerticalGroup(
             panelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelResultadosLayout.createSequentialGroup()
-                .addGroup(panelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelResultadosLayout.createSequentialGroup()
+                .addGroup(panelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelResultadosLayout.createSequentialGroup()
+                        .addGroup(panelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbTotalVendido, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbTotalAnulado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addGroup(panelResultadosLayout.createSequentialGroup()
                         .addComponent(panelInfoTicket, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE))
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -417,22 +448,29 @@ public class VerTickets extends javax.swing.JFrame {
         String fecha01 = fechaDesde.getText();
         String fecha02 = fechaHasta.getText();
 //ind.agencia.getNombreAgencia()
-        tickets = (ArrayList) new Ticket().getTickets("Ag. Colacho",fecha01, fecha02).clone();
+        tickets = (ArrayList) new Ticket().getTickets(ind.agencia.getId(),fecha01, fecha02).clone();
 
         modeloTickets.setRowCount(0);
         String estado = comboEstadoTicket.getSelectedItem().toString();
         estado = estado.equalsIgnoreCase("todos")
                 ?""
                 :estado;
-        
+        double totalVendido =0.0;
+        double totalAnulado =0.0;
         for (Ticket ticket : tickets) {
             if(ticket.getEstado().toLowerCase().contains(estado)){
                modeloTickets.addRow(new Object[]{
                 ticket.getId(),ticket.getNumTicket(), ticket.getFecha(), ticket.getTotalJugado(), ticket.getEstado()
             }); 
             }
-            
+            if(ticket.getEstado().equalsIgnoreCase("anulado")){
+                totalAnulado+=ticket.getTotalJugado();
+            }else{
+                totalVendido+=ticket.getTotalJugado();
+            }
         }
+        lbTotalAnulado.setText(totalAnulado+"");
+        lbTotalVendido.setText(totalVendido+"");
     }//GEN-LAST:event_btnBuscarTicketActionPerformed
 
     /**
@@ -471,7 +509,7 @@ public class VerTickets extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBuscarTicket;
+    public javax.swing.JButton btnBuscarTicket;
     private javax.swing.JComboBox<String> comboEstadoTicket;
     private javax.swing.JTextField fechaDesde;
     private javax.swing.JTextField fechaHasta;
@@ -480,7 +518,9 @@ public class VerTickets extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -490,8 +530,10 @@ public class VerTickets extends javax.swing.JFrame {
     private javax.swing.JLabel lbFecha;
     private javax.swing.JLabel lbMontoPrograma;
     private javax.swing.JLabel lbNumticket;
+    private javax.swing.JLabel lbTotalAnulado;
     private javax.swing.JLabel lbTotalPagado;
     private javax.swing.JLabel lbTotalPremios;
+    private javax.swing.JLabel lbTotalVendido;
     private javax.swing.JPanel panelFiltros;
     private javax.swing.JPanel panelInfoTicket;
     private javax.swing.JPanel panelResultados;
@@ -524,5 +566,7 @@ public class VerTickets extends javax.swing.JFrame {
         lbMontoPrograma.setText("#");
         lbTotalPagado.setText("#");
         lbTotalPremios.setText("#");
+        lbTotalAnulado.setText("#");
+        lbTotalVendido.setText("#");
     }
 }
