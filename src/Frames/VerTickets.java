@@ -114,7 +114,7 @@ public class VerTickets extends javax.swing.JFrame {
         jLabel7.setText("Estado del Ticket");
 
         comboEstadoTicket.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        comboEstadoTicket.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Premiados", "Pagados", "Anulados" }));
+        comboEstadoTicket.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Premiado", "Pagado", "Anulado" }));
 
         javax.swing.GroupLayout panelFiltrosLayout = new javax.swing.GroupLayout(panelFiltros);
         panelFiltros.setLayout(panelFiltrosLayout);
@@ -303,11 +303,11 @@ public class VerTickets extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Sorteo", "Jugada", "Monto"
+                "Sorteo", "Jugada", "Monto", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -436,7 +436,7 @@ public class VerTickets extends javax.swing.JFrame {
             lbTotalPagado.setText(ticketSeleccionado.getMontoPagado() + "");
             for (JugadasTicket jugada : ticketSeleccionado.getJugadas()) {
                 modeloJugadas.addRow(new Object[]{
-                    jugada.getSorteo(), jugada.getAnimal(), jugada.getMonto()
+                    jugada.getSorteo(), jugada.getAnimal(), jugada.getMonto(),jugada.getEstado()
                 });
             }
 
@@ -451,10 +451,10 @@ public class VerTickets extends javax.swing.JFrame {
         tickets = (ArrayList) new Ticket().getTickets(ind.agencia.getId(),fecha01, fecha02).clone();
 
         modeloTickets.setRowCount(0);
-        String estado = comboEstadoTicket.getSelectedItem().toString();
-        estado = estado.equalsIgnoreCase("todos")
+
+        String estado  = comboEstadoTicket.getSelectedIndex()==0
                 ?""
-                :estado;
+                :comboEstadoTicket.getSelectedItem().toString().toLowerCase();
         double totalVendido =0.0;
         double totalAnulado =0.0;
         for (Ticket ticket : tickets) {
