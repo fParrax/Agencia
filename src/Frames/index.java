@@ -1960,9 +1960,12 @@ public class index extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "No se encontró ningún ticket con ese serial");
         } else {
             if (ticket.getEstado().equalsIgnoreCase("premiado")) {
+                System.out.println("Ticker premiado: "+ticket.toString());
                 double premios = 0.0;
+                System.out.println("Jugadas del ticket: "+ticket.getJugadas().size());
                 for (JugadasTicket jugada : ticket.getJugadas()) {
                     if (jugada.getEstado().equalsIgnoreCase("premiado")) {
+                        System.out.println("Jugada Premaida: "+jugada.toString());
                         premios += (jugada.getMonto() * 30);
                         ticket.pagar(jugada.getId());
                     }
@@ -1971,7 +1974,7 @@ public class index extends javax.swing.JFrame {
 
             } else if (ticket.getEstado().equalsIgnoreCase("pagado")) {
                 JOptionPane.showMessageDialog(rootPane, "Ticket ya fue pagado");
-            } else if (ticket.getEstado().equalsIgnoreCase("pagado")) {
+            } else if (ticket.getEstado().equalsIgnoreCase("anulado")) {
                 JOptionPane.showMessageDialog(rootPane, "Ticket está Anulado");
             }
         }

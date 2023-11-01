@@ -92,9 +92,12 @@ public class Ticket {
             
             rs = pst.executeQuery();
             while (rs.next()) {
+                if(my.getId() == 0){
                     my = new Ticket(rs.getInt("id"),rs.getString("fecha"),rs.getString("agencia"),
                 rs.getString("serialTicket"),rs.getInt("numTicket"),rs.getString("estado"),rs.getFloat("totalJugado"),
                 rs.getFloat("totalPremio"),rs.getFloat("montoPagado"));
+                }
+                    
 
                     JugadasTicket jugada = new JugadasTicket(rs.getInt("idJugada"),rs.getInt("idTicket"),
                 rs.getString("programa"),rs.getString("fechaJugada"),rs.getString("sorteo"),
