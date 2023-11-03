@@ -109,9 +109,6 @@ public class JugadasTicket {
                     : temp==7 //&& horaArray[2].equalsIgnoreCase("pm")
                     ?  19
                     : temp ;
-            
-                
-        
         return rsp;
     }
     
