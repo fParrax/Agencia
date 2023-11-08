@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
@@ -69,6 +70,30 @@ public class tools {
         return dias;
     }
    
+    public String getHHDSerialNumer(){
+         try {// Obtener el número de serie del disco duro principal
+        
+        
+        Runtime runtime = Runtime.getRuntime();
+        String[] commands = {"wmic", "diskdrive", "get", "SerialNumber"};
+        Process process = runtime.exec(commands);
+        String chain = null;
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            String serialNumber= null;
+            while ((serialNumber = bufferedReader.readLine()) != null) {
+                if (serialNumber.trim().length() > 0) {
+                    chain = serialNumber;
+                }
+            }
+            return chain.trim();
+        }
+        
+    }   catch (IOException ex) {
+            Logger.getLogger(tools.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
     
     public int getMesInteger() {
         

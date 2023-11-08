@@ -7,10 +7,22 @@ package Frames;
 import Clases.Actualizar;
 import Clases.Agencia;
 import Clases.ConectarDBCloud;
+import Clases.EncriptadorAES;
 import Clases.PlaceHolder;
+import Clases.Ticket;
+import Clases.tools;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
+import java.nio.file.FileStore;
+import java.nio.file.FileSystems;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -29,6 +41,7 @@ public class login extends javax.swing.JFrame {
         new PlaceHolder("Ingrese nombre Usuario",txtUsername);
         new PlaceHolder("Ingrese contraseña",txtPassword);
         new Thread(this::testCon).start();
+        iniciar();
     }
 public void changeIcon() {
         Image icon = new ImageIcon(getClass().getResource("/imgs/chip.png")).getImage();
@@ -130,7 +143,7 @@ public void changeIcon() {
                     .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE))
                 .addGap(36, 36, 36)
                 .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lbAviso)
                 .addContainerGap())
         );
@@ -151,24 +164,49 @@ public void changeIcon() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-      if(validarCampos()){
-          String name = txtUsername.getText();
-          String pss = txtPassword.getText();
-          Agencia ag = new Agencia().getAgencia(name);
-          
-          if(ag.getId()>0){
-             if(ag.getPassword().equals(pss)){
-                 this.dispose();
-                 new index(ag).setVisible(true);
-             }else{
-                 JOptionPane.showMessageDialog(rootPane, "Contraseña Incorrecta");
-             }
-          }else{
-               JOptionPane.showMessageDialog(rootPane, "Agencia no encontrada");
-          }
-      }else{
-          JOptionPane.showMessageDialog(rootPane, "Usuario y contraseña no deben estar vacios");
-      }
+      
+        try {
+            if (validarCampos()) {
+                String name = txtUsername.getText();
+                String pss = txtPassword.getText();
+                Agencia ag = new Agencia().getAgencia(name);
+
+                if (ag.getId() > 0) {
+                    String mySerial = new tools().getHHDSerialNumer();
+                    new Thread(() -> {
+                        if (ag.getSerialPC().isEmpty()) {
+                            new Agencia().upSerial(mySerial, ag.getId());
+                        }
+                    }).start();
+
+                    if(!ag.getEstado().equalsIgnoreCase("activo")){
+                       JOptionPane.showMessageDialog(rootPane, "Agencia Inactiva");
+                    }else{
+                        if (mySerial.equals(ag.getSerialPC()) || ag.getSerialPC().isEmpty()) {
+                        if (ag.getPassword().equals(new EncriptadorAES().encriptar(pss))) {
+                            this.dispose();
+                            new index(ag).setVisible(true);
+                            
+                        } else {
+                            JOptionPane.showMessageDialog(rootPane, "Contraseña Incorrecta");
+                        }
+                   } else {
+                        JOptionPane.showMessageDialog(rootPane, "Esta PC no es la asignada para ingresar");
+                    }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Agencia no encontrada");
+                }
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Usuario y contraseña no deben estar vacios");
+            }
+        } catch (Exception e) {
+            Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, e);
+             JOptionPane.showMessageDialog(rootPane, "error +\n"+e);
+        }
+
+        
+
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
@@ -251,5 +289,9 @@ private void testCon(){
     }
      System.out.println(new ConectarDBCloud("ag").getCon());
 }
+
+    private void iniciar() {   
+        System.out.println( new tools().getHHDSerialNumer());
+    }
 
 }

@@ -91,7 +91,22 @@ public class Agencia {
     }
     
     
-    
+    public boolean upSerial(String serialx, int idAgenciax){
+         try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
+              sql = "call `sp.UpSerial` (?,?)";
+            pst = con.prepareStatement(sql);
+            pst.setString(1,serialx);
+            pst.setInt(2,idAgenciax);
+            pst.executeUpdate();
+            return true;
+         } catch (Exception e) {
+            Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, "Error con el manejo de base de datos, contacte con el adm.\n" + e);
+            return false;
+        } finally {
+            cerrar();
+        }
+    }
     
     
      private void cerrar() {

@@ -38,16 +38,21 @@ import rojerusan.RSNotifyFade;
 
 public class index extends javax.swing.JFrame {
 
-    ArrayList<String> programas = new ArrayList();
+    
     VerTickets verTickets;
     verResultados verResul;
     verVentas vVentas;
-    ArrayList<CupoAnimal> animalesVendidos = new ArrayList();
     public Configuracion datos;
-
+    
+    ArrayList<CupoAnimal> animalesVendidos = new ArrayList();
+    ArrayList<String> programas = new ArrayList();
     ArrayList<JToggleButton> animales = new ArrayList();
     ArrayList<JCheckBox> sorteos = new ArrayList();
+    ArrayList<String> sorteosDisponibles = new ArrayList();
+
+    
     DefaultTableModel modelo;
+    
 
     boolean tablero = false;
     String programa = "LottoActivo";
@@ -59,7 +64,7 @@ public class index extends javax.swing.JFrame {
     boolean isConnected = false;
     boolean firstRun = true;
     boolean imprimiendo = false;
-    private String myUrl = "capsperu.dyndns.org";
+    private String myUrl = "c1046.gconex.com";
 
     Calendar myHoraActual = Calendar.getInstance();
     public Calendar myUltimaHora = Calendar.getInstance();
@@ -79,7 +84,6 @@ public class index extends javax.swing.JFrame {
     public index(Agencia agencia) {
         initComponents();
         this.agencia = agencia;
-        datos = new Configuracion();
         setTitle(getTitle() + " - " + agencia.getNombreAgencia());
 
         changeIcon();
@@ -100,6 +104,9 @@ public class index extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         opcionesTabla = new javax.swing.JPopupMenu();
         BorrarJugadas = new javax.swing.JMenuItem();
+        rSMenuBar1 = new rojerusan.RSMenuBar();
+        jMenu2 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
         panelCentral = new javax.swing.JPanel();
         panelAnimales = new javax.swing.JPanel();
         a00 = new javax.swing.JToggleButton();
@@ -202,6 +209,12 @@ public class index extends javax.swing.JFrame {
             }
         });
         opcionesTabla.add(BorrarJugadas);
+
+        jMenu2.setText("File");
+        rSMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Edit");
+        rSMenuBar1.add(jMenu3);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Agencia de Loterias");
@@ -2382,6 +2395,8 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
@@ -2399,6 +2414,7 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JPanel panelJugadas;
     private javax.swing.JPanel panelPrograma;
     private javax.swing.JPanel panelSorteos;
+    private rojerusan.RSMenuBar rSMenuBar1;
     private javax.swing.JMenuItem resultadosItem;
     private javax.swing.JMenuItem salir;
     private rojerusan.RSTableMetro tabla;
@@ -2458,6 +2474,7 @@ public class index extends javax.swing.JFrame {
             lbMensajeSistema.setText("Sistema Listo. Esperando Novedades");
         } catch (ParseException ex) {
             Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(archivoMenu, ex);
         }
     }
 
@@ -2465,7 +2482,7 @@ public class index extends javax.swing.JFrame {
         public void run() {
             while (true) {
                 try {
-                    InetAddress address = InetAddress.getByName("capsperu.dyndns.org");
+                    InetAddress address = InetAddress.getByName("c1046.gconex.com");
                     isConnected = address.isReachable(1000);
 
                     lbMensajeSistema.setText("Conexión Estable. Esperando Novedades");
@@ -2516,6 +2533,7 @@ public class index extends javax.swing.JFrame {
         public void run() {
             try {
                 int minutos = 0;
+                sorteosDisponibles.clear();
                 String myHorax = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK).format(myUltimaHora.getTime());
                 Calendar myHora = Calendar.getInstance();
                 myHora.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK).parse(myHorax));
@@ -2530,6 +2548,13 @@ public class index extends javax.swing.JFrame {
                         minutos = new tools().restarMinutos(myHora.getTime(), mySorteo.getTime());
 
                         sorteo.setVisible(minutos < 3 ? false : true);
+                        for(String programa : programas){
+                                if(sorteo.isVisible()){
+                                    String sorteoxx = programa + " "+sorteo.getName();
+                                System.out.println(sorteoxx);
+                            sorteosDisponibles.add(sorteoxx);
+                                }
+                        }
                     }
               //  }
             } catch (ParseException ex) {
@@ -3033,46 +3058,50 @@ public class index extends javax.swing.JFrame {
 
             //Procesando la información de las jugadas.    
             for (int i = 0; i < tabla.getRowCount(); i++) {
-                Double montoJugado = Double.parseDouble(tabla.getValueAt(i, 2).toString());
-                if (montoJugado > 0) {
-                    String separador = Pattern.quote(" ");
-                    String sorteox = tabla.getValueAt(i, 0).toString();
-                    String[] sorteoYprograma = sorteox.split(separador);
-                    String programa = sorteoYprograma[0];
-                    String sorteoJugado = sorteoYprograma[1] + sorteoYprograma[2].toLowerCase();
-                    String animalCompleto = tabla.getValueAt(i, 1).toString();
-                    String animalJugado = "";
+                String sorteoJugadox = tabla.getValueAt(i, 0).toString();
+                if (sorteosDisponibles.contains(sorteoJugadox)) {
+                    Double montoJugado = Double.parseDouble(tabla.getValueAt(i, 2).toString());
+                    if (montoJugado > 0) {
+                        String separador = Pattern.quote(" ");
+                        String sorteox = tabla.getValueAt(i, 0).toString();
+                        String[] sorteoYprograma = sorteox.split(separador);
+                        String programa = sorteoYprograma[0];
+                        String sorteoJugado = sorteoYprograma[1] + sorteoYprograma[2].toLowerCase();
+                        String animalCompleto = tabla.getValueAt(i, 1).toString();
+                        String animalJugado = "";
 
-                    for (int j = 0; j < animalCompleto.length(); j++) {
-                        if (new tools().ComprobarNumeros(animalCompleto.substring(j, (j + 1)))) {
-                            animalJugado += animalCompleto.substring(j, (j + 1));
-                        } else {
-                            break;
+                        for (int j = 0; j < animalCompleto.length(); j++) {
+                            if (new tools().ComprobarNumeros(animalCompleto.substring(j, (j + 1)))) {
+                                animalJugado += animalCompleto.substring(j, (j + 1));
+                            } else {
+                                break;
+                            }
                         }
+
+                        CupoAnimal temp = new CupoAnimal().get(fechaHoy, programa, sorteoJugado, cupoMaximo);
+
+                        animalesVendidos.add(new CupoAnimal(
+                                programa,
+                                sorteoJugado,
+                                fechaHoy,
+                                animalJugado,
+                                montoJugado
+                        ));
+
+                        Float montoParseado = Float.parseFloat(tabla.getValueAt(i, 2).toString());
+                        totalJugado += montoParseado;
+                        jugadas.add(new JugadasTicket(0,
+                                agencia.getNumTicket(),
+                                programa,
+                                fechaHoy,
+                                sorteox,
+                                animalCompleto,
+                                montoParseado,
+                                "Activo")
+                        );
                     }
-
-                    CupoAnimal temp = new CupoAnimal().get(fechaHoy, programa, sorteoJugado, cupoMaximo);
-
-                    animalesVendidos.add(new CupoAnimal(
-                            programa,
-                            sorteoJugado,
-                            fechaHoy,
-                            animalJugado,
-                            montoJugado
-                    ));
-
-                    Float montoParseado = Float.parseFloat(tabla.getValueAt(i, 2).toString());
-                    totalJugado += montoParseado;
-                    jugadas.add(new JugadasTicket(0,
-                            agencia.getNumTicket(),
-                            programa,
-                            fechaHoy,
-                            sorteox,
-                            animalCompleto,
-                            montoParseado,
-                            "Activo")
-                    );
                 }
+
             }
 
             String hora = new SimpleDateFormat("hh:mm:ss").format(myUltimaHora.getTime());
@@ -3124,7 +3153,7 @@ public class index extends javax.swing.JFrame {
                         );
                     }).start();
 
-                    ++myNumTicket;
+                    
                     new Imprimir().enviarImpresion(
                             espaciosPrevios,
                             agencia.getNombreAgencia(),
@@ -3137,6 +3166,7 @@ public class index extends javax.swing.JFrame {
                             jugadas,
                             totalJugado);
 
+                    ++myNumTicket;
                     //FIN IMPRESION
                     datos.increaseTicket(
                             myNumTicket,
@@ -3160,7 +3190,7 @@ public class index extends javax.swing.JFrame {
                 }
             } else {
                 imprimiendo=false;
-                JOptionPane.showMessageDialog(archivoMenu, "No existen jugadas disponibles que posean cupos.");
+                JOptionPane.showMessageDialog(archivoMenu, "No existen: \n-Jugadas disponibles que posean cupos.\n-Jugadas con sorteos Disponibles\n\nRevise las jugadas agregadas..");
             }
             imprimiendo=false;
         } catch (Exception ex) {
