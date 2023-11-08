@@ -3273,4 +3273,7 @@ public class index extends javax.swing.JFrame {
     public ArrayList<String> getProgramas(){
         return programas;
     }
+    public ArrayList<CupoAnimal> getAnimalesVendidos(){
+        return animalesVendidos;
+    }
 }
