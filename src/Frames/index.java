@@ -177,7 +177,6 @@ public class index extends javax.swing.JFrame {
         btnAnular = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
-        txtRepetir = new javax.swing.JTextField();
         btnRepetir = new javax.swing.JButton();
         lbMensajeSistema = new javax.swing.JLabel();
         panelPrograma = new javax.swing.JPanel();
@@ -1290,20 +1289,8 @@ public class index extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setText("Repetir Ticket:");
 
-        txtRepetir.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtRepetir.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtRepetir.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtRepetirKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtRepetirKeyTyped(evt);
-            }
-        });
-
         btnRepetir.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnRepetir.setText("Repetir");
-        btnRepetir.setEnabled(false);
         btnRepetir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRepetirActionPerformed(evt);
@@ -1336,11 +1323,9 @@ public class index extends javax.swing.JFrame {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtRepetir, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRepetir)
-                .addGap(26, 26, 26)
+                .addGap(120, 120, 120)
                 .addComponent(lbMensajeSistema, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -1357,9 +1342,9 @@ public class index extends javax.swing.JFrame {
                     .addComponent(txtAnular, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAnular, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
                     .addComponent(jSeparator2)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtRepetir, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRepetir, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelAyudaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRepetir, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE))
                     .addComponent(lbMensajeSistema, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -2016,11 +2001,11 @@ public class index extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnAnularActionPerformed
 
-    private void txtRepetirKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRepetirKeyTyped
-        new tools().soloDoubleyCantidadDigitos(evt, txtRepetir, 3);
-    }//GEN-LAST:event_txtRepetirKeyTyped
-
     private void btnRepetirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepetirActionPerformed
+       
+        new RepetirTicket(this).setVisible(true);
+        
+        
         /*
         if (txtRepetir.getText().length() > 0) {
 
@@ -2074,12 +2059,6 @@ public class index extends javax.swing.JFrame {
          */
 
     }//GEN-LAST:event_btnRepetirActionPerformed
-
-    private void txtRepetirKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRepetirKeyReleased
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            btnRepetir.doClick();
-        }
-    }//GEN-LAST:event_txtRepetirKeyReleased
 
     private void txtAnularKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAnularKeyReleased
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -2403,7 +2382,6 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JLabel totalTicketTxt;
     private javax.swing.JTextField txtAnular;
     private javax.swing.JTextField txtPagar;
-    private javax.swing.JTextField txtRepetir;
     private javax.swing.JMenuItem ventasItem;
     private javax.swing.JMenuItem verTicketsItem;
     // End of variables declaration//GEN-END:variables
@@ -2424,7 +2402,6 @@ public class index extends javax.swing.JFrame {
             new PlaceHolder("Monto", montoTxt);
             new PlaceHolder("Serial", txtPagar);
             new PlaceHolder("# Ticket", txtAnular);
-            new PlaceHolder("# Ticket", txtRepetir);
 
             lbMensajeSistema.setText("Cargando Botones");
             agregarBotones();
@@ -3289,4 +3266,11 @@ public class index extends javax.swing.JFrame {
         }
     }
 
+    
+    public ArrayList<JCheckBox> getSorteos(){
+        return sorteos;
+    }
+    public ArrayList<String> getProgramas(){
+        return programas;
+    }
 }

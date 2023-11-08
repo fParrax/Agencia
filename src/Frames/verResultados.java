@@ -6,9 +6,11 @@
 package Frames;
 
 import Clases.Resultado;
+import java.awt.Image;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -24,16 +26,21 @@ public class verResultados extends javax.swing.JFrame {
     ArrayList<Resultado> resultados = new ArrayList();
     public verResultados() {
         initComponents();
+        changeIcon();
         iniciarDatos();
     }
     
 public verResultados(index ind) {
         initComponents();
         this.ind=ind;
+        changeIcon();
         iniciarDatos();
         
     }
-    
+    public void changeIcon() {
+        Image icon = new ImageIcon(getClass().getResource("/imgs/chip.png")).getImage();
+        setIconImage(icon);
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -238,7 +245,6 @@ public verResultados(index ind) {
     // End of variables declaration//GEN-END:variables
 
     private void iniciarDatos() {
-//        fecha = new SimpleDateFormat("yyyy-MM-dd").format(ind.myUltimaHora.getTime());
         modelo= (DefaultTableModel) tabla.getModel();
         fecha=ind.fechaHoy;
         fechaDesde.setDate(new Date());
