@@ -1,7 +1,15 @@
 
 package Clases;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.print.Doc;
 import javax.print.DocFlavor;
 import javax.print.DocPrintJob;
@@ -15,7 +23,21 @@ public class Imprimir {
     
     
     public static void main(String[] args) {
-        
+        try {
+            System.out.println(new EncriptadorAES().encriptar("123"));
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(Imprimir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Imprimir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidKeyException ex) {
+            Logger.getLogger(Imprimir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            Logger.getLogger(Imprimir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(Imprimir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
+            Logger.getLogger(Imprimir.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void enviarImpresion(int espaciosPrevios,String agencia,String fecha, String programa,String hora,

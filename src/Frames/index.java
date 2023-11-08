@@ -14,16 +14,13 @@ import Clases.tools;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.InetAddress;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -104,9 +101,6 @@ public class index extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         opcionesTabla = new javax.swing.JPopupMenu();
         BorrarJugadas = new javax.swing.JMenuItem();
-        rSMenuBar1 = new rojerusan.RSMenuBar();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
         panelCentral = new javax.swing.JPanel();
         panelAnimales = new javax.swing.JPanel();
         a00 = new javax.swing.JToggleButton();
@@ -209,12 +203,6 @@ public class index extends javax.swing.JFrame {
             }
         });
         opcionesTabla.add(BorrarJugadas);
-
-        jMenu2.setText("File");
-        rSMenuBar1.add(jMenu2);
-
-        jMenu3.setText("Edit");
-        rSMenuBar1.add(jMenu3);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Agencia de Loterias");
@@ -954,7 +942,7 @@ public class index extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnGenerarJugada, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE))
+                    .addComponent(btnGenerarJugada, javax.swing.GroupLayout.PREFERRED_SIZE, 114, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -1973,12 +1961,9 @@ public class index extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "No se encontró ningún ticket con ese serial");
         } else {
             if (ticket.getEstado().equalsIgnoreCase("premiado")) {
-                System.out.println("Ticker premiado: "+ticket.toString());
                 double premios = 0.0;
-                System.out.println("Jugadas del ticket: "+ticket.getJugadas().size());
                 for (JugadasTicket jugada : ticket.getJugadas()) {
                     if (jugada.getEstado().equalsIgnoreCase("premiado")) {
-                        System.out.println("Jugada Premaida: "+jugada.toString());
                         premios += (jugada.getMonto() * 30);
                         ticket.pagar(jugada.getId());
                     }
@@ -2164,7 +2149,6 @@ public class index extends javax.swing.JFrame {
 
                             double cupoAnimalJugado = cupoJugada.getCupoActual(animalReducido);
 
-                            System.out.println("cupo: " + cupoAnimalJugado);
 
                             double nuevoTotal = newMonto > cupoAnimalJugado
                                     ? cupoAnimalJugado
@@ -2395,8 +2379,6 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
@@ -2414,7 +2396,6 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JPanel panelJugadas;
     private javax.swing.JPanel panelPrograma;
     private javax.swing.JPanel panelSorteos;
-    private rojerusan.RSMenuBar rSMenuBar1;
     private javax.swing.JMenuItem resultadosItem;
     private javax.swing.JMenuItem salir;
     private rojerusan.RSTableMetro tabla;
@@ -2514,13 +2495,11 @@ public class index extends javax.swing.JFrame {
                             ? new SimpleDateFormat("yyyy-MM-dd").format(myUltimaHora.getTime())
                             : fechaHoy;
 
-//System.out.println("Actualizada: "+new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(myUltimaHora.getTime()));
                 } else {
                     tFinal = System.currentTimeMillis();
                     long dif = (tFinal - tInicio);
                     myUltimaHora.add(Calendar.MILLISECOND, (int) dif);
                     tInicio = System.currentTimeMillis();
-                    //System.out.println("Sin Internet: "+new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(myUltimaHora.getTime()));
                 }
 
             } catch (ParseException ex) {
@@ -2551,7 +2530,6 @@ public class index extends javax.swing.JFrame {
                         for(String programa : programas){
                                 if(sorteo.isVisible()){
                                     String sorteoxx = programa + " "+sorteo.getName();
-                                System.out.println(sorteoxx);
                             sorteosDisponibles.add(sorteoxx);
                                 }
                         }
@@ -2882,7 +2860,6 @@ public class index extends javax.swing.JFrame {
                                         String animString = getAnimal(anim);
                                         String animalJugado = animalSeleccionado.equals("-1") ? "00" : animalSeleccionado;
                                         String jugada = animalJugado + "" + animString;
-                                        //           System.out.println(sorteo.getName().toLowerCase().replace(" ", ""));
                                         CupoAnimal cupoJugada = animalesVendidos.stream()
                                                 .filter(t
                                                         -> t.getFecha().equalsIgnoreCase(fechaHoy)
@@ -3021,25 +2998,22 @@ public class index extends javax.swing.JFrame {
 
     private void borrarJugadas() {
         int[] filas = tabla.getSelectedRows();
-        if (filas.length > 0) {
-            for (int i = filas.length; i > 0; i--) {
-
-                String separador = Pattern.quote(" ");
-                String sorteox = tabla.getValueAt(i, 0).toString();
-                String[] sorteoYprograma = sorteox.split(separador);
-                String programa = sorteoYprograma[0];
-                String sorteoReducido = sorteoYprograma[1];
-                String sorteoCompleto = sorteoYprograma[1] + sorteoYprograma[2].toLowerCase();
-                String animalCompleto = tabla.getValueAt(i, 1).toString();
-                Double montoJugado = Double.parseDouble(tabla.getValueAt(i - 1, 2).toString());
-
-                totalTicket -= montoJugado;
-                totalTicketTxt.setText(totalTicket + "");
+        
+        for (int i = filas.length; i > 0; i--) {
                 modelo.removeRow(filas[i - 1]);
-            }
+        }
+        
+        if(modelo.getRowCount()>0){
+            totalTicket=0;
+            for(int i=0; i<modelo.getRowCount(); i++){
+                Double montoJugado = Double.parseDouble(tabla.getValueAt(i, 2).toString());
+                totalTicket += montoJugado;
+            }totalTicketTxt.setText(totalTicket + "");
         } else {
             JOptionPane.showMessageDialog(rootPane, "Debe seleccionar 1 o más jugadas a borrar");
         }
+      
+        
     }
 
     private void resetearJugadas() {
@@ -3216,9 +3190,6 @@ public class index extends javax.swing.JFrame {
             Date horaInicial = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(ticket.getFecha());
 
             int resultado = new tools().restarMinutos(horaInicial, hActual);
-            //System.out.println("Inicial: "+horaInicial);
-            //System.out.println("Final: "+hActual);
-            //System.out.println("Resultado: "+resultado);
             if (resultado <= minutos) {
                 llave = true;
             }
@@ -3244,7 +3215,6 @@ public class index extends javax.swing.JFrame {
 
     private void getNumTicket() {
         myNumTicket = datos.getNumTicket(fechaHoy);
-        System.out.println("myNumTicket: " + myNumTicket);
 
     }
 

@@ -8,7 +8,9 @@ package Frames;
 import Clases.Ticket;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -44,10 +46,10 @@ public class verVentas extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         panelFiltros = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        txtFechaDesde = new javax.swing.JTextField();
-        txtFechaHasta = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         btnBuscar = new javax.swing.JButton();
+        fechaDesde = new com.toedter.calendar.JDateChooser();
+        fechaHasta = new com.toedter.calendar.JDateChooser();
         jScrollPane4 = new javax.swing.JScrollPane();
         tabla = new rojerusan.RSTableMetro();
 
@@ -84,27 +86,6 @@ public class verVentas extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Desde");
 
-        txtFechaDesde.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtFechaDesde.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtFechaDesde.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtFechaDesdeKeyPressed(evt);
-            }
-        });
-
-        txtFechaHasta.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtFechaHasta.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtFechaHasta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFechaHastaActionPerformed(evt);
-            }
-        });
-        txtFechaHasta.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtFechaHastaKeyPressed(evt);
-            }
-        });
-
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Hasta:");
 
@@ -115,6 +96,10 @@ public class verVentas extends javax.swing.JFrame {
             }
         });
 
+        fechaDesde.setDateFormatString("yyyy-MM-dd");
+
+        fechaHasta.setDateFormatString("yyyy-MM-dd");
+
         javax.swing.GroupLayout panelFiltrosLayout = new javax.swing.GroupLayout(panelFiltros);
         panelFiltros.setLayout(panelFiltrosLayout);
         panelFiltrosLayout.setHorizontalGroup(
@@ -122,30 +107,32 @@ public class verVentas extends javax.swing.JFrame {
             .addGroup(panelFiltrosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtFechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(15, 15, 15))
         );
         panelFiltrosLayout.setVerticalGroup(
             panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelFiltrosLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFiltrosLayout.createSequentialGroup()
+                .addGap(13, 13, 13)
                 .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFiltrosLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(panelFiltrosLayout.createSequentialGroup()
                         .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(txtFechaDesde)
-                    .addComponent(txtFechaHasta)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(fechaHasta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(fechaDesde, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFiltrosLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
@@ -202,8 +189,8 @@ public class verVentas extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelFiltros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -221,10 +208,6 @@ public class verVentas extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtFechaHastaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaHastaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFechaHastaActionPerformed
-
     private void tablaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_tablaKeyPressed
@@ -233,7 +216,7 @@ public class verVentas extends javax.swing.JFrame {
        float porcentaje = (float) (ind.agencia.getComision()/100);
        
         double vendido =0,premios =0, comision=0,saldo=0;
-        String fecha01 = txtFechaDesde.getText()+" 00:00:00",fecha02 = txtFechaHasta.getText()+" 23:59:59";
+        String fecha01 = getFechaDesde()+" 00:00:00",fecha02 = getFechaHasta()+" 23:59:59";
         
         
         tickets = (ArrayList) new Ticket().getTickets(ind.agencia.getId(),fecha01, fecha02).clone();
@@ -252,18 +235,6 @@ public class verVentas extends javax.swing.JFrame {
         String sal = new DecimalFormat("#.##").format(saldo);
         modelo.addRow(new Object[]{vendido,comi,premios,sal});
     }//GEN-LAST:event_btnBuscarActionPerformed
-
-    private void txtFechaHastaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaHastaKeyPressed
-      if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-          btnBuscar.doClick();
-      }
-    }//GEN-LAST:event_txtFechaHastaKeyPressed
-
-    private void txtFechaDesdeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaDesdeKeyPressed
-       if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-          txtFechaHasta.requestFocus();
-      }
-    }//GEN-LAST:event_txtFechaDesdeKeyPressed
 
     /**
      * @param args the command line arguments
@@ -302,6 +273,8 @@ public class verVentas extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
+    private com.toedter.calendar.JDateChooser fechaDesde;
+    private com.toedter.calendar.JDateChooser fechaHasta;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -310,14 +283,19 @@ public class verVentas extends javax.swing.JFrame {
     private javax.swing.JPanel panelFiltros;
     private javax.swing.JPanel panelTitulo;
     private rojerusan.RSTableMetro tabla;
-    private javax.swing.JTextField txtFechaDesde;
-    private javax.swing.JTextField txtFechaHasta;
     // End of variables declaration//GEN-END:variables
 
     private void iniciarDatos() {
         modelo=(DefaultTableModel)tabla.getModel();
-        txtFechaDesde.setText(ind.fechaHoy);
-        txtFechaHasta.setText(ind.fechaHoy);
+        fechaDesde.setDate(new Date());
+        fechaHasta.setDate(new Date());
         
+        
+    }
+    public String getFechaDesde(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(fechaDesde.getDate());
+    }
+    public String getFechaHasta(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(fechaHasta.getDate());
     }
 }

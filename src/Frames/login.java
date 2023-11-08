@@ -9,18 +9,10 @@ import Clases.Agencia;
 import Clases.ConectarDBCloud;
 import Clases.EncriptadorAES;
 import Clases.PlaceHolder;
-import Clases.Ticket;
 import Clases.tools;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.management.ManagementFactory;
-import java.lang.management.OperatingSystemMXBean;
-import java.nio.file.FileStore;
-import java.nio.file.FileSystems;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -172,7 +164,7 @@ public void changeIcon() {
                 Agencia ag = new Agencia().getAgencia(name);
 
                 if (ag.getId() > 0) {
-                    String mySerial = new tools().getHHDSerialNumer();
+                    String mySerial = "";//new tools().getHHDSerialNumer();
                     new Thread(() -> {
                         if (ag.getSerialPC().isEmpty()) {
                             new Agencia().upSerial(mySerial, ag.getId());
@@ -291,7 +283,7 @@ private void testCon(){
 }
 
     private void iniciar() {   
-        System.out.println( new tools().getHHDSerialNumer());
+      //  System.out.println( new tools().getHHDSerialNumer());
     }
 
 }
