@@ -4,6 +4,7 @@
  */
 package panels;
 
+import Clases.JugadasTicket;
 import Frames.index;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -21,16 +22,18 @@ import javax.swing.JCheckBox;
 public class SorteoRepetir extends javax.swing.JPanel {
     index myIndex;
     public ArrayList<JCheckBox> sorteos = new ArrayList();
+    public JugadasTicket myJugada;
     
     public SorteoRepetir() {
         initComponents();
     }
     
-    public SorteoRepetir(index index,String sorteo) {
+    public SorteoRepetir(index index,JugadasTicket myJugada) {
         initComponents();
         myIndex=index;
-        mySorteo.setText(sorteo);
-        mySorteo.setName(sorteo);
+        this.myJugada = myJugada;
+        mySorteoPrincipal.setText(myJugada.getSorteo()+" - "+myJugada.getAnimal());
+        mySorteoPrincipal.setName(myJugada.getSorteo()+" - "+myJugada.getAnimal());
         panelSorteos.setLayout(new BoxLayout(panelSorteos, BoxLayout.Y_AXIS));
         iniciar();
     }
@@ -41,7 +44,7 @@ public class SorteoRepetir extends javax.swing.JPanel {
     private void initComponents() {
 
         panelCentral = new javax.swing.JPanel();
-        mySorteo = new javax.swing.JCheckBox();
+        mySorteoPrincipal = new javax.swing.JCheckBox();
         panelSorteos = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
 
@@ -49,8 +52,8 @@ public class SorteoRepetir extends javax.swing.JPanel {
 
         panelCentral.setBackground(new java.awt.Color(0, 102, 102));
 
-        mySorteo.setForeground(new java.awt.Color(255, 255, 255));
-        mySorteo.setText("jCheckBox1");
+        mySorteoPrincipal.setForeground(new java.awt.Color(255, 255, 255));
+        mySorteoPrincipal.setText("jCheckBox1");
 
         panelSorteos.setBackground(new java.awt.Color(0, 102, 102));
 
@@ -58,7 +61,7 @@ public class SorteoRepetir extends javax.swing.JPanel {
         panelSorteos.setLayout(panelSorteosLayout);
         panelSorteosLayout.setHorizontalGroup(
             panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 285, Short.MAX_VALUE)
+            .addGap(0, 367, Short.MAX_VALUE)
         );
         panelSorteosLayout.setVerticalGroup(
             panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -71,16 +74,17 @@ public class SorteoRepetir extends javax.swing.JPanel {
             panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCentralLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mySorteo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(mySorteoPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelSorteos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(panelSorteos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelCentralLayout.setVerticalGroup(
             panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCentralLayout.createSequentialGroup()
                 .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelSorteos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(mySorteo, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
+                    .addComponent(mySorteoPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
                 .addGap(0, 0, 0))
         );
 
@@ -107,7 +111,7 @@ public class SorteoRepetir extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSeparator jSeparator1;
-    public javax.swing.JCheckBox mySorteo;
+    public javax.swing.JCheckBox mySorteoPrincipal;
     private javax.swing.JPanel panelCentral;
     private javax.swing.JPanel panelSorteos;
     // End of variables declaration//GEN-END:variables

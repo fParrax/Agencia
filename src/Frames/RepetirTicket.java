@@ -4,23 +4,28 @@
  */
 package Frames;
 
+import Clases.JugadasTicket;
 import Clases.ScrollSens;
+import Clases.Ticket;
 import java.awt.Color;
 import java.awt.Image;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.stream.Collectors;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import panels.SorteoRepetir;
 
 
 public class RepetirTicket extends javax.swing.JFrame {
-
+JPanel myPanelRepetir = new JPanel();
     index myIndex;
     ArrayList<SorteoRepetir> listaRepetir = new ArrayList();
+    Ticket myTicket;
     public RepetirTicket() {
         initComponents();
         changeIcon();
@@ -89,6 +94,11 @@ public class RepetirTicket extends javax.swing.JFrame {
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
 
         jButton1.setText("Buscar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Repetir");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -103,13 +113,10 @@ public class RepetirTicket extends javax.swing.JFrame {
             panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(panelCentralLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelCentralLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jSeparator1))
-                    .addGroup(panelCentralLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(scroll)))
+                    .addComponent(jSeparator1)
+                    .addComponent(scroll))
                 .addContainerGap())
             .addGroup(panelCentralLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
@@ -162,11 +169,43 @@ public class RepetirTicket extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if(validarRepetir()){
+            ArrayList<SorteoRepetir> elejidas = new ArrayList();
             
+            elejidas = (ArrayList)listaRepetir.stream()
+                .filter(t-> t.mySorteoPrincipal.isSelected())
+                .collect(Collectors.toList());
+            System.out.println("Size Acertadas: "+elejidas.size());
+            for(SorteoRepetir s : elejidas){
+                ArrayList<JCheckBox> seleccionadas = new ArrayList();
+                seleccionadas = (ArrayList) 
+                                s.sorteos
+                                .stream()
+                                .filter(select-> select.isSelected())
+                                .collect(Collectors.toList());
+                
+                System.out.println("Original: "+s.mySorteoPrincipal.getText()+" Elejidas:");
+                for(JCheckBox j : seleccionadas){
+                    System.out.println(j.getText());
+                }
+            }
         }else{
             JOptionPane.showMessageDialog(this, "Seleccione al menos un Sorteo (Lado Izquierdo) y un objetivo (lado Derecho)");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+      int numTicket= Integer.parseInt(txtNumTicket.getText());
+        myTicket = new Ticket().getTicketByNum(
+              myIndex.getAgencia().getId(),
+              getFechaDesde(),
+              numTicket
+        );
+        if(myTicket.getId()>0){
+            mostrarDatos(myTicket);
+        }else{
+            JOptionPane.showMessageDialog(this, "Ticket no encontrado");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     
     public static void main(String args[]) {
@@ -218,28 +257,40 @@ public class RepetirTicket extends javax.swing.JFrame {
 public String getFechaDesde(){
         return new SimpleDateFormat("yyyy-MM-dd").format(fechaDesde.getDate());
     }
-
+ private boolean validarRepetir(){
+     /*
+        &&
+                        (t.sorteos.stream()
+                                .filter(f-> f.isSelected() )
+                                .count() > 0 
+                                ? true 
+                                : false
+                        )
+     */   
+     return listaRepetir.stream()
+                .filter(t-> 
+                        t.mySorteoPrincipal.isSelected()  
+                         
+                ).count() > 0 ? true : false;
+        
+    }
     private void iniciarDatos() {
         new ScrollSens(scroll,40);
         fechaDesde.setDate(new Date());
-        JPanel myPanelRepetir = new JPanel();
+    }
+    
+    private void mostrarDatos(Ticket ticket){
+        myPanelRepetir = new JPanel();
         myPanelRepetir.setLayout(new BoxLayout(myPanelRepetir, BoxLayout.Y_AXIS));
         myPanelRepetir.setBackground(new Color(0,102,102));
         
-        listaRepetir.add(new SorteoRepetir(myIndex,"Lotto Activo 7 PM"));
-        listaRepetir.add(new SorteoRepetir(myIndex,"Lotto Activo 5 PM"));
-        listaRepetir.add(new SorteoRepetir(myIndex,"Lotto Activo 5 PM"));
-        
-        for(SorteoRepetir panel:listaRepetir ){
-            myPanelRepetir.add(panel);
+        for(JugadasTicket jugada:ticket.getJugadas()){
+            SorteoRepetir temp = new SorteoRepetir(myIndex,jugada);
+            listaRepetir.add(temp);
+             myPanelRepetir.add(temp);
         }
-        
         scroll.setViewportView(myPanelRepetir);
     }
     
-    
-    private boolean validarRepetir(){
-        return listaRepetir.stream().filter(t-> t.mySorteo.isSelected()).count() >0?true:false;
-        
-    }
+   
 }

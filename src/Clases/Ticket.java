@@ -131,9 +131,34 @@ public class Ticket {
             
             rs = pst.executeQuery();
             while (rs.next()) {
-                    my = new Ticket(rs.getInt("id"),rs.getString("fecha"),rs.getString("agencia"),
-                rs.getString("serialTicket"),rs.getInt("numTicket"),rs.getString("estado"),rs.getFloat("totalJugado"),
-                rs.getFloat("totalPremio"),rs.getFloat("montoPagado"));
+                   if(my.getId() == 0){
+                    my = new Ticket(rs.getInt(
+                            "id"),
+                            rs.getString("fecha"),
+                            rs.getString("agencia"),
+                            rs.getString("serialTicket"),
+                            rs.getInt("numTicket"),
+                            rs.getString("estado"),
+                            rs.getFloat("totalJugado"),
+                            rs.getFloat("totalPremio"),
+                            rs.getFloat("montoPagado")
+                    );
+                }
+
+                    JugadasTicket jugada = new JugadasTicket(
+                            rs.getInt("idJugada"),
+                            rs.getInt("idTicket"),
+                            rs.getString("programa"),
+                            rs.getString("fechaJugada"),
+                            rs.getString("sorteo"),
+                            rs.getString("animal"),
+                            rs.getFloat("montoJugada"),
+                            rs.getString("estadoJugada")
+                    );
+                
+                if(!my.getJugadas().contains(jugada)){
+                    my.addJugada(jugada);
+                }
             }
         } catch (Exception e) {
             Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
