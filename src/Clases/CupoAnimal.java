@@ -7,13 +7,9 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
+
+
 public class CupoAnimal {
 
     int id = -1;
@@ -531,4 +527,371 @@ int id = 0;
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "CupoAnimal{" + "id=" + id + ", fecha=" + fecha + ", programa=" + programa + ", sorteo=" + sorteo + ", animalVendido=" + animalVendido + ", maximo=" + maximo + ", animal_0=" + animal_0 + ", animal_00=" + animal_00 + ", animal_1=" + animal_1 + ", animal_2=" + animal_2 + ", animal_3=" + animal_3 + ", animal_4=" + animal_4 + ", animal_5=" + animal_5 + ", animal_6=" + animal_6 + ", animal_7=" + animal_7 + ", animal_8=" + animal_8 + ", animal_9=" + animal_9 + ", animal_10=" + animal_10 + ", animal_11=" + animal_11 + ", animal_12=" + animal_12 + ", animal_13=" + animal_13 + ", animal_14=" + animal_14 + ", animal_15=" + animal_15 + ", animal_16=" + animal_16 + ", animal_17=" + animal_17 + ", animal_18=" + animal_18 + ", animal_19=" + animal_19 + ", animal_20=" + animal_20 + ", animal_21=" + animal_21 + ", animal_22=" + animal_22 + ", animal_23=" + animal_23 + ", animal_24=" + animal_24 + ", animal_25=" + animal_25 + ", animal_26=" + animal_26 + ", animal_27=" + animal_27 + ", animal_28=" + animal_28 + ", animal_29=" + animal_29 + ", animal_30=" + animal_30 + ", animal_31=" + animal_31 + ", animal_32=" + animal_32 + ", animal_33=" + animal_33 + ", animal_34=" + animal_34 + ", animal_35=" + animal_35 + ", animal_36=" + animal_36 + ", montoVendido=" + montoVendido + '}';
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getPrograma() {
+        return programa;
+    }
+
+    public void setPrograma(String programa) {
+        this.programa = programa;
+    }
+
+    public String getSorteo() {
+        return sorteo;
+    }
+
+    public void setSorteo(String sorteo) {
+        this.sorteo = sorteo;
+    }
+
+    public String getAnimalVendido() {
+        return animalVendido;
+    }
+
+    public void setAnimalVendido(String animalVendido) {
+        this.animalVendido = animalVendido;
+    }
+
+    public double getMaximo() {
+        return maximo;
+    }
+
+    public void setMaximo(double maximo) {
+        this.maximo = maximo;
+    }
+
+    public double getAnimal_0() {
+        return animal_0;
+    }
+
+    public void setAnimal_0(double animal_0) {
+        this.animal_0 = animal_0;
+    }
+
+    public double getAnimal_00() {
+        return animal_00;
+    }
+
+    public void setAnimal_00(double animal_00) {
+        this.animal_00 = animal_00;
+    }
+
+    public double getAnimal_1() {
+        return animal_1;
+    }
+
+    public void setAnimal_1(double animal_1) {
+        this.animal_1 = animal_1;
+    }
+
+    public double getAnimal_2() {
+        return animal_2;
+    }
+
+    public void setAnimal_2(double animal_2) {
+        this.animal_2 = animal_2;
+    }
+
+    public double getAnimal_3() {
+        return animal_3;
+    }
+
+    public void setAnimal_3(double animal_3) {
+        this.animal_3 = animal_3;
+    }
+
+    public double getAnimal_4() {
+        return animal_4;
+    }
+
+    public void setAnimal_4(double animal_4) {
+        this.animal_4 = animal_4;
+    }
+
+    public double getAnimal_5() {
+        return animal_5;
+    }
+
+    public void setAnimal_5(double animal_5) {
+        this.animal_5 = animal_5;
+    }
+
+    public double getAnimal_6() {
+        return animal_6;
+    }
+
+    public void setAnimal_6(double animal_6) {
+        this.animal_6 = animal_6;
+    }
+
+    public double getAnimal_7() {
+        return animal_7;
+    }
+
+    public void setAnimal_7(double animal_7) {
+        this.animal_7 = animal_7;
+    }
+
+    public double getAnimal_8() {
+        return animal_8;
+    }
+
+    public void setAnimal_8(double animal_8) {
+        this.animal_8 = animal_8;
+    }
+
+    public double getAnimal_9() {
+        return animal_9;
+    }
+
+    public void setAnimal_9(double animal_9) {
+        this.animal_9 = animal_9;
+    }
+
+    public double getAnimal_10() {
+        return animal_10;
+    }
+
+    public void setAnimal_10(double animal_10) {
+        this.animal_10 = animal_10;
+    }
+
+    public double getAnimal_11() {
+        return animal_11;
+    }
+
+    public void setAnimal_11(double animal_11) {
+        this.animal_11 = animal_11;
+    }
+
+    public double getAnimal_12() {
+        return animal_12;
+    }
+
+    public void setAnimal_12(double animal_12) {
+        this.animal_12 = animal_12;
+    }
+
+    public double getAnimal_13() {
+        return animal_13;
+    }
+
+    public void setAnimal_13(double animal_13) {
+        this.animal_13 = animal_13;
+    }
+
+    public double getAnimal_14() {
+        return animal_14;
+    }
+
+    public void setAnimal_14(double animal_14) {
+        this.animal_14 = animal_14;
+    }
+
+    public double getAnimal_15() {
+        return animal_15;
+    }
+
+    public void setAnimal_15(double animal_15) {
+        this.animal_15 = animal_15;
+    }
+
+    public double getAnimal_16() {
+        return animal_16;
+    }
+
+    public void setAnimal_16(double animal_16) {
+        this.animal_16 = animal_16;
+    }
+
+    public double getAnimal_17() {
+        return animal_17;
+    }
+
+    public void setAnimal_17(double animal_17) {
+        this.animal_17 = animal_17;
+    }
+
+    public double getAnimal_18() {
+        return animal_18;
+    }
+
+    public void setAnimal_18(double animal_18) {
+        this.animal_18 = animal_18;
+    }
+
+    public double getAnimal_19() {
+        return animal_19;
+    }
+
+    public void setAnimal_19(double animal_19) {
+        this.animal_19 = animal_19;
+    }
+
+    public double getAnimal_20() {
+        return animal_20;
+    }
+
+    public void setAnimal_20(double animal_20) {
+        this.animal_20 = animal_20;
+    }
+
+    public double getAnimal_21() {
+        return animal_21;
+    }
+
+    public void setAnimal_21(double animal_21) {
+        this.animal_21 = animal_21;
+    }
+
+    public double getAnimal_22() {
+        return animal_22;
+    }
+
+    public void setAnimal_22(double animal_22) {
+        this.animal_22 = animal_22;
+    }
+
+    public double getAnimal_23() {
+        return animal_23;
+    }
+
+    public void setAnimal_23(double animal_23) {
+        this.animal_23 = animal_23;
+    }
+
+    public double getAnimal_24() {
+        return animal_24;
+    }
+
+    public void setAnimal_24(double animal_24) {
+        this.animal_24 = animal_24;
+    }
+
+    public double getAnimal_25() {
+        return animal_25;
+    }
+
+    public void setAnimal_25(double animal_25) {
+        this.animal_25 = animal_25;
+    }
+
+    public double getAnimal_26() {
+        return animal_26;
+    }
+
+    public void setAnimal_26(double animal_26) {
+        this.animal_26 = animal_26;
+    }
+
+    public double getAnimal_27() {
+        return animal_27;
+    }
+
+    public void setAnimal_27(double animal_27) {
+        this.animal_27 = animal_27;
+    }
+
+    public double getAnimal_28() {
+        return animal_28;
+    }
+
+    public void setAnimal_28(double animal_28) {
+        this.animal_28 = animal_28;
+    }
+
+    public double getAnimal_29() {
+        return animal_29;
+    }
+
+    public void setAnimal_29(double animal_29) {
+        this.animal_29 = animal_29;
+    }
+
+    public double getAnimal_30() {
+        return animal_30;
+    }
+
+    public void setAnimal_30(double animal_30) {
+        this.animal_30 = animal_30;
+    }
+
+    public double getAnimal_31() {
+        return animal_31;
+    }
+
+    public void setAnimal_31(double animal_31) {
+        this.animal_31 = animal_31;
+    }
+
+    public double getAnimal_32() {
+        return animal_32;
+    }
+
+    public void setAnimal_32(double animal_32) {
+        this.animal_32 = animal_32;
+    }
+
+    public double getAnimal_33() {
+        return animal_33;
+    }
+
+    public void setAnimal_33(double animal_33) {
+        this.animal_33 = animal_33;
+    }
+
+    public double getAnimal_34() {
+        return animal_34;
+    }
+
+    public void setAnimal_34(double animal_34) {
+        this.animal_34 = animal_34;
+    }
+
+    public double getAnimal_35() {
+        return animal_35;
+    }
+
+    public void setAnimal_35(double animal_35) {
+        this.animal_35 = animal_35;
+    }
+
+    public double getAnimal_36() {
+        return animal_36;
+    }
+
+    public void setAnimal_36(double animal_36) {
+        this.animal_36 = animal_36;
+    }
+
+    public double getMontoVendido() {
+        return montoVendido;
+    }
+
+    public void setMontoVendido(double montoVendido) {
+        this.montoVendido = montoVendido;
+    }
+    
+    
 }

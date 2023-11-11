@@ -70,7 +70,7 @@ public class tools {
         return dias;
     }
    
-    public String getHHDSerialNumer(){
+    public String getHHDSerialNumer()  {
          try {// Obtener el número de serie del disco duro principal
         
         
@@ -94,8 +94,25 @@ public class tools {
         }
     }
     
+    public static void main(String[] args) {
+        System.out.println(getAnimalFromString("00Ballena"));
+    }
+public  static String getAnimalFromString(String animal){
+    String resultado="";
     
-    public int getMesInteger() {
+    for (int i = 0; i < animal.length(); i++) {
+        String caracter = animal.substring(i,i+1);
+        if(!isText(caracter)){
+            resultado+=caracter;
+        }
+    }
+    return resultado;
+}
+public static boolean isText(String texto) {
+    String regex = "[a-zA-Z]+";
+    return texto.matches(regex);
+}
+public int getMesInteger() {
         
         String c = new SimpleDateFormat("MM").format(new Date());
         System.out.println(c);
@@ -140,6 +157,7 @@ public class tools {
         // the resulting string 
         return thebuffer.toString(); 
     }
+    
     public  String getRandomString(int i){ 
     
         // bind the length 
@@ -177,6 +195,7 @@ public class tools {
         // the resulting string 
         return thebuffer.toString(); 
     } 
+    
     public  String getRandomMixString(int i){ 
     
         // bind the length 
@@ -215,7 +234,6 @@ public class tools {
         return thebuffer.toString(); 
     }
     
-    
     public int obtenerEdad(String fnacx){
         int edad=0;
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -228,6 +246,7 @@ public class tools {
         
         return edad;
     }
+    
     public int obtenerEdad2(String fnacx){
         int edad=0;
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -384,6 +403,7 @@ public class tools {
         }
         return new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime());
     }
+    
 public Date sumarDiasFechaDate(Date fechax, int dias) {
         Calendar calendar = Calendar.getInstance();
         //Date fecha = new SimpleDateFormat("yyyy-MM-dd").parse(fechax);
@@ -467,6 +487,7 @@ public int restarMinutos(Date horaInicial, Date horaFinal) {
         }
         return mes;
     }
+    
  public int getMes(String i) {
         int mes = 0;
         switch (i.toLowerCase()) {
@@ -510,6 +531,7 @@ public int restarMinutos(Date horaInicial, Date horaFinal) {
         }
         return mes;
     }
+ 
     public String Obtener_mac() throws UnknownHostException {
         InetAddress datos = InetAddress.getLocalHost();
         StringBuilder sb = new StringBuilder();
@@ -606,8 +628,6 @@ public int restarMinutos(Date horaInicial, Date horaFinal) {
 
     }
 
-  
-
     public ArrayList separarFile(File a) {
         ArrayList<String> val = new ArrayList();
         String separador = Pattern.quote(".");
@@ -618,11 +638,13 @@ public int restarMinutos(Date horaInicial, Date horaFinal) {
 
         return val;
     }
+    
     public String getExtesion(String ruta){
         File archivoOriginal = new File(ruta);
         ArrayList<String> v1 = (ArrayList) separarFile(archivoOriginal).clone();
         return v1.get(1);
     }
+    
     public void CopiarArchivo(String rutaArchivoOriginal, String CarpetaDestino) {
 
         try {

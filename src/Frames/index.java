@@ -53,7 +53,7 @@ public class index extends javax.swing.JFrame {
 
     boolean tablero = false;
     String programa = "LottoActivo";
-    double totalTicket = 0.0;
+    public double totalTicket = 0.0;
     long tInicio, tFinal;
     int myNumTicket = 0;
     int cupoMaximo = 50;
@@ -941,7 +941,7 @@ public class index extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnGenerarJugada, javax.swing.GroupLayout.PREFERRED_SIZE, 114, Short.MAX_VALUE))
+                    .addComponent(btnGenerarJugada, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -1060,7 +1060,7 @@ public class index extends javax.swing.JFrame {
 
         c9am.setBackground(new java.awt.Color(255, 255, 255));
         c9am.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        c9am.setText("9 AM");
+        c9am.setText(" 9 AM");
         c9am.setName("9 AM"); // NOI18N
         c9am.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1070,8 +1070,8 @@ public class index extends javax.swing.JFrame {
 
         c8am.setBackground(new java.awt.Color(255, 255, 255));
         c8am.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        c8am.setText("8 AM");
-        c8am.setName("8 AM"); // NOI18N
+        c8am.setLabel("8 AM");
+        c8am.setName(" 8 AM"); // NOI18N
         c8am.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c8amActionPerformed(evt);
@@ -1680,8 +1680,9 @@ public class index extends javax.swing.JFrame {
 
     private void montoTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_montoTxtKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-
-            jugar();
+                if(!montoTxt.getText().isEmpty()){
+                     jugar();
+                }
         }
 
 
@@ -2379,7 +2380,7 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JMenuItem salir;
     private rojerusan.RSTableMetro tabla;
     private javax.swing.JMenu ticketMenu;
-    private javax.swing.JLabel totalTicketTxt;
+    public javax.swing.JLabel totalTicketTxt;
     private javax.swing.JTextField txtAnular;
     private javax.swing.JTextField txtPagar;
     private javax.swing.JMenuItem ventasItem;
@@ -2759,8 +2760,7 @@ public class index extends javax.swing.JFrame {
 
                                                 CupoAnimal cupoJugada = animalesVendidos
                                                         .stream()
-                                                        .filter(t
-                                                                -> t.getFecha().equalsIgnoreCase(fechaHoy)
+                                                        .filter(t -> t.getFecha().equalsIgnoreCase(fechaHoy)
                                                         && t.getPrograma().equalsIgnoreCase(programa)
                                                         && t.getSorteo().equalsIgnoreCase(sorteo.getName().toLowerCase().replace(" ", ""))
                                                         )
@@ -2831,6 +2831,7 @@ public class index extends javax.swing.JFrame {
                                 String[] programas = sorteo.getText().split(separador);
                                 for (String programa : programas) {
                                     if (programa.equalsIgnoreCase("lottoActivo") || programa.equalsIgnoreCase("granjita")) {
+     //////////////
                                         String programaYsorteo = programa + " " + sorteo.getName();
                                         String animalSeleccionado = animalTxt.getText().equals("00") ? "-1" : animalTxt.getText();
                                         int anim = Integer.parseInt(animalSeleccionado);
@@ -2850,9 +2851,8 @@ public class index extends javax.swing.JFrame {
                                                                 cupoMaximo
                                                         )
                                                 );
-
+                                        
                                         double cupoAnimalJugado = cupoJugada.getCupoActual(animalJugado);
-
                                         if (tabla.getRowCount() > 0) {//Ya existen jugadas
                                             boolean flag = false;
                                             double montoTabla = 0.0;
@@ -2872,10 +2872,10 @@ public class index extends javax.swing.JFrame {
                                                         : montoDouble;
                                                 totalTicket += totalJugada;
                                                 //String cupoRestante = cupos.g
-                                                modelo.addRow(new Object[]{
+                                               modelo.addRow(new Object[]{
                                                     programaYsorteo, jugada, totalJugada, cupoAnimalJugado
                                                 });
-                                                totalTicketTxt.setText(totalTicket + "");
+                                               totalTicketTxt.setText(totalTicket + "");
                                             } else {//si hay jugadas iguales
                                                 double nuevoTotalAnimalJugado = (montoTabla + montoDouble) > cupoAnimalJugado
                                                         ? cupoAnimalJugado
@@ -2899,6 +2899,8 @@ public class index extends javax.swing.JFrame {
 
                                             totalTicketTxt.setText(totalTicket + "");
                                         }
+                                        
+     ///////////
                                     }
                                 }
                             }
@@ -3279,4 +3281,14 @@ public class index extends javax.swing.JFrame {
     public Agencia getAgencia(){
         return this.agencia;
     }
+    public rojerusan.RSTableMetro getTabla(){
+        return tabla;
+    }
+    public void setTotalTicket(String texto){
+        totalTicketTxt.setText(texto);
+    }
+    public DefaultTableModel getModel (){
+        return modelo;
+    }
+    
 }

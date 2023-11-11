@@ -7,10 +7,6 @@ package panels;
 import Clases.JugadasTicket;
 import Frames.index;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
@@ -21,7 +17,7 @@ import javax.swing.JCheckBox;
  */
 public class SorteoRepetir extends javax.swing.JPanel {
     index myIndex;
-    public ArrayList<JCheckBox> sorteos = new ArrayList();
+    public ArrayList<JCheckBox> sorteosSeleccionados = new ArrayList();
     public JugadasTicket myJugada;
     
     public SorteoRepetir() {
@@ -33,7 +29,7 @@ public class SorteoRepetir extends javax.swing.JPanel {
         myIndex=index;
         this.myJugada = myJugada;
         mySorteoPrincipal.setText(myJugada.getSorteo()+" - "+myJugada.getAnimal());
-        mySorteoPrincipal.setName(myJugada.getSorteo()+" - "+myJugada.getAnimal());
+        mySorteoPrincipal.setName(myJugada.getAnimal());
         panelSorteos.setLayout(new BoxLayout(panelSorteos, BoxLayout.Y_AXIS));
         iniciar();
     }
@@ -53,7 +49,7 @@ public class SorteoRepetir extends javax.swing.JPanel {
         panelCentral.setBackground(new java.awt.Color(0, 102, 102));
 
         mySorteoPrincipal.setForeground(new java.awt.Color(255, 255, 255));
-        mySorteoPrincipal.setText("jCheckBox1");
+        mySorteoPrincipal.setName(""); // NOI18N
 
         panelSorteos.setBackground(new java.awt.Color(0, 102, 102));
 
@@ -88,6 +84,8 @@ public class SorteoRepetir extends javax.swing.JPanel {
                 .addGap(0, 0, 0))
         );
 
+        mySorteoPrincipal.getAccessibleContext().setAccessibleName("jCheckBox");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -121,20 +119,25 @@ public class SorteoRepetir extends javax.swing.JPanel {
             for(JCheckBox sorteo:myIndex.getSorteos()){
             if(sorteo.isVisible()){
                 JCheckBox temp = new JCheckBox();    
-                temp.setText(programa + sorteo.getText());
+                temp.setText(programa +" "+ sorteo.getName());
+                temp.setName(sorteo.getName());
+                temp.setToolTipText(programa);
                 temp.setForeground(Color.white);
                  
-                sorteos.add(sorteo);
+                sorteosSeleccionados.add(temp);
                 panelSorteos.add(temp);
             }
         }
         }
         
         
-        
-        panelSorteos.setSize(sorteos.size()*22, panelSorteos.getWidth());
+        panelSorteos.setSize(sorteosSeleccionados.size()*22, panelSorteos.getWidth());
         panelCentral.setSize(panelSorteos.getSize());
         this.setSize(panelSorteos.getSize());
         
+    }
+    
+    public ArrayList<JCheckBox> getSorteosSeleccionados(){
+        return sorteosSeleccionados;
     }
 }

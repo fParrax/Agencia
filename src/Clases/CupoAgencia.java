@@ -1,30 +1,21 @@
 
 package Clases;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.EqualsAndHashCode;
 
 
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+
+
+
 public class CupoAgencia {
     
     
@@ -191,5 +182,117 @@ public class CupoAgencia {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "CupoAgencia{" + "idcupo=" + idcupo + ", idAgencia=" + idAgencia + ", tipoCupo=" + tipoCupo + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", estadoCupo=" + estadoCupo + ", monto=" + monto + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 83 * hash + this.idcupo;
+        hash = 83 * hash + this.idAgencia;
+        hash = 83 * hash + Objects.hashCode(this.tipoCupo);
+        hash = 83 * hash + Objects.hashCode(this.fechaInicio);
+        hash = 83 * hash + Objects.hashCode(this.fechaFin);
+        hash = 83 * hash + Objects.hashCode(this.estadoCupo);
+        hash = 83 * hash + (int) (Double.doubleToLongBits(this.monto) ^ (Double.doubleToLongBits(this.monto) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CupoAgencia other = (CupoAgencia) obj;
+        if (this.idcupo != other.idcupo) {
+            return false;
+        }
+        if (this.idAgencia != other.idAgencia) {
+            return false;
+        }
+        if (Double.doubleToLongBits(this.monto) != Double.doubleToLongBits(other.monto)) {
+            return false;
+        }
+        if (!Objects.equals(this.tipoCupo, other.tipoCupo)) {
+            return false;
+        }
+        if (!Objects.equals(this.fechaInicio, other.fechaInicio)) {
+            return false;
+        }
+        if (!Objects.equals(this.fechaFin, other.fechaFin)) {
+            return false;
+        }
+        return Objects.equals(this.estadoCupo, other.estadoCupo);
+    }
+
+     
+     
+    public int getIdcupo() {
+        return idcupo;
+    }
+
+    public void setIdcupo(int idcupo) {
+        this.idcupo = idcupo;
+    }
+
+    public int getIdAgencia() {
+        return idAgencia;
+    }
+
+    public void setIdAgencia(int idAgencia) {
+        this.idAgencia = idAgencia;
+    }
+
+    public String getTipoCupo() {
+        return tipoCupo;
+    }
+
+    public void setTipoCupo(String tipoCupo) {
+        this.tipoCupo = tipoCupo;
+    }
+
+    public String getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(String fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public String getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(String fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public String getEstadoCupo() {
+        return estadoCupo;
+    }
+
+    public void setEstadoCupo(String estadoCupo) {
+        this.estadoCupo = estadoCupo;
+    }
+
+    public double getMonto() {
+        return monto;
+    }
+
+    public void setMonto(double monto) {
+        this.monto = monto;
+    }
     
+     
+     
+     
 }

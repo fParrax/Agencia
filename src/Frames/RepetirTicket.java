@@ -4,14 +4,18 @@
  */
 package Frames;
 
+import Clases.CupoAnimal;
 import Clases.JugadasTicket;
 import Clases.ScrollSens;
 import Clases.Ticket;
+import Clases.tools;
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -55,8 +59,8 @@ JPanel myPanelRepetir = new JPanel();
         txtNumTicket = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         scroll = new javax.swing.JScrollPane();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
+        btnRepetir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Repetir Ticket");
@@ -91,19 +95,25 @@ JPanel myPanelRepetir = new JPanel();
 
         jLabel3.setText("Número Ticket:");
 
-        jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
-
-        jButton1.setText("Buscar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        txtNumTicket.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNumTicketKeyPressed(evt);
             }
         });
 
-        jButton2.setText("Repetir");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
+
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
+        btnRepetir.setText("Repetir");
+        btnRepetir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRepetirActionPerformed(evt);
             }
         });
 
@@ -128,9 +138,9 @@ JPanel myPanelRepetir = new JPanel();
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtNumTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(btnBuscar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
+                .addComponent(btnRepetir)
                 .addContainerGap(45, Short.MAX_VALUE))
         );
         panelCentralLayout.setVerticalGroup(
@@ -143,8 +153,8 @@ JPanel myPanelRepetir = new JPanel();
                     .addComponent(fechaDesde, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtNumTicket)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRepetir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -167,33 +177,112 @@ JPanel myPanelRepetir = new JPanel();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnRepetirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepetirActionPerformed
         if(validarRepetir()){
-            ArrayList<SorteoRepetir> elejidas = new ArrayList();
+            myIndex.getModel().setRowCount(0);
+            myIndex.totalTicket = 0;
+            myIndex.totalTicketTxt.setText(myIndex.totalTicket + "");
             
-            elejidas = (ArrayList)listaRepetir.stream()
+            ArrayList<SorteoRepetir> sorteosSeleccionados = new ArrayList();
+            
+            sorteosSeleccionados = (ArrayList)listaRepetir.stream()
                 .filter(t-> t.mySorteoPrincipal.isSelected())
                 .collect(Collectors.toList());
-            System.out.println("Size Acertadas: "+elejidas.size());
-            for(SorteoRepetir s : elejidas){
-                ArrayList<JCheckBox> seleccionadas = new ArrayList();
-                seleccionadas = (ArrayList) 
-                                s.sorteos
-                                .stream()
-                                .filter(select-> select.isSelected())
-                                .collect(Collectors.toList());
-                
-                System.out.println("Original: "+s.mySorteoPrincipal.getText()+" Elejidas:");
-                for(JCheckBox j : seleccionadas){
-                    System.out.println(j.getText());
+            
+            for (SorteoRepetir mainSorteoSelected : sorteosSeleccionados) {
+                ArrayList<JCheckBox> jugadasSeleccionadas = new ArrayList();
+
+                double montoDouble = mainSorteoSelected.myJugada.getMonto();
+                jugadasSeleccionadas = (ArrayList) mainSorteoSelected.getSorteosSeleccionados()
+                        .stream()
+                        .filter(select -> select.isSelected())
+                        .collect(Collectors.toList());
+
+                String separadorEspacio = Pattern.quote(" ");
+                String[] separarJugadaOriginal = mainSorteoSelected.mySorteoPrincipal.getText().split(separadorEspacio);
+                String animalJugadoCompleto = separarJugadaOriginal[4];
+
+                //Granjita  8 AM
+                String animalJugado = new tools().getAnimalFromString(animalJugadoCompleto);
+                for (JCheckBox jugada : jugadasSeleccionadas) {
+                    String programaYsorteo = jugada.getText();
+
+                    String programa = jugada.getToolTipText();
+
+                    CupoAnimal cupoJugada = myIndex.getAnimalesVendidos().stream()
+                            .filter(t
+                                    -> t.getFecha().equalsIgnoreCase(myIndex.fechaHoy)
+                            && t.getPrograma().equalsIgnoreCase(programa)
+                            && t.getSorteo().equalsIgnoreCase(jugada.getName().toLowerCase().replace(" ", ""))
+                            ).findFirst().orElse(
+                                    insertCupo(
+                                            myIndex.fechaHoy,
+                                            programa,
+                                            jugada.getName().toLowerCase().replace(" ", ""),
+                                            50
+                                    )
+                            );
+
+                    double cupoAnimalJugado = cupoJugada.getCupoActual(animalJugado);
+
+                    if (myIndex.getModel().getRowCount() > 0) {//Ya existen jugadas
+                        boolean flag = false;
+                        double montoTabla = 0.0;
+                        int filax = 0;
+                        for (int i = 0; i < myIndex.getTabla().getRowCount(); i++) {
+                            String sorteox = myIndex.getTabla().getValueAt(i, 0).toString();
+                            String jugadax = myIndex.getTabla().getValueAt(i, 1).toString();
+                            if (programaYsorteo.equalsIgnoreCase(sorteox) && animalJugadoCompleto.equalsIgnoreCase(jugadax)) {
+                                montoTabla = Double.parseDouble(myIndex.getTabla().getValueAt(i, 2).toString());
+                                flag = true;
+                                filax = i;
+                            }
+                        }
+                        if (flag == false) {//No hay jugadas iguales
+                            double totalJugada = montoDouble > cupoAnimalJugado
+                                    ? cupoAnimalJugado
+                                    : montoDouble;
+                            myIndex.totalTicket += totalJugada;
+                            //String cupoRestante = cupos.g
+                            myIndex.getModel().addRow(new Object[]{
+                                programaYsorteo, animalJugadoCompleto, totalJugada, cupoAnimalJugado
+                            });
+                            myIndex.totalTicketTxt.setText(myIndex.totalTicket + "");
+                        } else {//si hay jugadas iguales
+                            double nuevoTotalAnimalJugado = (montoTabla + montoDouble) > cupoAnimalJugado
+                                    ? cupoAnimalJugado
+                                    : (montoTabla + montoDouble);
+
+                            myIndex.totalTicket += (nuevoTotalAnimalJugado - montoTabla);
+                            myIndex.getTabla().setValueAt(nuevoTotalAnimalJugado, filax, 2);
+                            myIndex.getTabla().setValueAt(cupoAnimalJugado, filax, 3);
+                            myIndex.totalTicketTxt.setText(myIndex.totalTicket + "");
+                        }
+                    } else {//La Tabla está vacia
+                        double totalJugada = montoDouble > cupoAnimalJugado
+                                ? cupoAnimalJugado
+                                : montoDouble;
+                        myIndex.totalTicket += totalJugada;
+                        //String cupoRestante = cupos.g
+
+                        myIndex.getModel().addRow(new Object[]{
+                            programaYsorteo, animalJugadoCompleto, totalJugada, cupoAnimalJugado
+                        });
+
+                        myIndex.totalTicketTxt.setText(myIndex.totalTicket + "");
+                    }
+                    /*
+                     */
+
                 }
             }
+            this.dispose();
         }else{
             JOptionPane.showMessageDialog(this, "Seleccione al menos un Sorteo (Lado Izquierdo) y un objetivo (lado Derecho)");
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnRepetirActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
       int numTicket= Integer.parseInt(txtNumTicket.getText());
         myTicket = new Ticket().getTicketByNum(
               myIndex.getAgencia().getId(),
@@ -205,7 +294,13 @@ JPanel myPanelRepetir = new JPanel();
         }else{
             JOptionPane.showMessageDialog(this, "Ticket no encontrado");
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void txtNumTicketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumTicketKeyPressed
+     if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+         btnBuscar.doClick();
+     }
+    }//GEN-LAST:event_txtNumTicketKeyPressed
 
     
     public static void main(String args[]) {
@@ -241,9 +336,9 @@ JPanel myPanelRepetir = new JPanel();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnRepetir;
     private com.toedter.calendar.JDateChooser fechaDesde;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -254,11 +349,12 @@ JPanel myPanelRepetir = new JPanel();
     private javax.swing.JTextField txtNumTicket;
     // End of variables declaration//GEN-END:variables
 
-public String getFechaDesde(){
+public String getFechaDesde() {
         return new SimpleDateFormat("yyyy-MM-dd").format(fechaDesde.getDate());
     }
- private boolean validarRepetir(){
-     /*
+
+    private boolean validarRepetir() {
+        /*
         &&
                         (t.sorteos.stream()
                                 .filter(f-> f.isSelected() )
@@ -266,31 +362,42 @@ public String getFechaDesde(){
                                 ? true 
                                 : false
                         )
-     */   
-     return listaRepetir.stream()
-                .filter(t-> 
-                        t.mySorteoPrincipal.isSelected()  
-                         
+         */
+        return listaRepetir.stream()
+                .filter(t
+                        -> t.mySorteoPrincipal.isSelected()
+                && (t.getSorteosSeleccionados().stream()
+                        .filter(f -> f.isSelected())
+                        .count() > 0
+                        ? true
+                        : false)
                 ).count() > 0 ? true : false;
-        
+
     }
+
     private void iniciarDatos() {
-        new ScrollSens(scroll,40);
+        txtNumTicket.requestFocus();
+
+        new ScrollSens(scroll, 40);
         fechaDesde.setDate(new Date());
     }
-    
-    private void mostrarDatos(Ticket ticket){
+
+    private void mostrarDatos(Ticket ticket) {
         myPanelRepetir = new JPanel();
         myPanelRepetir.setLayout(new BoxLayout(myPanelRepetir, BoxLayout.Y_AXIS));
-        myPanelRepetir.setBackground(new Color(0,102,102));
-        
-        for(JugadasTicket jugada:ticket.getJugadas()){
-            SorteoRepetir temp = new SorteoRepetir(myIndex,jugada);
+        myPanelRepetir.setBackground(new Color(0, 102, 102));
+
+        for (JugadasTicket jugada : ticket.getJugadas()) {
+            SorteoRepetir temp = new SorteoRepetir(myIndex, jugada);
             listaRepetir.add(temp);
-             myPanelRepetir.add(temp);
+            myPanelRepetir.add(temp);
         }
         scroll.setViewportView(myPanelRepetir);
     }
+
+    private CupoAnimal insertCupo(String fecha, String programa, String sorteo, double monto) {
+        return new CupoAnimal().get(fecha, programa, sorteo, monto);
+
+    }
     
-   
 }

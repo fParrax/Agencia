@@ -92,7 +92,7 @@ public class JugadasTicket {
     }
      public int getHoradelSorteo(String hora){
         int rsp=0;
-                int temp = Integer.parseInt(hora);
+                int temp = Integer.parseInt(hora.trim());
                 
                 rsp = temp==1 //&& horaArray[2].equalsIgnoreCase("pm")
                     ?  13 

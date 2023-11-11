@@ -164,7 +164,8 @@ public void changeIcon() {
                 Agencia ag = new Agencia().getAgencia(name);
 
                 if (ag.getId() > 0) {
-                    String mySerial = "2020202057202d44435754413232313437303138";//new tools().getHHDSerialNumer();
+                    //String mySerial = "2020202057202d44435754413232313437303138";//new tools().getHHDSerialNumer();
+                    String mySerial = new tools().getHHDSerialNumer();
                     new Thread(() -> {
                         if (ag.getSerialPC().isEmpty()) {
                             new Agencia().upSerial(mySerial, ag.getId());
