@@ -2190,7 +2190,7 @@ public class index extends javax.swing.JFrame {
     private void checkLottoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkLottoItemStateChanged
         if (checkLotto.isSelected()) {
             JCheckBox c8amSorteo = sorteos.stream()
-                    .filter(t -> t.getName().equals("8 AM"))
+                    .filter(t -> t.getName().trim().equals("8 AM"))
                     .findFirst().get();
             if (c8amSorteo.isVisible()) {
                 c8amSorteo.setSelected(false);
@@ -2205,7 +2205,7 @@ public class index extends javax.swing.JFrame {
             }
         } else {
             JCheckBox c8amSorteo = sorteos.stream()
-                    .filter(t -> t.getName().equals("8 AM"))
+                    .filter(t -> t.getName().trim().equals("8 AM"))
                     .findFirst().get();
             lbAvisoLt8am.setVisible(false);
             c8amSorteo.setEnabled(true);
@@ -2394,6 +2394,14 @@ public class index extends javax.swing.JFrame {
             datos = new Configuracion(fechaHoy);
             getNumTicket();
 
+             
+                
+            new Thread(()->{
+                new Timer().scheduleAtFixedRate(actualizarHoraTT, 0, 5000);
+                new Timer().scheduleAtFixedRate(desactivarSorteosTT, 0, 10000);
+                new Timer().scheduleAtFixedRate(validarConeccion, 0, 1000); 
+            }).start();
+            
             lbMensajeSistema.setText("Cargando fecha del servidor");
             lbAvisoLt8am.setVisible(false);
 
@@ -2418,12 +2426,14 @@ public class index extends javax.swing.JFrame {
             myUltimaHora.setTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2022-01-01 00:00:00"));
             tInicio = System.currentTimeMillis();
 
-            new Timer().scheduleAtFixedRate(actualizarHoraTT, 0, 5000);
+            
             verTickets = new VerTickets(this);
             verResul = new verResultados(this);
             vVentas = new verVentas(this);
-            new Timer().scheduleAtFixedRate(desactivarSorteosTT, 1000, 10000);
-            new Timer().scheduleAtFixedRate(validarConeccion, 1000, 1000);
+        
+            
+            
+            
             lbMensajeSistema.setText("Cargando información de Ag.");
 
             new Thread(() -> {
@@ -2463,8 +2473,9 @@ public class index extends javax.swing.JFrame {
             try {
 
                 String capturaHora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new NTPService().getNTPDate());
-                myHoraActual.setTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(capturaHora));
+                myHoraActual.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(capturaHora));
 
+                        
                 if (myHoraActual.compareTo(myUltimaHora) >= 0) {
                     tInicio = System.currentTimeMillis();
                     myUltimaHora = myHoraActual;
@@ -2853,6 +2864,7 @@ public class index extends javax.swing.JFrame {
                                                 );
                                         
                                         double cupoAnimalJugado = cupoJugada.getCupoActual(animalJugado);
+                                        System.out.println("programaYsorteo: "+programaYsorteo);
                                         if (tabla.getRowCount() > 0) {//Ya existen jugadas
                                             boolean flag = false;
                                             double montoTabla = 0.0;

@@ -102,7 +102,7 @@ public  static String getAnimalFromString(String animal){
     
     for (int i = 0; i < animal.length(); i++) {
         String caracter = animal.substring(i,i+1);
-        if(!isText(caracter)){
+        if(isNumeric(caracter)){
             resultado+=caracter;
         }
     }
@@ -111,6 +111,10 @@ public  static String getAnimalFromString(String animal){
 public static boolean isText(String texto) {
     String regex = "[a-zA-Z]+";
     return texto.matches(regex);
+}
+public static boolean isNumeric(String str) {
+  String regex = "[0-9]+";
+  return str.matches(regex);
 }
 public int getMesInteger() {
         
