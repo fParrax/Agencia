@@ -3118,7 +3118,9 @@ public class index extends javax.swing.JFrame {
                         );
                     }).start();
 
-                    
+                    /*
+                    delete
+                    */
                     new Imprimir().enviarImpresion(
                             espaciosPrevios,
                             agencia.getNombreAgencia(),
