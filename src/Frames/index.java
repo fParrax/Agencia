@@ -3119,7 +3119,7 @@ public class index extends javax.swing.JFrame {
                     }).start();
 
                     /*
-                    delete
+                    testing merge
                     */
                     new Imprimir().enviarImpresion(
                             espaciosPrevios,
@@ -3131,7 +3131,8 @@ public class index extends javax.swing.JFrame {
                             serialTicket,
                             numJugadas,
                             jugadas,
-                            totalJugado);
+                            totalJugado
+                    );
 
                     ++myNumTicket;
                     //FIN IMPRESION
