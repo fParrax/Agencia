@@ -183,6 +183,8 @@ public class index extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         checkLotto = new javax.swing.JCheckBox();
         checkGranjita = new javax.swing.JCheckBox();
+        jLabel2 = new javax.swing.JLabel();
+        lbNumTicket = new javax.swing.JLabel();
         menuMain = new javax.swing.JMenuBar();
         archivoMenu = new javax.swing.JMenu();
         salir = new javax.swing.JMenuItem();
@@ -1228,7 +1230,7 @@ public class index extends javax.swing.JFrame {
                             .addComponent(totalTicketTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1386,6 +1388,9 @@ public class index extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jLabel2.setText("Ticket #");
+
         javax.swing.GroupLayout panelProgramaLayout = new javax.swing.GroupLayout(panelPrograma);
         panelPrograma.setLayout(panelProgramaLayout);
         panelProgramaLayout.setHorizontalGroup(
@@ -1397,7 +1402,9 @@ public class index extends javax.swing.JFrame {
                 .addComponent(checkLotto, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(checkGranjita, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(433, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 375, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         panelProgramaLayout.setVerticalGroup(
             panelProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1408,8 +1415,12 @@ public class index extends javax.swing.JFrame {
                     .addComponent(checkLotto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelProgramaLayout.createSequentialGroup()
                         .addComponent(checkGranjita, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addContainerGap())
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
+
+        lbNumTicket.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        lbNumTicket.setText("jLabel7");
 
         javax.swing.GroupLayout panelCentralLayout = new javax.swing.GroupLayout(panelCentral);
         panelCentral.setLayout(panelCentralLayout);
@@ -1424,12 +1435,18 @@ public class index extends javax.swing.JFrame {
             .addComponent(panelAyuda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(panelCentralLayout.createSequentialGroup()
                 .addComponent(panelPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbNumTicket)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelCentralLayout.setVerticalGroup(
             panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCentralLayout.createSequentialGroup()
-                .addComponent(panelPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panelPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelCentralLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lbNumTicket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(panelSorteos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -2238,7 +2255,14 @@ public class index extends javax.swing.JFrame {
     }//GEN-LAST:event_checkGranjitaItemStateChanged
 
     private void c8amActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c8amActionPerformed
-        // TODO add your handling code here:
+       if (animalTxt.isEnabled()) {
+            animalTxt.requestFocus();
+            if (animalTxt.getText().length() == 2) {
+                montoTxt.requestFocus();
+            }
+        } else if (!animalTxt.isEnabled() || !animalTxt.getText().isEmpty()) {
+            montoTxt.requestFocus();
+        }
     }//GEN-LAST:event_c8amActionPerformed
 
     private void cbTodosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbTodosItemStateChanged
@@ -2354,6 +2378,7 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -2367,6 +2392,7 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel lbAvisoLt8am;
     private javax.swing.JLabel lbMensajeSistema;
+    private javax.swing.JLabel lbNumTicket;
     private javax.swing.JMenuBar menuMain;
     private javax.swing.JTextField montoTxt;
     private javax.swing.JPopupMenu opcionesTabla;
@@ -2515,7 +2541,8 @@ public class index extends javax.swing.JFrame {
                         mySorteo.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK).parse(horaSorteo));
                         minutos = new tools().restarMinutos(myHora.getTime(), mySorteo.getTime());
 
-                        sorteo.setVisible(minutos < 3 ? false : true);
+                        sorteo.setVisible(minutos < 3 ? false : true);//ORIgginAl
+                        //sorteo.setVisible(minutos < 3 ? true : true);
                         for(String programa : programas){
                                 if(sorteo.isVisible()){
                                     String sorteoxx = programa + " "+sorteo.getName();
@@ -2761,6 +2788,7 @@ public class index extends javax.swing.JFrame {
                                 for (String programa : programas) {
                                     if (programa.equalsIgnoreCase("lottoactivo") || programa.equalsIgnoreCase("granjita")) {
                                         String programaYsorteo = programa + " " + sorteo.getName();
+                                        programaYsorteo = programaYsorteo.replace("  ", " ");
                                         for (JToggleButton animal : animales) {
                                             if (animal.isSelected()) {
                                                 String anmx = animal.getName().equals("00") ? "-1" : animal.getName();
@@ -2844,6 +2872,7 @@ public class index extends javax.swing.JFrame {
                                     if (programa.equalsIgnoreCase("lottoActivo") || programa.equalsIgnoreCase("granjita")) {
      //////////////
                                         String programaYsorteo = programa + " " + sorteo.getName();
+                                        programaYsorteo = programaYsorteo.replace("  ", " ");
                                         String animalSeleccionado = animalTxt.getText().equals("00") ? "-1" : animalTxt.getText();
                                         int anim = Integer.parseInt(animalSeleccionado);
                                         String animString = getAnimal(anim);
@@ -2985,6 +3014,7 @@ public class index extends javax.swing.JFrame {
         animalTxt.setText("");
         animalTxt.setEnabled(true);
         animalTxt.requestFocus();
+        lbNumTicket.setText(myNumTicket+"");
     }
 
     private void borrarJugadas() {
@@ -3118,7 +3148,9 @@ public class index extends javax.swing.JFrame {
                         );
                     }).start();
 
-                    
+                    /*
+                    testing merge
+                    */
                     new Imprimir().enviarImpresion(
                             espaciosPrevios,
                             agencia.getNombreAgencia(),
@@ -3129,7 +3161,8 @@ public class index extends javax.swing.JFrame {
                             serialTicket,
                             numJugadas,
                             jugadas,
-                            totalJugado);
+                            totalJugado
+                    );
 
                     ++myNumTicket;
                     //FIN IMPRESION
@@ -3206,6 +3239,7 @@ public class index extends javax.swing.JFrame {
 
     private void getNumTicket() {
         myNumTicket = datos.getNumTicket(fechaHoy);
+        lbNumTicket.setText(myNumTicket+"");
 
     }
 

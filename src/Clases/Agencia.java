@@ -49,8 +49,17 @@ public class Agencia {
             
             rs = pst.executeQuery();
             while (rs.next()) {
-                    my = new Agencia(rs.getInt("id"),rs.getInt("numTicket"),rs.getInt("cupoAnimal"),rs.getString("serialPc"),rs.getString("nombreAgencia"),
-                            rs.getString("username"),rs.getString("pasword"),rs.getString("estado"),rs.getDouble("comision"));
+                    my = new Agencia(
+                            rs.getInt("id"),
+                            rs.getInt("numTicket"),
+                            rs.getInt("cupoAnimal"),
+                            rs.getString("serialPc"),
+                            rs.getString("nombreAgencia"),
+                            rs.getString("username"),
+                            rs.getString("pasword"),
+                            rs.getString("estado"),
+                            rs.getDouble("comision")
+                    );
                     System.out.println(my.toString());
             }
         } catch (Exception e) {
