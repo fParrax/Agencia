@@ -20,7 +20,7 @@ public class CupoAgencia {
     
     
     int idcupo,idAgencia;
-    String tipoCupo,fechaInicio,fechaFin,estadoCupo;
+    String tipoCupo,fechaInicio,fechaFin,estadoCupo,programas,sorteos,animales;
     double monto;
     
     String sql;
@@ -33,10 +33,13 @@ public class CupoAgencia {
 
     
 
-    public CupoAgencia(int idcupo, int idAgencia, String tipoCupo,double monto, String fechaInicio, String fechaFin, String estadoCupo) {
+    public CupoAgencia(int idcupo, int idAgencia, String tipoCupo,String programas, String sorteos,String animales,double monto, String fechaInicio, String fechaFin, String estadoCupo) {
         this.idcupo = idcupo;
         this.idAgencia = idAgencia;
         this.tipoCupo = tipoCupo;
+        this.programas=programas;
+        this.sorteos=sorteos;
+        this.animales=animales;
         this.monto=monto;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
@@ -56,27 +59,6 @@ public class CupoAgencia {
             e.printStackTrace();
         }
                 
-                
-                
-                /*
-                try {
-                    URL url = new URL("https://capsperu.dyndns.org");
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("GET");
-                    System.out.println(connection.toString());
-                    connection.connect();
-                    System.out.println("connection.getResponseCode(): "+connection.getResponseCode());
-                    
-                    System.out.println("Conexión Estable. Esperando Novedades");
-                } catch (IOException e) {
-                    System.out.println("Ups. Hay problemas de Conexión");
-                }
-
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                }
-                */
                 
                 
             }
@@ -133,6 +115,9 @@ public class CupoAgencia {
                         rs.getInt("idCupo"),
                         rs.getInt("idAgencia"),
                         rs.getString("tipoCupo"),
+                        rs.getString("programas"),
+                        rs.getString("sorteos"),
+                        rs.getString("animales"),
                         rs.getDouble("monto"),
                         rs.getString("fechaInicio"),
                         rs.getString("fechaFin"),
@@ -185,19 +170,22 @@ public class CupoAgencia {
 
     @Override
     public String toString() {
-        return "CupoAgencia{" + "idcupo=" + idcupo + ", idAgencia=" + idAgencia + ", tipoCupo=" + tipoCupo + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", estadoCupo=" + estadoCupo + ", monto=" + monto + '}';
+        return "CupoAgencia{" + "idcupo=" + idcupo + ", idAgencia=" + idAgencia + ", tipoCupo=" + tipoCupo + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", estadoCupo=" + estadoCupo + ", programas=" + programas + ", sorteos=" + sorteos + ", animales=" + animales + ", monto=" + monto + '}';
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 83 * hash + this.idcupo;
-        hash = 83 * hash + this.idAgencia;
-        hash = 83 * hash + Objects.hashCode(this.tipoCupo);
-        hash = 83 * hash + Objects.hashCode(this.fechaInicio);
-        hash = 83 * hash + Objects.hashCode(this.fechaFin);
-        hash = 83 * hash + Objects.hashCode(this.estadoCupo);
-        hash = 83 * hash + (int) (Double.doubleToLongBits(this.monto) ^ (Double.doubleToLongBits(this.monto) >>> 32));
+        hash = 97 * hash + this.idcupo;
+        hash = 97 * hash + this.idAgencia;
+        hash = 97 * hash + Objects.hashCode(this.tipoCupo);
+        hash = 97 * hash + Objects.hashCode(this.fechaInicio);
+        hash = 97 * hash + Objects.hashCode(this.fechaFin);
+        hash = 97 * hash + Objects.hashCode(this.estadoCupo);
+        hash = 97 * hash + Objects.hashCode(this.programas);
+        hash = 97 * hash + Objects.hashCode(this.sorteos);
+        hash = 97 * hash + Objects.hashCode(this.animales);
+        hash = 97 * hash + (int) (Double.doubleToLongBits(this.monto) ^ (Double.doubleToLongBits(this.monto) >>> 32));
         return hash;
     }
 
@@ -231,11 +219,52 @@ public class CupoAgencia {
         if (!Objects.equals(this.fechaFin, other.fechaFin)) {
             return false;
         }
-        return Objects.equals(this.estadoCupo, other.estadoCupo);
+        if (!Objects.equals(this.estadoCupo, other.estadoCupo)) {
+            return false;
+        }
+        if (!Objects.equals(this.programas, other.programas)) {
+            return false;
+        }
+        if (!Objects.equals(this.sorteos, other.sorteos)) {
+            return false;
+        }
+        return Objects.equals(this.animales, other.animales);
     }
 
      
      
+     
+     
+     
+     
+     
+     
+     
+    public String getProgramas() {
+        return programas;
+    }
+
+    public void setProgramas(String programas) {
+        this.programas = programas;
+    }
+
+    public String getSorteos() {
+        return sorteos;
+    }
+
+    public void setSorteos(String sorteos) {
+        this.sorteos = sorteos;
+    }
+
+    public String getAnimales() {
+        return animales;
+    }
+
+    public void setAnimales(String animales) {
+        this.animales = animales;
+    }
+
+    
     public int getIdcupo() {
         return idcupo;
     }
