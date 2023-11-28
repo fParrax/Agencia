@@ -177,7 +177,7 @@ public class Agencia {
     }
 
     public String getSerialPC() {
-        return serialPC;
+        return serialPC==null?"":serialPC;
     }
 
     public void setSerialPC(String serialPC) {
