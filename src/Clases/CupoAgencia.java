@@ -70,17 +70,22 @@ public class CupoAgencia {
             String tipo,
             double monto,
             String desde,
-            String hasta
+            String hasta,
+            String programasx,
+            String sorteosx,
+            String animalesx
     ){
-        sql = "call `sp.insertCupo` (?,?,?,?,?)";
+        sql = "call `sp.insertCupo` (?,?,?,?,?,?,?,?)";
         try ( Connection con = new ConectarDBCloud("ag").getCon()) {
-            con.setCatalog("ag");
             pst = con.prepareStatement(sql);
             pst.setInt(1, idAgencia);
             pst.setString(2, tipo);
             pst.setDouble(3, monto);
             pst.setString(4, desde);
             pst.setString(5, hasta);
+            pst.setString(6, programasx);
+            pst.setString(7, sorteosx);
+            pst.setString(8, animalesx);
            
             return pst.executeUpdate() > 0 ? true : false;
             

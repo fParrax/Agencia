@@ -24,13 +24,13 @@ import javax.swing.JOptionPane;
 
 
 public class Propiedades{
-    static final String URL_PROJECT="http://bermudez.cgesucre.gob.ve/siacesucre/ChequeoEmpleadosPublicos/";
     public final String LOCATE_PATCH = System.getProperty("user.dir");
-    public static final String URL_Ejecutable_Cloud = "http://siacetest.cgesucre.gob.ve/ConsultaApp-J8.jar";
-    public static final String URL_DB_Cloud = "https://github.com/fParrax/Agencia/raw/produccion/distribution/config.db";
-    public static final String URL_Properties_Cloud = "http://siacetest.cgesucre.gob.ve/version.properties";
+    public static final String URL_Updatter_Cloud = "http://siacetest.cgesucre.gob.ve/ConsultaApp-J8.jar";
     
-    public static final String NAME_EXECUTABLE = "AppConsulta.jar";
+    public static final String URL_DB_Cloud = "https://github.com/fParrax/Agencia/raw/produccion/distribution/config.db";
+    public static final String URL_Properties_Cloud = "https://raw.githubusercontent.com/fParrax/Agencia/produccion/distribution/version.properties";
+    
+    public static final String NAME_UPDATTER = "AppConsulta.jar";
     
     private static final String PROPERTIES_NAME_FILE = "version.properties";
     
@@ -81,9 +81,9 @@ public class Propiedades{
                     outPutNameFile = PROPERTIES_NAME_FILE;
                     
                     break;
-                case "Ejecutable":
-                     nameArchivoDescarga = URL_Ejecutable_Cloud;
-                      outPutNameFile = NAME_EXECUTABLE;
+                case "Updatter":
+                     nameArchivoDescarga = URL_Updatter_Cloud;
+                      outPutNameFile = NAME_UPDATTER;
                     break;
                 
             }

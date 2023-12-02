@@ -20,9 +20,10 @@ public class Actualizar extends Propiedades{
     
      public Actualizar(){
          super();
-        // versionActual = Double.parseDouble(getVersionLocal());
-         //versionServer = Double.parseDouble(getVersionServer().replace("version=", ""));
-         
+         versionActual = Double.parseDouble(getVersionLocal());
+         versionServer = Double.parseDouble(getVersionServer().replace("version=", ""));
+         System.out.println("versionActual: "+versionActual);
+         System.out.println("versionServer: "+versionServer);
      }
 
     public void checkUpdate(){
@@ -79,8 +80,8 @@ public class Actualizar extends Propiedades{
     
     private void downloadExecutable(){
         try {
-            URL url = new URL(URL_Ejecutable_Cloud);
-            File file = new File(LOCATE_PATCH+NAME_EXECUTABLE);
+            URL url = new URL(URL_Updatter_Cloud);
+            File file = new File(LOCATE_PATCH+NAME_UPDATTER);
             String username = "siaceces";
             String password = "107swUPRu2";
             Authenticator.setDefault(new Authenticator() {
@@ -146,12 +147,12 @@ public class Actualizar extends Propiedades{
 
     public void openExcecutable() {
         
-        File file_Excecutable = new File(LOCATE_PATCH + NAME_EXECUTABLE);
+        File file_Excecutable = new File(LOCATE_PATCH + NAME_UPDATTER);
         if (!file_Excecutable.exists()) {
             downloadExecutable();
-            openFile(LOCATE_PATCH + NAME_EXECUTABLE);
+            openFile(LOCATE_PATCH + NAME_UPDATTER);
         } else {
-            openFile(LOCATE_PATCH + NAME_EXECUTABLE);
+            openFile(LOCATE_PATCH + NAME_UPDATTER);
         }
     }
     protected void openFile(String URL) {
