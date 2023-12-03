@@ -56,7 +56,7 @@ public class index extends javax.swing.JFrame {
     public double totalTicket = 0.0;
     long tInicio, tFinal;
     int myNumTicket = 0;
-    int cupoMaximo = 50;
+    int cupoMaximo = 25;
     int espaciosPrevios = 0;
     boolean isConnected = false;
     boolean firstRun = true;
@@ -2426,6 +2426,7 @@ public class index extends javax.swing.JFrame {
                 new Timer().scheduleAtFixedRate(actualizarHoraTT, 0, 5000);
                 new Timer().scheduleAtFixedRate(desactivarSorteosTT, 0, 10000);
                 new Timer().scheduleAtFixedRate(validarConeccion, 0, 1000); 
+                new Timer().scheduleAtFixedRate(actualizarCuposTT, 60000, 60000); 
             }).start();
             
             lbMensajeSistema.setText("Cargando fecha del servidor");
@@ -3262,42 +3263,58 @@ public class index extends javax.swing.JFrame {
         } else {
             for (CupoAgencia myCupo : cupos) {
                 cupoMaximo = (int) myCupo.getMonto();
-                if (myCupo.getTipoCupo().equalsIgnoreCase("temporal")) {
-                    try {
-                        Date fechaInicial = new SimpleDateFormat("yyyy-MM-dd").parse(myCupo.getFechaInicio());
-                        Date fechaFinal = new SimpleDateFormat("yyyy-MM-dd").parse(myCupo.getFechaFin());
-                        int diasDiferencia = (int) new tools().getDiasDiferencia(fechaInicial, fechaFinal) + 1;
-                        for (int i = 0; i < diasDiferencia; i++) {
-                            for (String programa : programas) {
-                                for (JCheckBox sorteo : sorteos) {
-                                    String mySorteo = sorteo.getName().toLowerCase().replace(" ", "");
-                                    new CupoAnimal().get(
-                                            new SimpleDateFormat("yyyy-MM-dd").format(fechaInicial),
-                                            programa,
-                                            mySorteo,
-                                            cupoMaximo
-                                    );
-                                }
+                int diasDiferencia =0;
+                Date fechaInicial = new Date();
+                Date fechaFinal = new Date();
+                Date myActualDate = new Date();
+                int fechaActualizado = 0;
+
+                try {
+                    fechaInicial = new SimpleDateFormat("yyyy-MM-dd").parse(myCupo.getFechaInicio());
+                    fechaFinal = new SimpleDateFormat("yyyy-MM-dd").parse(myCupo.getFechaFin());
+                    myActualDate = new SimpleDateFormat("yyyy-MM-dd").parse(fechaHoy);
+
+                    fechaActualizado = (int) new tools().getDiasDiferencia(myActualDate, fechaFinal);
+                    diasDiferencia = fechaActualizado >= 0
+                            ? (int) new tools().getDiasDiferencia(fechaInicial, fechaFinal) + 1
+                            : 1;
+
+                } catch (ParseException ex) {
+                    Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                if (myCupo.getTipoCupo().equalsIgnoreCase("especifico")) {
+                    new CupoAnimal().updateCupoEspecifico(
+                            fechaHoy,
+                            myCupo.getProgramas(),
+                            myCupo.getSorteos(),
+                            myCupo.getAnimales(),
+                            myCupo.getMonto()
+                    );
+                } else {//if (myCupo.getTipoCupo().equalsIgnoreCase("permanente o Especifico"))
+                    for (int i = 0; i < diasDiferencia; i++) {
+                        for (String programa : programas) {
+                            for (JCheckBox sorteo : sorteos) {
+                                String mySorteo = sorteo.getName().toLowerCase().replace(" ", "");
+                                new CupoAnimal().get(
+                                        new SimpleDateFormat("yyyy-MM-dd").format(
+                                                fechaActualizado > 0
+                                                        ? fechaInicial
+                                                        : myActualDate
+                                        ),
+                                        programa,
+                                        mySorteo,
+                                        cupoMaximo
+                                );
                             }
-                            fechaInicial = new tools().sumarDiasFechaDate(fechaInicial, 1);
                         }
-                        new CupoAgencia().deleteCupoTemporal(agencia.getId());
-                    } catch (ParseException ex) {
-                        Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+                        fechaInicial = new tools().sumarDiasFechaDate(fechaInicial, 1);
+
                     }
-                    break;
-                } else {
-                    for (String programa : programas) {
-                        for (JCheckBox sorteo : sorteos) {
-                            String mySorteo = sorteo.getName().toLowerCase().replace(" ", "");
-                            new CupoAnimal().get(
-                                    fechaHoy,
-                                    programa,
-                                    mySorteo,
-                                    cupoMaximo
-                            );
-                        }
-                    }
+                }
+
+                if (myCupo.getTipoCupo().equalsIgnoreCase("temporal")) {
+                    new CupoAgencia().deleteCupoTemporal(agencia.getId());
                 }
             }
         }
@@ -3314,7 +3331,85 @@ public class index extends javax.swing.JFrame {
         }
     }
 
-    
+        TimerTask actualizarCuposTT = new TimerTask() {
+        public void run() {
+            ArrayList<CupoAgencia> cupos = (ArrayList) new CupoAgencia().getCupos(agencia.getId()).clone();
+
+            if (cupos.isEmpty()) {
+                for (String programa : programas) {
+                    for (JCheckBox sorteo : sorteos) {
+                        String mySorteo = sorteo.getName().toLowerCase().replace(" ", "");
+                        new CupoAnimal().get(
+                                fechaHoy,
+                                programa,
+                                mySorteo,
+                                cupoMaximo
+                        );
+                    }
+                }
+            } else {
+                for (CupoAgencia myCupo : cupos) {
+                    cupoMaximo = (int) myCupo.getMonto();
+                    int diasDiferencia = 0;
+                    Date fechaInicial = new Date();
+                    Date fechaFinal = new Date();
+                    Date myActualDate = new Date();
+                    int fechaActualizado = 0;
+
+                    try {
+                        fechaInicial = new SimpleDateFormat("yyyy-MM-dd").parse(myCupo.getFechaInicio());
+                        fechaFinal = new SimpleDateFormat("yyyy-MM-dd").parse(myCupo.getFechaFin());
+                        myActualDate = new SimpleDateFormat("yyyy-MM-dd").parse(fechaHoy);
+
+                        fechaActualizado = (int) new tools().getDiasDiferencia(myActualDate, fechaFinal);
+                        diasDiferencia = fechaActualizado >= 0
+                                ? (int) new tools().getDiasDiferencia(fechaInicial, fechaFinal) + 1
+                                : 1;
+
+                    } catch (ParseException ex) {
+                        Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    if (myCupo.getTipoCupo().equalsIgnoreCase("especifico")) {
+                        new CupoAnimal().updateCupoEspecifico(
+                                fechaHoy,
+                                myCupo.getProgramas(),
+                                myCupo.getSorteos(),
+                                myCupo.getAnimales(),
+                                myCupo.getMonto()
+                        );
+                    } else {//if (myCupo.getTipoCupo().equalsIgnoreCase("permanente o temporal"))
+                        for (int i = 0; i < diasDiferencia; i++) {
+                            for (String programa : programas) {
+                                for (JCheckBox sorteo : sorteos) {
+                                    String mySorteo = sorteo.getName().toLowerCase().replace(" ", "");
+                                    new CupoAnimal().get(
+                                            new SimpleDateFormat("yyyy-MM-dd").format(
+                                                    fechaActualizado > 0
+                                                            ? fechaInicial
+                                                            : myActualDate
+                                            ),
+                                            programa,
+                                            mySorteo,
+                                            cupoMaximo
+                                    );
+                                }
+                            }
+                            fechaInicial = new tools().sumarDiasFechaDate(fechaInicial, 1);
+
+                        }
+                    }
+
+                    if (myCupo.getTipoCupo().equalsIgnoreCase("temporal")) {
+                        new CupoAgencia().deleteCupoTemporal(agencia.getId());
+                    }
+                }
+            }
+            System.out.println("cupos actualizados");
+        }
+        
+    };
+        
     public ArrayList<JCheckBox> getSorteos(){
         return sorteos;
     }

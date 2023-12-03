@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 
@@ -103,8 +104,8 @@ public class CupoAnimal {
     
     public CupoAnimal get(String fechax, String programax, String sorteox, double cupoTotal) {
         String sql = "select * from cupo_animal where fecha=? and lower (programa) like lower ('%"+programax+"%') and sorteo=?";
-boolean actualizar = false;
-int id = 0;
+        boolean actualizar = false;
+        int id = 0;
 
         try ( Connection con = new ConectarDBSQLLite().getCon()) {
             pst = con.prepareStatement(sql);
@@ -113,7 +114,6 @@ int id = 0;
             rs = pst.executeQuery();
             CupoAnimal cupo = new CupoAnimal();
             if(rs.next()) {
-                if(cupoTotal > rs.getDouble("maximo")){
                     actualizar=true;
                     id = rs.getInt("id");
                     
@@ -162,53 +162,6 @@ int id = 0;
                         rs.getDouble(42),
                         rs.getDouble(43));
                     
-                }else{
-                    return  new CupoAnimal(
-                        rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getDouble(5),
-                        rs.getDouble(6),
-                        rs.getDouble(7),
-                        rs.getDouble(8),
-                        rs.getDouble(9),
-                        rs.getDouble(10),
-                        rs.getDouble(11),
-                        rs.getDouble(12),
-                        rs.getDouble(13),
-                        rs.getDouble(14),
-                        rs.getDouble(15),
-                        rs.getDouble(16),
-                        rs.getDouble(17),
-                        rs.getDouble(18),
-                        rs.getDouble(19),
-                        rs.getDouble(20),
-                        rs.getDouble(21),
-                        rs.getDouble(22),
-                        rs.getDouble(23),
-                        rs.getDouble(24),
-                        rs.getDouble(25),
-                        rs.getDouble(26),
-                        rs.getDouble(27),
-                        rs.getDouble(28),
-                        rs.getDouble(29),
-                        rs.getDouble(30),
-                        rs.getDouble(31),
-                        rs.getDouble(32),
-                        rs.getDouble(33),
-                        rs.getDouble(34),
-                        rs.getDouble(35),
-                        rs.getDouble(36),
-                        rs.getDouble(37),
-                        rs.getDouble(38),
-                        rs.getDouble(39),
-                        rs.getDouble(40),
-                        rs.getDouble(41),
-                        rs.getDouble(42),
-                        rs.getDouble(43));
-
-                }
             } else{
                 return insert(fechax, programax, sorteox,cupoTotal);
             }
@@ -229,6 +182,88 @@ int id = 0;
         
         
     }
+    
+    
+    public static void main(String[] args) {
+       
+        
+        
+        
+    }
+    
+public  void updateCupoEspecifico(String fecha,String programas,String sorteos, String animales,double montoCupo){
+    String separador = Pattern.quote(",");
+    String sqlCuerpo = "update cupo_animal set ";
+    String sqlValores ="";
+    String sqlWhereClause =" where ";
+    
+    if(true){
+        if(!animales.equalsIgnoreCase("todos")){
+        for(String animal : animales.split(separador)){
+        sqlValores+= " animal_"+animal+"=(maximo-"+montoCupo+"),";
+    }sqlValores = sqlValores.substring(0, sqlValores.length() - 1);
+    }else{
+        sqlValores ="animal_00=(maximo-"+montoCupo+"),animal_0=(maximo-"+montoCupo+"),animal_1=(maximo-"+montoCupo+"),animal_2=(maximo-"+montoCupo+"),animal_3=(maximo-"+montoCupo+"),animal_4=(maximo-"+montoCupo+"),animal_5=(maximo-"+montoCupo+"),animal_6=(maximo-"+montoCupo+"),animal_7=(maximo-"+montoCupo+"),animal_8=(maximo-"+montoCupo+"),animal_9=(maximo-"+montoCupo+"),animal_10=(maximo-"+montoCupo+"),animal_11=(maximo-"+montoCupo+"),animal_12=(maximo-"+montoCupo+"),animal_13=(maximo-"+montoCupo+"),animal_14=(maximo-"+montoCupo+"),animal_15=(maximo-"+montoCupo+"),animal_16=(maximo-"+montoCupo+"),animal_17=(maximo-"+montoCupo+"),animal_18=(maximo-"+montoCupo+"),animal_19=(maximo-"+montoCupo+"),animal_20=(maximo-"+montoCupo+"),animal_21=(maximo-"+montoCupo+"),animal_22=(maximo-"+montoCupo+"),animal_23=(maximo-"+montoCupo+"),animal_24=(maximo-"+montoCupo+"),animal_25=(maximo-"+montoCupo+"),animal_26=(maximo-"+montoCupo+"),animal_27=(maximo-"+montoCupo+"),animal_28=(maximo-"+montoCupo+"),animal_29=(maximo-"+montoCupo+"),animal_30=(maximo-"+montoCupo+"),animal_31=(maximo-"+montoCupo+"),animal_32=(maximo-"+montoCupo+"),animal_33=(maximo-"+montoCupo+"),animal_34=(maximo-"+montoCupo+"),animal_35=(maximo-"+montoCupo+"),animal_36=(maximo-"+montoCupo+")";
+    }
+    
+    
+    
+    
+    sqlWhereClause += "( ";
+    for(String fech : fecha.split(separador)){
+        sqlWhereClause+= " fecha = '"+fecha+"' or";
+    }
+    sqlWhereClause = sqlWhereClause.substring(0, sqlWhereClause.length()-2)+" ) and ";
+    
+    
+    if (!programas.equalsIgnoreCase("todos")) {
+        sqlWhereClause += " ( ";
+        for (String programa : programas.split(separador)) {
+            sqlWhereClause += " programa = '" + programa + "' or";
+        }
+        sqlWhereClause = sqlWhereClause.substring(0, sqlWhereClause.length() - 2) + " ) and ";
+    }
+    
+    
+    
+    if(!sorteos.equalsIgnoreCase("todos")){
+        sqlWhereClause += " ( ";
+        for (String sorteo : sorteos.split(separador)) {
+            sqlWhereClause += " sorteo = '" + sorteo + "' or";
+        }
+        sqlWhereClause = sqlWhereClause.substring(0, sqlWhereClause.length() - 2) + " )  ";
+        
+    }else{
+        sqlWhereClause = sqlWhereClause.substring(0, sqlWhereClause.length() - 4);
+    }
+    
+    }
+    
+    String sql = sqlCuerpo + sqlValores + sqlWhereClause;
+    
+    
+     try ( Connection con = new ConectarDBSQLLite().getCon()) {
+        pst = con.prepareStatement(sql);
+        pst.executeUpdate();
+     } catch (Exception e) {
+            Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                pst.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        }
+    
+   
+}
+
+
+
+
+
 
     private CupoAnimal insert(String fechax, String programax, String sorteox,double cupoTotal) {
         int resultado = 0;
@@ -499,34 +534,7 @@ int id = 0;
         }
     }
 
-    public boolean updateMaximo(double monto){
-       
-
-        try ( Connection con = new ConectarDBSQLLite().getCon()) {
-             String sql = "ALTER TABLE cupo_animal DROP  maximo";
-            pst = con.prepareStatement(sql);
-            pst.executeQuery();
-
-            
-             sql = "ALTER TABLE cupo_animal ADD COLUMN maximo REAL DEFAULT "+monto;
-            pst = con.prepareStatement(sql);
-            pst.executeQuery();
-
-            return true;
-        } catch (Exception e) {
-            Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, e);
-            JOptionPane.showMessageDialog(null, e);
-            return false;
-        } finally {
-            try {
-                pst.close();
-                rs.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        }
-    }
+  
 
     @Override
     public String toString() {
