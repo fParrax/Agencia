@@ -34,6 +34,9 @@ public class login extends javax.swing.JFrame {
         new PlaceHolder("Ingrese contraseña",txtPassword);
         new Thread(this::testCon).start();
         iniciar();
+        new Thread(()->{
+            new Actualizar().checkUpdate();
+        }).start();
     }
 public void changeIcon() {
         Image icon = new ImageIcon(getClass().getResource("/imgs/chip.png")).getImage();

@@ -36,7 +36,7 @@ public class JugadasTicket {
     
     @Override
     public int hashCode() {
-        return Objects.hash(id, idTicket,programa, fecha,  sorteo,  animal,  monto,  estado);
+        return Objects.hash(id, idTicket, fecha,  animal,  monto,  estado);
     }
     
     @Override
@@ -54,8 +54,8 @@ public class JugadasTicket {
         JugadasTicket jt = (JugadasTicket) obj;
 
         return Float.compare(id, jt.id) == 0 && Float.compare(idTicket, jt.idTicket) == 0 &&
-                fecha.equals(jt.fecha) && sorteo.equals(jt.sorteo) && animal.equals(jt.animal) &&
-                Float.compare(monto, jt.monto) == 0 && estado.equals(jt.estado) && programa.equals(jt.programa);
+                fecha.equals(jt.fecha)  && animal.equals(jt.animal) &&
+                Float.compare(monto, jt.monto) == 0 && estado.equals(jt.estado);//&& sorteo.equals(jt.sorteo) && programa.equals(jt.programa);
     }
 
     @Override

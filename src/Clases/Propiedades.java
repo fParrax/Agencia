@@ -25,14 +25,15 @@ import javax.swing.JOptionPane;
 
 public class Propiedades{
     public final String LOCATE_PATCH = System.getProperty("user.dir");
-    public static final String URL_Updatter_Cloud = "http://siacetest.cgesucre.gob.ve/ConsultaApp-J8.jar";
+    public static final String URL_Updatter_Cloud = "https://github.com/fParrax/Agencia/raw/produccion/distribution/UpdatterAgencia.jar";
     
     public static final String URL_DB_Cloud = "https://github.com/fParrax/Agencia/raw/produccion/distribution/config.db";
-    public static final String URL_Properties_Cloud = "https://raw.githubusercontent.com/fParrax/Agencia/produccion/distribution/version.properties";
+    public static final String URL_Properties_Cloud = "https://raw.githubusercontent.com/fParrax/Agencia/produccion/distribution/versionUpdatter.properties";
     
-    public static final String NAME_UPDATTER = "AppConsulta.jar";
+    public static final String NAME_UPDATTER = "UpdatterAgencia.jar";
     
-    private static final String PROPERTIES_NAME_FILE = "version.properties";
+    public static final String PROPERTIES_NAME_FILE = "versionUpdatter.properties";
+    
     
     Properties myProperties = new Properties();
     Properties serverProperties = new Properties();
@@ -45,13 +46,14 @@ public class Propiedades{
     
     protected void openProperties() {
        
-        if(!new File(LOCATE_PATCH) .exists()){
-           new File(LOCATE_PATCH)  .mkdirs();
+        if(!new File(LOCATE_PATCH+"\\") .exists()){
+           new File(LOCATE_PATCH+"\\")  .mkdirs();
         }
         
-        File fileMyProperties = new File(LOCATE_PATCH+PROPERTIES_NAME_FILE);
+        File fileMyProperties = new File(LOCATE_PATCH+"\\"+PROPERTIES_NAME_FILE);
         
         if(!fileMyProperties.exists()){
+            System.out.println("Descargando proper3 from  openProer");
             descargar("properties");
         }
         
@@ -87,7 +89,8 @@ public class Propiedades{
                     break;
                 
             }
-            File file = new File(LOCATE_PATCH+outPutNameFile);
+            File file = new File(LOCATE_PATCH+"\\"+outPutNameFile);
+            System.out.println(LOCATE_PATCH+"\\"+outPutNameFile);
             URL url = new URL(nameArchivoDescarga);
             
             
@@ -137,7 +140,7 @@ public class Propiedades{
     
     protected void guardarCambios(String comentario){
         try {
-            myProperties.store(new FileWriter(LOCATE_PATCH+PROPERTIES_NAME_FILE),comentario);
+            myProperties.store(new FileWriter(LOCATE_PATCH+"\\"+PROPERTIES_NAME_FILE),comentario);
         } catch (IOException ex) {
             Logger.getLogger(Propiedades.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, ex);
@@ -146,12 +149,14 @@ public class Propiedades{
     
     protected void setPropert(String llave, String valor){
         if(!myProperties.isEmpty()){
+            System.out.println("llave: "+llave+" Valor: "+valor);
              myProperties.setProperty(llave,valor);
-             myProperties.setProperty("actualizado",new SimpleDateFormat("dd/MM/yyyy").format(new Date()).toString());
-             
+            // myProperties.setProperty("actualizado",new SimpleDateFormat("dd/MM/yyyy").format(new Date()).toString());
+             System.out.println("Actualizado 1");
              guardarCambios(" "+new SimpleDateFormat("dd/MM/yyyy").format(new Date())+"");
         }else{
             openProperties();
+            System.out.println("Actualizado 2");
             myProperties.setProperty(llave,valor);
              myProperties.setProperty("actualizado",new SimpleDateFormat("dd/MM/yyyy").format(new Date()).toString());
              guardarCambios(" "+new SimpleDateFormat("dd/MM/yyyy").format(new Date())+"");
