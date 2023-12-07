@@ -19,6 +19,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Timer;
@@ -26,6 +27,7 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
@@ -193,7 +195,6 @@ public class index extends javax.swing.JFrame {
         resultadosItem = new javax.swing.JMenuItem();
         ventasItem = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -1503,15 +1504,6 @@ public class index extends javax.swing.JFrame {
         menuMain.add(ticketMenu);
 
         jMenu1.setText("Herramientas");
-
-        jMenuItem2.setText("Actualizar Cupo");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem2);
-
         menuMain.add(jMenu1);
 
         setJMenuBar(menuMain);
@@ -2271,12 +2263,6 @@ public class index extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbTodosItemStateChanged
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        new Thread(() -> {
-            crearCupos(true);
-        }).start();
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -2353,7 +2339,7 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JToggleButton a7;
     private javax.swing.JToggleButton a8;
     private javax.swing.JToggleButton a9;
-    private javax.swing.JTextField animalTxt;
+    public javax.swing.JTextField animalTxt;
     private javax.swing.JMenu archivoMenu;
     private javax.swing.ButtonGroup bg1;
     private javax.swing.JButton btnAnular;
@@ -2385,7 +2371,6 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
@@ -2894,7 +2879,6 @@ public class index extends javax.swing.JFrame {
                                                 );
                                         
                                         double cupoAnimalJugado = cupoJugada.getCupoActual(animalJugado);
-                                        System.out.println("programaYsorteo: "+programaYsorteo);
                                         if (tabla.getRowCount() > 0) {//Ya existen jugadas
                                             boolean flag = false;
                                             double montoTabla = 0.0;
@@ -3035,7 +3019,7 @@ public class index extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Debe seleccionar 1 o más jugadas a borrar");
         }
       
-        
+        animalTxt.requestFocus();
     }
 
     private void resetearJugadas() {
@@ -3051,7 +3035,7 @@ public class index extends javax.swing.JFrame {
             imprimiendo=true;
             double totalJugado = 0.0;
             ArrayList<JugadasTicket> jugadas = new ArrayList();
-
+             
             //Procesando la información de las jugadas.    
             for (int i = 0; i < tabla.getRowCount(); i++) {
                 String sorteoJugadox = tabla.getValueAt(i, 0).toString();
@@ -3104,6 +3088,7 @@ public class index extends javax.swing.JFrame {
             String serialTicket = "";
 
             if (!jugadas.isEmpty()) {
+                
                 serialTicket = new Ticket().insert(
                         myNumTicket,
                         agencia.getId(),
@@ -3111,34 +3096,25 @@ public class index extends javax.swing.JFrame {
                         totalJugado,
                         jugadas
                 );
+                
+                
+                
                 if (!serialTicket.equalsIgnoreCase("error")) {
+                    
+                    jugadas = (ArrayList) jugadas.stream()
+                            .sorted(Comparator.comparing(JugadasTicket::getPrograma)
+                            ).collect(Collectors.toList());
+                   
+                    jugadas = (ArrayList) jugadas.stream()
+                            .sorted(Comparator.comparing(JugadasTicket::getMonto)
+                            ).collect(Collectors.toList());
+                    
+                    jugadas = (ArrayList) jugadas.stream()
+                            .sorted(Comparator.comparing(JugadasTicket::getSorteo)
+                            ).collect(Collectors.toList());
+                   
 
-                    String numJugadas = jugadas.size() + "";/////////////////////////
-                    //IMPRESION - Organizar un arreglo de Jugadas para Luego imprimir
-
-                    //Organizamos las jugadas por orden del Monto
-                    for (int i = 0; i < jugadas.size(); i++) {
-                        for (int j = 0; j < jugadas.size() - 1; j++) {
-                            JugadasTicket tempx = new JugadasTicket();
-                            if (jugadas.get(j).getMonto() > jugadas.get(j + 1).getMonto()) {
-                                tempx = jugadas.get(j);
-                                jugadas.set(j, jugadas.get(j + 1));
-                                jugadas.set(j + 1, tempx);
-                            }
-                        }
-                    }
-
-                    //Organizamos jugadas por hora del sorteo
-                    for (int i = 0; i < jugadas.size(); i++) {
-                        for (int j = 0; j < jugadas.size() - 1; j++) {
-                            JugadasTicket tempx = new JugadasTicket();
-                            if (jugadas.get(j).getHoradelSorteo() > jugadas.get(j + 1).getHoradelSorteo()) {
-                                tempx = jugadas.get(j);
-                                jugadas.set(j, jugadas.get(j + 1));
-                                jugadas.set(j + 1, tempx);
-                            }
-                        }
-                    }
+                    
 
                     new Thread(() -> {//Actualizar los cupos de los animales que fueron seleccionados para la venta
                         animalesVendidos.forEach(animal
@@ -3148,29 +3124,26 @@ public class index extends javax.swing.JFrame {
                                 ).updateCupo()
                         );
                     }).start();
-
-                    /*
-                    testing merge
-                    */
+                    
                     new Imprimir().enviarImpresion(
                             espaciosPrevios,
                             agencia.getNombreAgencia(),
                             fechaHoy,
-                            programa,
                             hora,
                             String.valueOf(myNumTicket),
                             serialTicket,
-                            numJugadas,
                             jugadas,
                             totalJugado
-                    );
-
+                    );//FIN IMPRESION
+                    
                     ++myNumTicket;
-                    //FIN IMPRESION
                     datos.increaseTicket(
                             myNumTicket,
                             fechaHoy
                     );
+                   
+                    
+                    
 
                     resetearBotones();
                     resetearSorteos();

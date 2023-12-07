@@ -28,11 +28,17 @@ public class Actualizar extends Propiedades{
 
     public void checkUpdate(){
         if(!idUpdated()){
-            downloadUpdate();
-        }else{
+            System.out.println("No está actualizado");
+            descargar("Updatter");
+            setNewVersion(String.valueOf(versionServer));
+        }
+        /*
+        else{
            openExcecutable();
         }
         System.exit(0);
+        */
+        
     }
 
     private String obtenerContenidoURL(String url) {
@@ -55,10 +61,19 @@ public class Actualizar extends Propiedades{
     }
 
     private String getVersionLocal() {
+        
+        File temp = new File(LOCATE_PATCH+"\\"+PROPERTIES_NAME_FILE);
+        if(!temp.exists()){
+            System.out.println("Descargando1: "+LOCATE_PATCH+"\\"+PROPERTIES_NAME_FILE);
+             descargar("properties");
+             descargar("Updatter");
+        }
+        
         if(!myProperties.isEmpty()){
             return getPropiedad("version");
         }else{
-            descargar("properties");
+             System.out.println("Open Properties: ");
+            openProperties();
             return getPropiedad("version");
         }
         
@@ -75,13 +90,14 @@ public class Actualizar extends Propiedades{
     public void downloadUpdate(){
         downloadExecutable();
         setNewVersion(String.valueOf(versionServer));
-        openExcecutable();
+        //openExcecutable();
     }
     
     private void downloadExecutable(){
         try {
             URL url = new URL(URL_Updatter_Cloud);
             File file = new File(LOCATE_PATCH+NAME_UPDATTER);
+            /*
             String username = "siaceces";
             String password = "107swUPRu2";
             Authenticator.setDefault(new Authenticator() {
@@ -90,6 +106,8 @@ public class Actualizar extends Propiedades{
                     return new PasswordAuthentication(username, password.toCharArray());
                 }
             });
+            */
+            
             
         URLConnection connection = url.openConnection();
         long size = connection.getContentLengthLong();

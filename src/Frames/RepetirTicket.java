@@ -219,6 +219,7 @@ JPanel myPanelRepetir = new JPanel();
                      break;      
                 }
             }
+            myIndex.animalTxt.requestFocus();
             this.dispose();
         }else{
             JOptionPane.showMessageDialog(this, "Ticket no encontrado");

@@ -10,7 +10,10 @@ import Clases.Ticket;
 import java.awt.Image;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
@@ -443,7 +446,12 @@ public class VerTickets extends javax.swing.JFrame {
             lbMontoPrograma.setText(ticketSeleccionado.getTotalJugado() + "");
             lbTotalPremios.setText(ticketSeleccionado.getTotalPremio() + "");
             lbTotalPagado.setText(ticketSeleccionado.getMontoPagado() + "");
-            for (JugadasTicket jugada : ticketSeleccionado.getJugadas()) {
+            
+            ArrayList<JugadasTicket> jugadasSeleccionadas =  (ArrayList) ticketSeleccionado.getJugadas()
+                    .stream()
+                    .sorted(Comparator.comparing(JugadasTicket::getPrograma))
+                    .collect(Collectors.toList());
+            for (JugadasTicket jugada :jugadasSeleccionadas) {
                 modeloJugadas.addRow(new Object[]{
                     jugada.getSorteo(),
                     jugada.getAnimal(),
