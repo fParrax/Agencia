@@ -119,7 +119,6 @@ public static boolean isNumeric(String str) {
 public int getMesInteger() {
         
         String c = new SimpleDateFormat("MM").format(new Date());
-        System.out.println(c);
         int v = Integer.valueOf(c);
         return v;
     }
