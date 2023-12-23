@@ -53,7 +53,6 @@ public class Propiedades{
         File fileMyProperties = new File(LOCATE_PATCH+"\\"+PROPERTIES_NAME_FILE);
         
         if(!fileMyProperties.exists()){
-            System.out.println("Descargando proper3 from  openProer");
             descargar("properties");
         }
         
@@ -90,7 +89,6 @@ public class Propiedades{
                 
             }
             File file = new File(LOCATE_PATCH+"\\"+outPutNameFile);
-            System.out.println(LOCATE_PATCH+"\\"+outPutNameFile);
             URL url = new URL(nameArchivoDescarga);
             
             
@@ -149,14 +147,11 @@ public class Propiedades{
     
     protected void setPropert(String llave, String valor){
         if(!myProperties.isEmpty()){
-            System.out.println("llave: "+llave+" Valor: "+valor);
              myProperties.setProperty(llave,valor);
             // myProperties.setProperty("actualizado",new SimpleDateFormat("dd/MM/yyyy").format(new Date()).toString());
-             System.out.println("Actualizado 1");
              guardarCambios(" "+new SimpleDateFormat("dd/MM/yyyy").format(new Date())+"");
         }else{
             openProperties();
-            System.out.println("Actualizado 2");
             myProperties.setProperty(llave,valor);
              myProperties.setProperty("actualizado",new SimpleDateFormat("dd/MM/yyyy").format(new Date()).toString());
              guardarCambios(" "+new SimpleDateFormat("dd/MM/yyyy").format(new Date())+"");

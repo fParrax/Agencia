@@ -4,10 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
+import javax.swing.JToggleButton;
 
 
 
@@ -183,13 +187,82 @@ public class CupoAnimal {
         
     }
     
-    
-    public static void main(String[] args) {
-       
+    public ArrayList<CupoAnimal> listarCupos(String fechax) {
+        String sql = "select * from cupo_animal where fecha=? ";
+        ArrayList<CupoAnimal> cupos = new ArrayList();    
         
+        try ( Connection con = new ConectarDBSQLLite().getCon()) {
+            pst = con.prepareStatement(sql);
+            pst.setString(1, fechax);
+            rs = pst.executeQuery();
+            CupoAnimal cupo = new CupoAnimal();
+            while(rs.next()){
+                         cupos.add(  new CupoAnimal(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getDouble(5),
+                        rs.getDouble(6),
+                        rs.getDouble(7),
+                        rs.getDouble(8),
+                        rs.getDouble(9),
+                        rs.getDouble(10),
+                        rs.getDouble(11),
+                        rs.getDouble(12),
+                        rs.getDouble(13),
+                        rs.getDouble(14),
+                        rs.getDouble(15),
+                        rs.getDouble(16),
+                        rs.getDouble(17),
+                        rs.getDouble(18),
+                        rs.getDouble(19),
+                        rs.getDouble(20),
+                        rs.getDouble(21),
+                        rs.getDouble(22),
+                        rs.getDouble(23),
+                        rs.getDouble(24),
+                        rs.getDouble(25),
+                        rs.getDouble(26),
+                        rs.getDouble(27),
+                        rs.getDouble(28),
+                        rs.getDouble(29),
+                        rs.getDouble(30),
+                        rs.getDouble(31),
+                        rs.getDouble(32),
+                        rs.getDouble(33),
+                        rs.getDouble(34),
+                        rs.getDouble(35),
+                        rs.getDouble(36),
+                        rs.getDouble(37),
+                        rs.getDouble(38),
+                        rs.getDouble(39),
+                        rs.getDouble(40),
+                        rs.getDouble(41),
+                        rs.getDouble(42),
+                        rs.getDouble(43))
+                         );
+                    
+            } 
+        } catch (Exception e) {
+            Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                pst.close();
+                rs.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        }
         
-        
+        return cupos;
     }
+    
+    
+    
+   
     
 public  void updateCupoEspecifico(String fecha,String programas,String sorteos, String animales,double montoCupo){
     String separador = Pattern.quote(",");
@@ -295,6 +368,54 @@ public  void updateCupoEspecifico(String fecha,String programas,String sorteos, 
         return resultado > 0
                 ? get(fechax, programax, sorteox,cupoTotal)
                 : null;
+    }
+    public void agregarCupoFromCupoAgencia(
+            String fechax,
+            ArrayList<JCheckBox> sorteos,
+            String sorteosSeleccionados,
+            ArrayList<String> programas,
+            String programasSeleccionados,
+            double cupoTotal
+    ){
+        String sql = "insert into cupo_animal (fecha,programa,sorteo,maximo) values (?,?,?,?)";
+        String separador = Pattern.quote(",");
+        ArrayList<String> sSorteos = new ArrayList();
+        ArrayList<String> sProgramas = new ArrayList();
+        ArrayList<String> sAnimales = new ArrayList();
+        
+        String [] jSorteos = sorteosSeleccionados.split(separador);
+        String[] jProgramas = programasSeleccionados.split(separador);
+        
+        sSorteos= new ArrayList<>(Arrays.asList(jSorteos));
+        sProgramas= new ArrayList<>(Arrays.asList(jProgramas));
+        
+        try ( Connection con = new ConectarDBSQLLite().getCon()) {
+            for (String programax : programas) {
+                if (programasSeleccionados.equalsIgnoreCase("todos") || sProgramas.contains(programax)) {
+                    for (JCheckBox sorteo : sorteos) {
+                        String mySorteo = sorteo.getName().toLowerCase().replace(" ", "");
+                        if (sorteosSeleccionados.equalsIgnoreCase("todos") || sSorteos.contains(mySorteo)) {
+                                pst = con.prepareStatement(sql);
+                                pst.setString(1, fechax);
+                                pst.setString(2, programax);
+                                pst.setString(3, mySorteo);
+                                pst.setDouble(4, cupoTotal);
+                                pst.executeUpdate(); 
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                pst.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        }
     }
 
     public double getCupoActual(String animal) {

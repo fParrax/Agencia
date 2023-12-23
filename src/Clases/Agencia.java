@@ -60,7 +60,6 @@ public class Agencia {
                             rs.getString("estado"),
                             rs.getDouble("comision")
                     );
-                    System.out.println(my.toString());
             }
         } catch (Exception e) {
             Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);

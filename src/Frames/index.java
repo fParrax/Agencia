@@ -18,6 +18,7 @@ import java.net.InetAddress;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
@@ -48,6 +49,7 @@ public class index extends javax.swing.JFrame {
     ArrayList<JToggleButton> animales = new ArrayList();
     ArrayList<JCheckBox> sorteos = new ArrayList();
     ArrayList<String> sorteosDisponibles = new ArrayList();
+    ArrayList<CupoAnimal> myCupos = new ArrayList();
 
     
     DefaultTableModel modelo;
@@ -2407,12 +2409,7 @@ public class index extends javax.swing.JFrame {
 
              
                 
-            new Thread(()->{
-                new Timer().scheduleAtFixedRate(actualizarHoraTT, 0, 5000);
-                new Timer().scheduleAtFixedRate(desactivarSorteosTT, 0, 10000);
-                new Timer().scheduleAtFixedRate(validarConeccion, 0, 1000); 
-                new Timer().scheduleAtFixedRate(actualizarCuposTT, 60000, 60000); 
-            }).start();
+            
             
             lbMensajeSistema.setText("Cargando fecha del servidor");
             lbAvisoLt8am.setVisible(false);
@@ -2444,13 +2441,17 @@ public class index extends javax.swing.JFrame {
             vVentas = new verVentas(this);
         
             
-            
+            new Thread(()->{
+                //  crearCupos(false);
+                new Timer().scheduleAtFixedRate(actualizarHoraTT, 0, 5000);
+                new Timer().scheduleAtFixedRate(desactivarSorteosTT, 0, 10000);
+                new Timer().scheduleAtFixedRate(validarConeccion, 0, 1000); 
+                new Timer().scheduleAtFixedRate(actualizarCuposTT, 0, 60000); 
+            }).start();
             
             lbMensajeSistema.setText("Cargando información de Ag.");
 
-            new Thread(() -> {
-                crearCupos(false);
-            }).start();
+           
 
             lbMensajeSistema.setText("Sistema Listo. Esperando Novedades");
         } catch (ParseException ex) {
@@ -2783,21 +2784,21 @@ public class index extends javax.swing.JFrame {
                                                 String animalJugado = anmx.equals("-1") ? "00" : anmx;
                                                 String jugada = animalJugado + "" + animString;
 
-                                                CupoAnimal cupoJugada = animalesVendidos
+                                                CupoAnimal cupoJugada = myCupos
                                                         .stream()
                                                         .filter(t -> t.getFecha().equalsIgnoreCase(fechaHoy)
-                                                        && t.getPrograma().equalsIgnoreCase(programa)
-                                                        && t.getSorteo().equalsIgnoreCase(sorteo.getName().toLowerCase().replace(" ", ""))
+                                                            && t.getPrograma().equalsIgnoreCase(programa)
+                                                            && t.getSorteo().equalsIgnoreCase(sorteo.getName().toLowerCase().replace(" ", ""))
                                                         )
-                                                        .findFirst()
-                                                        .orElse(
+                                                        .findFirst().get();
+                                                        /*.orElse(
                                                                 insertCupo(
                                                                         fechaHoy,
                                                                         programa,
                                                                          sorteo.getName().toLowerCase().replace(" ", ""),
                                                                         cupoMaximo
                                                                 )
-                                                        );
+                                                        );*/
 
                                                 double cupoAnimalJugado = cupoJugada.getCupoActual(animalJugado);
 
@@ -2864,20 +2865,20 @@ public class index extends javax.swing.JFrame {
                                         String animString = getAnimal(anim);
                                         String animalJugado = animalSeleccionado.equals("-1") ? "00" : animalSeleccionado;
                                         String jugada = animalJugado + "" + animString;
-                                        CupoAnimal cupoJugada = animalesVendidos.stream()
+                                        
+                                        CupoAnimal cupoJugada = myCupos.stream()
                                                 .filter(t
                                                         -> t.getFecha().equalsIgnoreCase(fechaHoy)
                                                 && t.getPrograma().equalsIgnoreCase(programa)
                                                 && t.getSorteo().equalsIgnoreCase(sorteo.getName().toLowerCase().replace(" ", ""))
-                                                ).findFirst().orElse(
+                                                ).findFirst().get();/*.orElse(
                                                         insertCupo(
                                                                 fechaHoy,
                                                                 programa,
                                                                 sorteo.getName().toLowerCase().replace(" ", ""),
                                                                 cupoMaximo
                                                         )
-                                                );
-                                        
+                                                );*/
                                         double cupoAnimalJugado = cupoJugada.getCupoActual(animalJugado);
                                         if (tabla.getRowCount() > 0) {//Ya existen jugadas
                                             boolean flag = false;
@@ -3219,18 +3220,18 @@ public class index extends javax.swing.JFrame {
 
     private void crearCupos(boolean fromMenu) {
 
-        ArrayList<CupoAgencia> cupos = (ArrayList) new CupoAgencia().getCupos(agencia.getId()).clone();
+      ArrayList<CupoAgencia>  cupos = (ArrayList) new CupoAgencia().getCupos(agencia.getId()).clone();
 
         if (cupos.isEmpty()) {
             for (String programa : programas) {
                 for (JCheckBox sorteo : sorteos) {
                     String mySorteo = sorteo.getName().toLowerCase().replace(" ", "");
-                    new CupoAnimal().get(
+                    myCupos.add(new CupoAnimal().get(
                             fechaHoy,
                             programa,
                             mySorteo,
                             cupoMaximo
-                    );
+                    ));
                 }
             }
         } else {
@@ -3256,20 +3257,26 @@ public class index extends javax.swing.JFrame {
                     Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
+                
                 if (myCupo.getTipoCupo().equalsIgnoreCase("especifico")) {
-                    new CupoAnimal().updateCupoEspecifico(
-                            fechaHoy,
-                            myCupo.getProgramas(),
-                            myCupo.getSorteos(),
-                            myCupo.getAnimales(),
-                            myCupo.getMonto()
-                    );
+                    String fechaSeleccionada = new SimpleDateFormat("yyyy-MM-dd").format(fechaInicial);
+                        for (int i = 0; i < diasDiferencia; i++) {
+                            new CupoAnimal().updateCupoEspecifico(
+                                    fechaSeleccionada,
+                                    myCupo.getProgramas(),
+                                    myCupo.getSorteos(),
+                                    myCupo.getAnimales(),
+                                    myCupo.getMonto()
+                            );
+                        }
+                        myCupos = (ArrayList) new CupoAnimal().listarCupos(fechaHoy).clone();
+                         new CupoAgencia().deleteCupoTemporal(agencia.getId());
                 } else {//if (myCupo.getTipoCupo().equalsIgnoreCase("permanente o Especifico"))
                     for (int i = 0; i < diasDiferencia; i++) {
                         for (String programa : programas) {
                             for (JCheckBox sorteo : sorteos) {
                                 String mySorteo = sorteo.getName().toLowerCase().replace(" ", "");
-                                new CupoAnimal().get(
+                                myCupos.add(new CupoAnimal().get(
                                         new SimpleDateFormat("yyyy-MM-dd").format(
                                                 fechaActualizado > 0
                                                         ? fechaInicial
@@ -3278,12 +3285,13 @@ public class index extends javax.swing.JFrame {
                                         programa,
                                         mySorteo,
                                         cupoMaximo
-                                );
+                                ));
                             }
                         }
                         fechaInicial = new tools().sumarDiasFechaDate(fechaInicial, 1);
 
                     }
+                     myCupos = (ArrayList) new CupoAnimal().listarCupos(fechaHoy).clone();
                 }
 
                 if (myCupo.getTipoCupo().equalsIgnoreCase("temporal")) {
@@ -3302,6 +3310,7 @@ public class index extends javax.swing.JFrame {
                     RSNotifyFade.TypeNotify.SUCCESS
             ).setVisible(true);
         }
+          System.out.println("cupos actualizados");
     }
 
         TimerTask actualizarCuposTT = new TimerTask() {
@@ -3309,15 +3318,16 @@ public class index extends javax.swing.JFrame {
             ArrayList<CupoAgencia> cupos = (ArrayList) new CupoAgencia().getCupos(agencia.getId()).clone();
 
             if (cupos.isEmpty()) {
+              //  System.out.println("isEmpty");
                 for (String programa : programas) {
                     for (JCheckBox sorteo : sorteos) {
                         String mySorteo = sorteo.getName().toLowerCase().replace(" ", "");
-                        new CupoAnimal().get(
+                        myCupos.add(new CupoAnimal().get(
                                 fechaHoy,
                                 programa,
                                 mySorteo,
                                 cupoMaximo
-                        );
+                        ));
                     }
                 }
             } else {
@@ -3344,33 +3354,63 @@ public class index extends javax.swing.JFrame {
                     }
 
                     if (myCupo.getTipoCupo().equalsIgnoreCase("especifico")) {
-                        new CupoAnimal().updateCupoEspecifico(
-                                fechaHoy,
-                                myCupo.getProgramas(),
-                                myCupo.getSorteos(),
-                                myCupo.getAnimales(),
-                                myCupo.getMonto()
-                        );
+                        String separador = Pattern.quote(",");
+                        String [] sorteoSeparado = myCupo.getSorteos().split(separador);
+                        String [] animalSeparado = myCupo.getAnimales().split(separador);
+                        
+                        ArrayList<String> sortxs =new ArrayList();
+                        sortxs = new ArrayList<String>(Arrays.asList(sorteoSeparado));
+                        
+                        String fechaSeleccionada = new SimpleDateFormat("yyyy-MM-dd").format(fechaInicial);
+                        for (int i = 0; i < diasDiferencia; i++) {
+                            
+                            for (String programa : programas) {
+                                if (myCupo.getProgramas().equalsIgnoreCase("todos") || myCupo.equals(programa)) {
+                                    for (JCheckBox sorteo : sorteos) {
+                                        String sortx = sorteo.getText().replace(" ", "").toLowerCase();
+                                        if (myCupo.getSorteos().equalsIgnoreCase("todos") || sortxs.contains(sortx)) {
+                                                    new CupoAnimal().get(
+                                                     fechaSeleccionada,
+                                                     programa,
+                                                     sortx,
+                                                     agencia.getCupoAnimal()
+                                                     ); 
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            new CupoAnimal().updateCupoEspecifico(
+                                    fechaSeleccionada,
+                                    myCupo.getProgramas(),
+                                    myCupo.getSorteos(),
+                                    myCupo.getAnimales(),
+                                    myCupo.getMonto()
+                            );
+                            
+                            
+                            fechaSeleccionada = new tools().sumarDiasFecha(fechaSeleccionada, 1);
+                        }
+                         myCupos = (ArrayList) new CupoAnimal().listarCupos(fechaHoy).clone();
+                          new CupoAgencia().deleteCupoTemporal(agencia.getId());
                     } else {//if (myCupo.getTipoCupo().equalsIgnoreCase("permanente o temporal"))
+                        String fechaSeleccionada = new SimpleDateFormat("yyyy-MM-dd").format(fechaInicial);
                         for (int i = 0; i < diasDiferencia; i++) {
                             for (String programa : programas) {
                                 for (JCheckBox sorteo : sorteos) {
                                     String mySorteo = sorteo.getName().toLowerCase().replace(" ", "");
-                                    new CupoAnimal().get(
-                                            new SimpleDateFormat("yyyy-MM-dd").format(
-                                                    fechaActualizado > 0
-                                                            ? fechaInicial
-                                                            : myActualDate
-                                            ),
+                                   myCupos.add( new CupoAnimal().get(
+                                            fechaSeleccionada,
                                             programa,
                                             mySorteo,
                                             cupoMaximo
-                                    );
+                                    ));
                                 }
                             }
                             fechaInicial = new tools().sumarDiasFechaDate(fechaInicial, 1);
-
+                              fechaSeleccionada = new tools().sumarDiasFecha(fechaSeleccionada, 1);
                         }
+                         myCupos = (ArrayList) new CupoAnimal().listarCupos(fechaHoy).clone();
                     }
 
                     if (myCupo.getTipoCupo().equalsIgnoreCase("temporal")) {

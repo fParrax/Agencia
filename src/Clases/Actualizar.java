@@ -22,13 +22,10 @@ public class Actualizar extends Propiedades{
          super();
          versionActual = Double.parseDouble(getVersionLocal());
          versionServer = Double.parseDouble(getVersionServer().replace("version=", ""));
-         System.out.println("versionActual: "+versionActual);
-         System.out.println("versionServer: "+versionServer);
      }
 
     public void checkUpdate(){
         if(!idUpdated()){
-            System.out.println("No está actualizado");
             descargar("Updatter");
             setNewVersion(String.valueOf(versionServer));
         }
@@ -64,7 +61,6 @@ public class Actualizar extends Propiedades{
         
         File temp = new File(LOCATE_PATCH+"\\"+PROPERTIES_NAME_FILE);
         if(!temp.exists()){
-            System.out.println("Descargando1: "+LOCATE_PATCH+"\\"+PROPERTIES_NAME_FILE);
              descargar("properties");
              descargar("Updatter");
         }
@@ -72,7 +68,6 @@ public class Actualizar extends Propiedades{
         if(!myProperties.isEmpty()){
             return getPropiedad("version");
         }else{
-             System.out.println("Open Properties: ");
             openProperties();
             return getPropiedad("version");
         }
@@ -128,7 +123,6 @@ public class Actualizar extends Propiedades{
         try {
             URL url = new URL(URL_DB_Cloud);
             File file = new File(LOCATE_PATCH+"/config.db");
-            System.out.println(file.getAbsolutePath());
             /*
             String username = "siaceces";
             String password = "107swUPRu2";

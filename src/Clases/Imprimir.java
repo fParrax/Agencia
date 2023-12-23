@@ -187,7 +187,6 @@ public class Imprimir {
             
         }
         
-        System.out.println("isSamePlays: "+granja.containsAll(lotto));
 
         return false;
     }
