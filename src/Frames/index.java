@@ -2447,6 +2447,9 @@ public class index extends javax.swing.JFrame {
                 new Timer().scheduleAtFixedRate(desactivarSorteosTT, 0, 10000);
                 new Timer().scheduleAtFixedRate(validarConeccion, 0, 1000); 
                 new Timer().scheduleAtFixedRate(actualizarCuposTT, 0, 60000); 
+                if(agencia.getId() == 1){
+                    iniciarIngresoResultados();
+                }
             }).start();
             
             lbMensajeSistema.setText("Cargando información de Ag.");
@@ -3444,5 +3447,17 @@ public class index extends javax.swing.JFrame {
     public DefaultTableModel getModel (){
         return modelo;
     }
+    
+    
+    private void iniciarIngresoResultados(){
+        ProcesarResultados pr = new ProcesarResultados();
+    }
+    
+    
+    
+    
+    
+    
+    
     
 }

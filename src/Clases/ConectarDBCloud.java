@@ -171,4 +171,34 @@ con.setCatalog("ag");
         return a;
     }
     
+     public  String tomarFechaCompleta() {
+        String fecha = "";
+        try (Connection conex = new ConectarDBCloud("ag").getCon()) {
+                
+            String sql = "select replace(NOW(),'/','-') as a";
+            PreparedStatement s = conex.prepareStatement(sql);
+            ResultSet rs = s.executeQuery();
+            while (rs.next()) {
+                fecha = rs.getString("a");
+            }
+            try {
+                if (s != null) {
+                    s.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ConectarDBCloud.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            Logger.getLogger(ConectarDBCloud.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+        return fecha;
+    }
+     
 }
+
