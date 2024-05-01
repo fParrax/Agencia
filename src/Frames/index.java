@@ -18,6 +18,7 @@ import java.net.InetAddress;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
@@ -2739,6 +2740,7 @@ public class index extends javax.swing.JFrame {
                 if(agencia.getId() == 1){
                     iniciarIngresoResultados();
                 }
+
             }).start();
             
             lbMensajeSistema.setText("Cargando información de Ag.");
@@ -3109,6 +3111,7 @@ public class index extends javax.swing.JFrame {
                                                         .findFirst().get();
                                                         
 
+
                                                 double cupoAnimalJugado = cupoJugada.getCupoActual(animalJugado);
 
                                                 if (tabla.getRowCount() > 0) {//Ya existen jugadas
@@ -3175,6 +3178,7 @@ public class index extends javax.swing.JFrame {
                                         String jugada = animalJugado + "" + animString;
                                         String sorteoUtilizar = sorteo.getName();//.replace(" ", ":30 ");
                                         
+
                                         
                                         CupoAnimal cupoJugada = myCupos.stream()
                                                 .filter(t
@@ -3185,6 +3189,7 @@ public class index extends javax.swing.JFrame {
                                                 .get();
                                         
                                         
+
                                         double cupoAnimalJugado = cupoJugada.getCupoActual(animalJugado);
                                         if (tabla.getRowCount() > 0) {//Ya existen jugadas
                                             boolean flag = false;
@@ -3540,6 +3545,7 @@ public class index extends javax.swing.JFrame {
     private void crearCupos(boolean fromMenu) {
         actualizarCupoAnimales();
       //myCupos = (ArrayList) new CupoAnimal().getCupoAgencia(agencia.getId(),fechaHoy).clone();
+
         lbMensajeSistema.setText("Cupos Cargados.");
         if (fromMenu) {
             new rojerusan.RSNotifyFade(
@@ -3562,6 +3568,7 @@ public class index extends javax.swing.JFrame {
 //                     agencia.getId(),
 //                     fechaHoy
 //             ).clone();
+
         }
     };
         
