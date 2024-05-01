@@ -3,10 +3,10 @@ package Frames;
 import Clases.Agencia;
 import Clases.ConectarDBCloud;
 import Clases.Configuracion;
-import Clases.CupoAgencia;
 import Clases.CupoAnimal;
 import Clases.Imprimir;
 import Clases.JugadasTicket;
+import Clases.Loteria;
 import Clases.NTPService;
 import Clases.PlaceHolder;
 import Clases.Ticket;
@@ -34,6 +34,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 import javax.swing.table.DefaultTableModel;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import rojerusan.RSNotifyFade;
 
 public class index extends javax.swing.JFrame {
@@ -45,9 +47,12 @@ public class index extends javax.swing.JFrame {
     public Configuracion datos;
     
     ArrayList<CupoAnimal> animalesVendidos = new ArrayList();
-    ArrayList<String> programas = new ArrayList();
+    //ArrayList<String> programas = new ArrayList();
     ArrayList<JToggleButton> animales = new ArrayList();
+    ArrayList<Loteria> loterias = new ArrayList();
     ArrayList<JCheckBox> sorteos = new ArrayList();
+    ArrayList<JCheckBox> programas = new ArrayList();
+    
     ArrayList<String> sorteosDisponibles = new ArrayList();
     ArrayList<CupoAnimal> myCupos = new ArrayList();
 
@@ -60,7 +65,7 @@ public class index extends javax.swing.JFrame {
     public double totalTicket = 0.0;
     long tInicio, tFinal;
     int myNumTicket = 0;
-    int cupoMaximo = 25;
+    int cupoMaximo = 20;
     int espaciosPrevios = 0;
     boolean isConnected = false;
     boolean firstRun = true;
@@ -146,12 +151,6 @@ public class index extends javax.swing.JFrame {
         a34 = new javax.swing.JToggleButton();
         a27 = new javax.swing.JToggleButton();
         panelSorteos = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        animalTxt = new javax.swing.JTextField();
-        montoTxt = new javax.swing.JTextField();
-        btnGenerarJugada = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        cbTodos = new javax.swing.JCheckBox();
         c7pm = new javax.swing.JCheckBox();
         c6pm = new javax.swing.JCheckBox();
         c5pm = new javax.swing.JCheckBox();
@@ -164,13 +163,24 @@ public class index extends javax.swing.JFrame {
         c10am = new javax.swing.JCheckBox();
         c9am = new javax.swing.JCheckBox();
         c8am = new javax.swing.JCheckBox();
-        lbAvisoLt8am = new javax.swing.JLabel();
-        panelJugadas = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        totalTicketTxt = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabla = new rojerusan.RSTableMetro();
+        c830am = new javax.swing.JCheckBox();
+        c930am = new javax.swing.JCheckBox();
+        c1030am = new javax.swing.JCheckBox();
+        c1130am = new javax.swing.JCheckBox();
+        c1230pm = new javax.swing.JCheckBox();
+        c130pm = new javax.swing.JCheckBox();
+        c230pm = new javax.swing.JCheckBox();
+        c330pm = new javax.swing.JCheckBox();
+        c430pm = new javax.swing.JCheckBox();
+        c530pm = new javax.swing.JCheckBox();
+        c630pm = new javax.swing.JCheckBox();
+        c730pm = new javax.swing.JCheckBox();
+        animalTxt = new javax.swing.JTextField();
+        montoTxt = new javax.swing.JTextField();
+        btnGenerarJugada = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
         panelAyuda = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         txtPagar = new javax.swing.JTextField();
@@ -184,11 +194,15 @@ public class index extends javax.swing.JFrame {
         btnRepetir = new javax.swing.JButton();
         lbMensajeSistema = new javax.swing.JLabel();
         panelPrograma = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        checkLotto = new javax.swing.JCheckBox();
+        checkLottoActivo = new javax.swing.JCheckBox();
         checkGranjita = new javax.swing.JCheckBox();
+        checkLottoRD = new javax.swing.JCheckBox();
+        checkLottoInternacional = new javax.swing.JCheckBox();
+        totalTicketTxt = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         lbNumTicket = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
         menuMain = new javax.swing.JMenuBar();
         archivoMenu = new javax.swing.JMenu();
         salir = new javax.swing.JMenuItem();
@@ -879,93 +893,10 @@ public class index extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-
-        animalTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        animalTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        animalTxt.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                animalTxtKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                animalTxtKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                animalTxtKeyTyped(evt);
-            }
-        });
-
-        montoTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        montoTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        montoTxt.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                montoTxtKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                montoTxtKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                montoTxtKeyTyped(evt);
-            }
-        });
-
-        btnGenerarJugada.setText("Agregar Jugada");
-        btnGenerarJugada.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGenerarJugadaActionPerformed(evt);
-            }
-        });
-
-        jButton5.setText("Imprimir ( + )");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
-        cbTodos.setText("Seleccionar Todos los Sorteos");
-        cbTodos.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cbTodosItemStateChanged(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(animalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(montoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(cbTodos)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnGenerarJugada, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbTodos))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(animalTxt)
-                    .addComponent(montoTxt)
-                    .addComponent(btnGenerarJugada, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
         c7pm.setBackground(new java.awt.Color(255, 255, 255));
         c7pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         c7pm.setText(" 7 PM");
+        c7pm.setToolTipText("1");
         c7pm.setName("7 PM"); // NOI18N
         c7pm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -976,6 +907,7 @@ public class index extends javax.swing.JFrame {
         c6pm.setBackground(new java.awt.Color(255, 255, 255));
         c6pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         c6pm.setText(" 6 PM");
+        c6pm.setToolTipText("1");
         c6pm.setName("6 PM"); // NOI18N
         c6pm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -986,6 +918,7 @@ public class index extends javax.swing.JFrame {
         c5pm.setBackground(new java.awt.Color(255, 255, 255));
         c5pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         c5pm.setText(" 5 PM");
+        c5pm.setToolTipText("1");
         c5pm.setName("5 PM"); // NOI18N
         c5pm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -996,6 +929,7 @@ public class index extends javax.swing.JFrame {
         c4pm.setBackground(new java.awt.Color(255, 255, 255));
         c4pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         c4pm.setText(" 4 PM");
+        c4pm.setToolTipText("1");
         c4pm.setName("4 PM"); // NOI18N
         c4pm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1006,6 +940,7 @@ public class index extends javax.swing.JFrame {
         c3pm.setBackground(new java.awt.Color(255, 255, 255));
         c3pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         c3pm.setText(" 3 PM");
+        c3pm.setToolTipText("1");
         c3pm.setName("3 PM"); // NOI18N
         c3pm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1016,6 +951,7 @@ public class index extends javax.swing.JFrame {
         c2pm.setBackground(new java.awt.Color(255, 255, 255));
         c2pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         c2pm.setText(" 2 PM");
+        c2pm.setToolTipText("1");
         c2pm.setName("2 PM"); // NOI18N
         c2pm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1026,6 +962,7 @@ public class index extends javax.swing.JFrame {
         c1pm.setBackground(new java.awt.Color(255, 255, 255));
         c1pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         c1pm.setText(" 1 PM");
+        c1pm.setToolTipText("1");
         c1pm.setName("1 PM"); // NOI18N
         c1pm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1036,6 +973,7 @@ public class index extends javax.swing.JFrame {
         c12pm.setBackground(new java.awt.Color(255, 255, 255));
         c12pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         c12pm.setText(" 12 PM");
+        c12pm.setToolTipText("1");
         c12pm.setName("12 PM"); // NOI18N
         c12pm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1046,6 +984,7 @@ public class index extends javax.swing.JFrame {
         c11am.setBackground(new java.awt.Color(255, 255, 255));
         c11am.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         c11am.setText(" 11 AM");
+        c11am.setToolTipText("1");
         c11am.setName("11 AM"); // NOI18N
         c11am.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1056,6 +995,7 @@ public class index extends javax.swing.JFrame {
         c10am.setBackground(new java.awt.Color(255, 255, 255));
         c10am.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         c10am.setText(" 10 AM");
+        c10am.setToolTipText("1");
         c10am.setName("10 AM"); // NOI18N
         c10am.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1066,6 +1006,7 @@ public class index extends javax.swing.JFrame {
         c9am.setBackground(new java.awt.Color(255, 255, 255));
         c9am.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         c9am.setText(" 9 AM");
+        c9am.setToolTipText("1");
         c9am.setName("9 AM"); // NOI18N
         c9am.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1075,92 +1016,12 @@ public class index extends javax.swing.JFrame {
 
         c8am.setBackground(new java.awt.Color(255, 255, 255));
         c8am.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        c8am.setToolTipText("1");
         c8am.setLabel("8 AM");
-        c8am.setName(" 8 AM"); // NOI18N
+        c8am.setName("8 AM"); // NOI18N
         c8am.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c8amActionPerformed(evt);
-            }
-        });
-
-        lbAvisoLt8am.setForeground(new java.awt.Color(102, 102, 102));
-        lbAvisoLt8am.setText("Lotto Activo no tiene Sorteo 8am.");
-
-        javax.swing.GroupLayout panelSorteosLayout = new javax.swing.GroupLayout(panelSorteos);
-        panelSorteos.setLayout(panelSorteosLayout);
-        panelSorteosLayout.setHorizontalGroup(
-            panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelSorteosLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(panelSorteosLayout.createSequentialGroup()
-                        .addComponent(c8am)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbAvisoLt8am, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(c9am, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(c10am, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
-                    .addComponent(c11am, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(c12pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(c1pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(c2pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(c3pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(c4pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(c5pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(c6pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(c7pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        panelSorteosLayout.setVerticalGroup(
-            panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelSorteosLayout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(c8am, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-                    .addComponent(lbAvisoLt8am, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c9am, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c10am, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c11am, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c12pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c1pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c2pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c3pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c4pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c5pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c6pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c7pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17))
-        );
-
-        panelJugadas.setBackground(new java.awt.Color(255, 255, 255));
-        panelJugadas.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                panelJugadasKeyPressed(evt);
-            }
-        });
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel3.setText("Total del Ticket: Bs");
-
-        totalTicketTxt.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        totalTicketTxt.setText("0");
-
-        jButton4.setText("Eliminar Todas las Jugadas");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
             }
         });
 
@@ -1206,35 +1067,291 @@ public class index extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tabla);
 
-        javax.swing.GroupLayout panelJugadasLayout = new javax.swing.GroupLayout(panelJugadas);
-        panelJugadas.setLayout(panelJugadasLayout);
-        panelJugadasLayout.setHorizontalGroup(
-            panelJugadasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelJugadasLayout.createSequentialGroup()
+        c830am.setBackground(new java.awt.Color(255, 255, 255));
+        c830am.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        c830am.setText("8:30 AM");
+        c830am.setToolTipText("2");
+        c830am.setName("8:30 AM"); // NOI18N
+        c830am.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c830amActionPerformed(evt);
+            }
+        });
+
+        c930am.setBackground(new java.awt.Color(255, 255, 255));
+        c930am.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        c930am.setText(" 9:30 AM");
+        c930am.setToolTipText("2");
+        c930am.setName("9:30 AM"); // NOI18N
+        c930am.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c930amActionPerformed(evt);
+            }
+        });
+
+        c1030am.setBackground(new java.awt.Color(255, 255, 255));
+        c1030am.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        c1030am.setText(" 10:30 AM");
+        c1030am.setToolTipText("2");
+        c1030am.setName("10:30 AM"); // NOI18N
+        c1030am.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c1030amActionPerformed(evt);
+            }
+        });
+
+        c1130am.setBackground(new java.awt.Color(255, 255, 255));
+        c1130am.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        c1130am.setText(" 11:30 AM");
+        c1130am.setToolTipText("2");
+        c1130am.setName("11:30 AM"); // NOI18N
+        c1130am.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c1130amActionPerformed(evt);
+            }
+        });
+
+        c1230pm.setBackground(new java.awt.Color(255, 255, 255));
+        c1230pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        c1230pm.setText(" 12:30 PM");
+        c1230pm.setToolTipText("2");
+        c1230pm.setName("12:30 PM"); // NOI18N
+        c1230pm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c1230pmActionPerformed(evt);
+            }
+        });
+
+        c130pm.setBackground(new java.awt.Color(255, 255, 255));
+        c130pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        c130pm.setText(" 1:30 PM");
+        c130pm.setToolTipText("2");
+        c130pm.setName("1:30 PM"); // NOI18N
+        c130pm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c130pmActionPerformed(evt);
+            }
+        });
+
+        c230pm.setBackground(new java.awt.Color(255, 255, 255));
+        c230pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        c230pm.setText(" 2:30 PM");
+        c230pm.setToolTipText("2");
+        c230pm.setName("2:30 PM"); // NOI18N
+        c230pm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c230pmActionPerformed(evt);
+            }
+        });
+
+        c330pm.setBackground(new java.awt.Color(255, 255, 255));
+        c330pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        c330pm.setText(" 3:30 PM");
+        c330pm.setToolTipText("2");
+        c330pm.setName("3:30 PM"); // NOI18N
+        c330pm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c330pmActionPerformed(evt);
+            }
+        });
+
+        c430pm.setBackground(new java.awt.Color(255, 255, 255));
+        c430pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        c430pm.setText(" 4:30 PM");
+        c430pm.setToolTipText("2");
+        c430pm.setName("4:30 PM"); // NOI18N
+        c430pm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c430pmActionPerformed(evt);
+            }
+        });
+
+        c530pm.setBackground(new java.awt.Color(255, 255, 255));
+        c530pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        c530pm.setText(" 5:30 PM");
+        c530pm.setToolTipText("2");
+        c530pm.setName("5:30 PM"); // NOI18N
+        c530pm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c530pmActionPerformed(evt);
+            }
+        });
+
+        c630pm.setBackground(new java.awt.Color(255, 255, 255));
+        c630pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        c630pm.setText(" 6:30 PM");
+        c630pm.setToolTipText("2");
+        c630pm.setName("6:30 PM"); // NOI18N
+        c630pm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c630pmActionPerformed(evt);
+            }
+        });
+
+        c730pm.setBackground(new java.awt.Color(255, 255, 255));
+        c730pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        c730pm.setText(" 7:30 PM");
+        c730pm.setToolTipText("2");
+        c730pm.setName("7:30 PM"); // NOI18N
+        c730pm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c730pmActionPerformed(evt);
+            }
+        });
+
+        animalTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        animalTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        animalTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                animalTxtKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                animalTxtKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                animalTxtKeyTyped(evt);
+            }
+        });
+
+        montoTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        montoTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        montoTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                montoTxtKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                montoTxtKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                montoTxtKeyTyped(evt);
+            }
+        });
+
+        btnGenerarJugada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgs/felcha_derecha.png"))); // NOI18N
+        btnGenerarJugada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarJugadaActionPerformed(evt);
+            }
+        });
+
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgs/print.png"))); // NOI18N
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelSorteosLayout = new javax.swing.GroupLayout(panelSorteos);
+        panelSorteos.setLayout(panelSorteosLayout);
+        panelSorteosLayout.setHorizontalGroup(
+            panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSorteosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelJugadasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
-                    .addGroup(panelJugadasLayout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                .addGroup(panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(panelSorteosLayout.createSequentialGroup()
+                        .addGroup(panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(c8am, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c9am, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c10am, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+                            .addComponent(c11am, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c12pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c1pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c4pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c3pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c2pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c5pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c6pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c7pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(26, 26, 26)
+                        .addGroup(panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(c130pm, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c230pm, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c330pm, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c430pm, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c530pm, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c630pm, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c730pm, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c1130am, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c1230pm, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c830am, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(c930am, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(c1030am, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(panelSorteosLayout.createSequentialGroup()
+                        .addComponent(animalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(totalTicketTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(montoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnGenerarJugada)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4)))
-                .addContainerGap())
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(6, 6, 6)
+                .addComponent(jScrollPane2))
         );
-        panelJugadasLayout.setVerticalGroup(
-            panelJugadasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelJugadasLayout.createSequentialGroup()
-                .addGroup(panelJugadasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelJugadasLayout.createSequentialGroup()
+        panelSorteosLayout.setVerticalGroup(
+            panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSorteosLayout.createSequentialGroup()
+                .addGroup(panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelSorteosLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(panelJugadasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(totalTicketTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
+                        .addGroup(panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(animalTxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(montoTxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnGenerarJugada, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addGroup(panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelSorteosLayout.createSequentialGroup()
+                        .addComponent(c8am, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)
+                        .addComponent(c9am, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c10am, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c11am, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c12pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c1pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c2pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c3pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c4pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c5pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c6pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c7pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelSorteosLayout.createSequentialGroup()
+                        .addComponent(c830am, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)
+                        .addComponent(c930am, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c1030am, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c1130am, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c1230pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c130pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c230pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c330pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c430pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c530pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c630pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(c730pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelSorteosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2))
         );
 
         panelAyuda.setBackground(new java.awt.Color(255, 255, 255));
@@ -1331,7 +1448,7 @@ public class index extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRepetir)
                 .addGap(120, 120, 120)
-                .addComponent(lbMensajeSistema, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+                .addComponent(lbMensajeSistema, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         panelAyudaLayout.setVerticalGroup(
@@ -1356,30 +1473,31 @@ public class index extends javax.swing.JFrame {
 
         panelPrograma.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jLabel1.setText("ELIJA EL TIPO DE SORTEO PARA EL TICKET");
-
-        checkLotto.setBackground(new java.awt.Color(255, 255, 255));
-        checkLotto.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        checkLotto.setText("Lotto Activo");
-        checkLotto.setIconTextGap(10);
-        checkLotto.setMargin(new java.awt.Insets(2, 5, 2, 2));
-        checkLotto.addItemListener(new java.awt.event.ItemListener() {
+        checkLottoActivo.setBackground(new java.awt.Color(255, 255, 255));
+        checkLottoActivo.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        checkLottoActivo.setText("Lotto Activo");
+        checkLottoActivo.setToolTipText("1");
+        checkLottoActivo.setIconTextGap(10);
+        checkLottoActivo.setMargin(new java.awt.Insets(2, 5, 2, 2));
+        checkLottoActivo.setName("1"); // NOI18N
+        checkLottoActivo.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                checkLottoItemStateChanged(evt);
+                checkLottoActivoItemStateChanged(evt);
             }
         });
-        checkLotto.addActionListener(new java.awt.event.ActionListener() {
+        checkLottoActivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                checkLottoActionPerformed(evt);
+                checkLottoActivoActionPerformed(evt);
             }
         });
 
         checkGranjita.setBackground(new java.awt.Color(255, 255, 255));
         checkGranjita.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         checkGranjita.setText("Granjita");
+        checkGranjita.setToolTipText("1");
         checkGranjita.setIconTextGap(10);
         checkGranjita.setMargin(new java.awt.Insets(2, 5, 2, 2));
+        checkGranjita.setName("2"); // NOI18N
         checkGranjita.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 checkGranjitaItemStateChanged(evt);
@@ -1391,39 +1509,96 @@ public class index extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        jLabel2.setText("Ticket #");
+        checkLottoRD.setBackground(new java.awt.Color(255, 255, 255));
+        checkLottoRD.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        checkLottoRD.setText("Lotto RD");
+        checkLottoRD.setToolTipText("2");
+        checkLottoRD.setIconTextGap(10);
+        checkLottoRD.setMargin(new java.awt.Insets(2, 5, 2, 2));
+        checkLottoRD.setName("3"); // NOI18N
+        checkLottoRD.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                checkLottoRDItemStateChanged(evt);
+            }
+        });
+        checkLottoRD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkLottoRDActionPerformed(evt);
+            }
+        });
+
+        checkLottoInternacional.setBackground(new java.awt.Color(255, 255, 255));
+        checkLottoInternacional.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        checkLottoInternacional.setText("Lotto Internacional");
+        checkLottoInternacional.setToolTipText("2");
+        checkLottoInternacional.setIconTextGap(10);
+        checkLottoInternacional.setMargin(new java.awt.Insets(2, 5, 2, 2));
+        checkLottoInternacional.setName("4"); // NOI18N
+        checkLottoInternacional.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                checkLottoInternacionalItemStateChanged(evt);
+            }
+        });
+        checkLottoInternacional.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkLottoInternacionalActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelProgramaLayout = new javax.swing.GroupLayout(panelPrograma);
         panelPrograma.setLayout(panelProgramaLayout);
         panelProgramaLayout.setHorizontalGroup(
             panelProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelProgramaLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(checkLotto, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(checkGranjita, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 375, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(checkLottoActivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(checkGranjita, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(133, 133, 133)
+                .addGroup(panelProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(checkLottoInternacional, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkLottoRD, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         panelProgramaLayout.setVerticalGroup(
             panelProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(panelProgramaLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(7, 7, 7)
                 .addGroup(panelProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(checkLotto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelProgramaLayout.createSequentialGroup()
-                        .addComponent(checkGranjita, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(checkLottoRD)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkLottoInternacional)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(panelProgramaLayout.createSequentialGroup()
+                        .addComponent(checkLottoActivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkGranjita, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
+
+        totalTicketTxt.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        totalTicketTxt.setText("0");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jLabel2.setText("Ticket #");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
 
         lbNumTicket.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         lbNumTicket.setText("jLabel7");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setText("Total del Ticket: Bs");
+
+        jButton4.setText("Eliminar Todas las Jugadas");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelCentralLayout = new javax.swing.GroupLayout(panelCentral);
         panelCentral.setLayout(panelCentralLayout);
@@ -1431,30 +1606,50 @@ public class index extends javax.swing.JFrame {
             panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCentralLayout.createSequentialGroup()
                 .addComponent(panelAnimales, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelSorteos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelJugadas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelCentralLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton4)
+                        .addGap(64, 64, 64)
+                        .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelCentralLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(totalTicketTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCentralLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbNumTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(8, 8, 8))
+                    .addGroup(panelCentralLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelSorteos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addComponent(panelAyuda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(panelCentralLayout.createSequentialGroup()
-                .addComponent(panelPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbNumTicket)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelCentralLayout.setVerticalGroup(
             panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCentralLayout.createSequentialGroup()
-                .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelCentralLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lbNumTicket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(panelSorteos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelAnimales, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelJugadas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(panelPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelCentralLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbNumTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(totalTicketTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(panelSorteos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelAnimales, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelAyuda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1717,7 +1912,7 @@ public class index extends javax.swing.JFrame {
             } catch (Exception e) {
                 Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, e);
 
-            }
+            }System.out.println("");
         }).start();
 
     }//GEN-LAST:event_btnGenerarJugadaActionPerformed
@@ -1732,7 +1927,6 @@ public class index extends javax.swing.JFrame {
     }//GEN-LAST:event_BorrarJugadasActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
         if (JOptionPane.showConfirmDialog(archivoMenu, "Desea borrar las jugadas?", "Limpiar", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
             resetearJugadas();
             resetearBotones();
@@ -1745,12 +1939,7 @@ public class index extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         if (modelo.getRowCount() > 0) {
-            if (isConnected && !imprimiendo) {
-                //new Thread(this::imprimir).start();
-                imprimir();
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "No hay conexión con el servidor, revise su conexión a internet o contacte con el administrador para ver la conexión del servidor.");
-            }
+            imprimir();
 
         } else {
             JOptionPane.showMessageDialog(rootPane, "No hay jugadas realizadas para imprimir");
@@ -1799,10 +1988,6 @@ public class index extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_panelSorteosKeyPressed
-
-    private void panelJugadasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_panelJugadasKeyPressed
-
-    }//GEN-LAST:event_panelJugadasKeyPressed
 
     private void panelAnimalesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_panelAnimalesKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ADD) {
@@ -2124,19 +2309,13 @@ public class index extends javax.swing.JFrame {
                                 }
                             }
 
-                            CupoAnimal cupoJugada = animalesVendidos.stream()
+                            CupoAnimal cupoJugada = myCupos.stream()
                                     .filter(t
                                             -> t.getFecha().equalsIgnoreCase(fechaHoy)
                                     && t.getPrograma().equalsIgnoreCase(programa)
                                     && t.getSorteo().equalsIgnoreCase(sorteo)
-                                    ).findFirst().orElse(
-                                            insertCupo(
-                                                    fechaHoy,
-                                                    programa,
-                                                    sorteo,
-                                                    cupoMaximo
-                                            )
-                                    );
+                                    ).findFirst()
+                                    .get();
 
                             double cupoAnimalJugado = cupoJugada.getCupoActual(animalReducido);
 
@@ -2190,26 +2369,25 @@ public class index extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ventasItemActionPerformed
 
-    private void checkLottoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkLottoActionPerformed
+    private void checkLottoActivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkLottoActivoActionPerformed
 
-    }//GEN-LAST:event_checkLottoActionPerformed
+    }//GEN-LAST:event_checkLottoActivoActionPerformed
 
     private void checkGranjitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkGranjitaActionPerformed
 
     }//GEN-LAST:event_checkGranjitaActionPerformed
 
-    private void checkLottoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkLottoItemStateChanged
-        if (checkLotto.isSelected()) {
+    private void checkLottoActivoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkLottoActivoItemStateChanged
+        if (checkLottoActivo.isSelected()) {
             JCheckBox c8amSorteo = sorteos.stream()
                     .filter(t -> t.getName().trim().equals("8 AM"))
                     .findFirst().get();
             if (c8amSorteo.isVisible()) {
                 c8amSorteo.setSelected(false);
                 c8amSorteo.setEnabled(false);
-                lbAvisoLt8am.setVisible(true);
             }
 
-            for (JCheckBox sorteo : sorteos) {
+            for (JCheckBox sorteo : sorteos.stream().filter(t->t.getToolTipText().equals(checkLottoActivo.getToolTipText())).collect(Collectors.toList())) {
                 if (!sorteo.getText().toLowerCase().contains("lottoactivo") && !sorteo.getName().equalsIgnoreCase("8 am")) {
                     sorteo.setText("LottoActivo" + " " + sorteo.getText());
                 }
@@ -2218,34 +2396,33 @@ public class index extends javax.swing.JFrame {
             JCheckBox c8amSorteo = sorteos.stream()
                     .filter(t -> t.getName().trim().equals("8 AM"))
                     .findFirst().get();
-            lbAvisoLt8am.setVisible(false);
             c8amSorteo.setEnabled(true);
 
-            for (JCheckBox sorteo : sorteos) {
+            for (JCheckBox sorteo : sorteos.stream().filter(t->t.getToolTipText().equals(checkLottoActivo.getToolTipText())).collect(Collectors.toList())) {
                 if (sorteo.getText().toLowerCase().contains("lottoactivo") && !sorteo.getName().equalsIgnoreCase("8 am")) {
                     sorteo.setText(sorteo.getText().replace("LottoActivo ", ""));
                 }
             }
         }
         animalTxt.requestFocus();
-    }//GEN-LAST:event_checkLottoItemStateChanged
+    }//GEN-LAST:event_checkLottoActivoItemStateChanged
 
     private void checkGranjitaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkGranjitaItemStateChanged
         if (checkGranjita.isSelected()) {
 
-            for (JCheckBox sorteo : sorteos) {
+            for (JCheckBox sorteo : sorteos.stream().filter(t->t.getToolTipText().equals(checkGranjita.getToolTipText())).collect(Collectors.toList())) {
                 if (!sorteo.getText().toLowerCase().contains("granjita")) {
                     sorteo.setText("Granjita" + " " + sorteo.getText());
                 }
             }
         } else {
-            for (JCheckBox sorteo : sorteos) {
+            for (JCheckBox sorteo : sorteos.stream().filter(t->t.getToolTipText().equals(checkGranjita.getToolTipText())).collect(Collectors.toList())) {
                 if (sorteo.getText().toLowerCase().contains("granjita")) {
                     sorteo.setText(sorteo.getText().replace("Granjita ", ""));
                 }
             }
         }
-        animalTxt.requestFocus();
+        setFocusAnimalAfterSorteo();
     }//GEN-LAST:event_checkGranjitaItemStateChanged
 
     private void c8amActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c8amActionPerformed
@@ -2259,11 +2436,99 @@ public class index extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_c8amActionPerformed
 
-    private void cbTodosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbTodosItemStateChanged
-        for (JCheckBox sorteo : sorteos) {
-            sorteo.setSelected(cbTodos.isSelected());
+    private void checkLottoInternacionalItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkLottoInternacionalItemStateChanged
+       setFocusAnimalAfterSorteo();
+       if (checkLottoInternacional.isSelected()) {
+            for (JCheckBox sorteo : sorteos.stream().filter(t->t.getToolTipText().equals(checkLottoInternacional.getToolTipText())).collect(Collectors.toList())) {
+                if (!sorteo.getText().toLowerCase().contains("lottointern.")) {
+                    sorteo.setText("LottoIntern." + " " + sorteo.getText());
+                }
+            }
+        } else {
+            for (JCheckBox sorteo : sorteos.stream().filter(t->t.getToolTipText().equals(checkLottoInternacional.getToolTipText())).collect(Collectors.toList())) {
+                if (sorteo.getText().toLowerCase().contains("lottointern.")) {
+                    sorteo.setText(sorteo.getText().replace("LottoIntern. ", ""));
+                }
+            }
         }
-    }//GEN-LAST:event_cbTodosItemStateChanged
+    }//GEN-LAST:event_checkLottoInternacionalItemStateChanged
+
+    private void checkLottoInternacionalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkLottoInternacionalActionPerformed
+       
+    }//GEN-LAST:event_checkLottoInternacionalActionPerformed
+
+    private void checkLottoRDItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkLottoRDItemStateChanged
+        setFocusAnimalAfterSorteo();
+        if (checkLottoRD.isSelected()) {
+            for (JCheckBox sorteo : sorteos.stream().filter(t->t.getToolTipText().equals(checkLottoRD.getToolTipText())).collect(Collectors.toList())) {
+                if (!sorteo.getText().toLowerCase().contains("lottord")) {
+                    sorteo.setText("LottoRD" + " " + sorteo.getText());
+                }
+            }
+        } else {
+            for (JCheckBox sorteo : sorteos.stream().filter(t->t.getToolTipText().equals(checkLottoRD.getToolTipText())).collect(Collectors.toList())) {
+                if (sorteo.getText().toLowerCase().contains("lottord")) {
+                    sorteo.setText(sorteo.getText().replace("LottoRD ", ""));
+                }
+            }
+        }
+    }//GEN-LAST:event_checkLottoRDItemStateChanged
+
+    private void checkLottoRDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkLottoRDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkLottoRDActionPerformed
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+       
+    }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void c830amActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c830amActionPerformed
+      setFocusAnimalAfterSorteo();
+    }//GEN-LAST:event_c830amActionPerformed
+
+    private void c930amActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c930amActionPerformed
+       setFocusAnimalAfterSorteo();
+    }//GEN-LAST:event_c930amActionPerformed
+
+    private void c1030amActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1030amActionPerformed
+       setFocusAnimalAfterSorteo();
+    }//GEN-LAST:event_c1030amActionPerformed
+
+    private void c1130amActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1130amActionPerformed
+        setFocusAnimalAfterSorteo();
+    }//GEN-LAST:event_c1130amActionPerformed
+
+    private void c1230pmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1230pmActionPerformed
+        setFocusAnimalAfterSorteo();
+    }//GEN-LAST:event_c1230pmActionPerformed
+
+    private void c130pmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c130pmActionPerformed
+       setFocusAnimalAfterSorteo();
+    }//GEN-LAST:event_c130pmActionPerformed
+
+    private void c230pmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c230pmActionPerformed
+        setFocusAnimalAfterSorteo();
+    }//GEN-LAST:event_c230pmActionPerformed
+
+    private void c330pmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c330pmActionPerformed
+       setFocusAnimalAfterSorteo();
+    }//GEN-LAST:event_c330pmActionPerformed
+
+    private void c430pmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c430pmActionPerformed
+       setFocusAnimalAfterSorteo();
+    }//GEN-LAST:event_c430pmActionPerformed
+
+    private void c530pmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c530pmActionPerformed
+       setFocusAnimalAfterSorteo();
+    }//GEN-LAST:event_c530pmActionPerformed
+
+    private void c630pmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c630pmActionPerformed
+      setFocusAnimalAfterSorteo();
+    }//GEN-LAST:event_c630pmActionPerformed
+
+    private void c730pmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c730pmActionPerformed
+       setFocusAnimalAfterSorteo();
+    }//GEN-LAST:event_c730pmActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2348,24 +2613,36 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JButton btnGenerarJugada;
     private javax.swing.JButton btnPagar;
     private javax.swing.JButton btnRepetir;
+    private javax.swing.JCheckBox c1030am;
     private javax.swing.JCheckBox c10am;
+    private javax.swing.JCheckBox c1130am;
     private javax.swing.JCheckBox c11am;
+    private javax.swing.JCheckBox c1230pm;
     private javax.swing.JCheckBox c12pm;
+    private javax.swing.JCheckBox c130pm;
     private javax.swing.JCheckBox c1pm;
+    private javax.swing.JCheckBox c230pm;
     private javax.swing.JCheckBox c2pm;
+    private javax.swing.JCheckBox c330pm;
     private javax.swing.JCheckBox c3pm;
+    private javax.swing.JCheckBox c430pm;
     private javax.swing.JCheckBox c4pm;
+    private javax.swing.JCheckBox c530pm;
     private javax.swing.JCheckBox c5pm;
+    private javax.swing.JCheckBox c630pm;
     private javax.swing.JCheckBox c6pm;
+    private javax.swing.JCheckBox c730pm;
     private javax.swing.JCheckBox c7pm;
+    private javax.swing.JCheckBox c830am;
     private javax.swing.JCheckBox c8am;
+    private javax.swing.JCheckBox c930am;
     private javax.swing.JCheckBox c9am;
-    private javax.swing.JCheckBox cbTodos;
     private javax.swing.JCheckBox checkGranjita;
-    private javax.swing.JCheckBox checkLotto;
+    private javax.swing.JCheckBox checkLottoActivo;
+    private javax.swing.JCheckBox checkLottoInternacional;
+    private javax.swing.JCheckBox checkLottoRD;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -2373,11 +2650,9 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JLabel lbAvisoLt8am;
     private javax.swing.JLabel lbMensajeSistema;
     private javax.swing.JLabel lbNumTicket;
     private javax.swing.JMenuBar menuMain;
@@ -2386,7 +2661,6 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JPanel panelAnimales;
     private javax.swing.JPanel panelAyuda;
     private javax.swing.JPanel panelCentral;
-    private javax.swing.JPanel panelJugadas;
     private javax.swing.JPanel panelPrograma;
     private javax.swing.JPanel panelSorteos;
     private javax.swing.JMenuItem resultadosItem;
@@ -2400,6 +2674,18 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JMenuItem verTicketsItem;
     // End of variables declaration//GEN-END:variables
 
+    private void setFocusAnimalAfterSorteo(){
+        if (animalTxt.isEnabled()) {
+            animalTxt.requestFocus();
+            if (animalTxt.getText().length() == 2) {
+                montoTxt.requestFocus();
+            }
+        } else if (!animalTxt.isEnabled() || !animalTxt.getText().isEmpty()) {
+            montoTxt.requestFocus();
+        }
+    }
+    
+    
     private void iniciar() {
 
         try {
@@ -2407,12 +2693,15 @@ public class index extends javax.swing.JFrame {
             datos = new Configuracion(fechaHoy);
             getNumTicket();
 
+             programas.add(checkGranjita);
+             programas.add(checkLottoActivo);
+             programas.add(checkLottoInternacional);
+             programas.add(checkLottoRD);
              
                 
             
             
             lbMensajeSistema.setText("Cargando fecha del servidor");
-            lbAvisoLt8am.setVisible(false);
 
             lbMensajeSistema.setText("Cargando placeHolder");
             modelo = (DefaultTableModel) tabla.getModel();
@@ -2425,8 +2714,6 @@ public class index extends javax.swing.JFrame {
             agregarBotones();
             lbMensajeSistema.setText("Cargando sorteos");
             agregarSorteos();
-            programas.add("LottoActivo");
-            programas.add("Granjita");
             lbMensajeSistema.setText("Cargando Cupos");
 
             animalTxt.requestFocus();
@@ -2442,11 +2729,18 @@ public class index extends javax.swing.JFrame {
         
             
             new Thread(()->{
-                //  crearCupos(false);
+                //actualizarCupoAnimales();
+                  crearCupos(false);
                 new Timer().scheduleAtFixedRate(actualizarHoraTT, 0, 5000);
                 new Timer().scheduleAtFixedRate(desactivarSorteosTT, 0, 10000);
-                new Timer().scheduleAtFixedRate(validarConeccion, 0, 1000); 
-                new Timer().scheduleAtFixedRate(actualizarCuposTT, 0, 60000); 
+                new Timer().scheduleAtFixedRate(validarConeccion, 0, 5000); 
+                new Timer().scheduleAtFixedRate(actualizarCuposTT, 0, 60000);
+                loterias = (ArrayList) new Loteria().getLoterias().clone();
+                actualizarCupoAnimales();
+                if(agencia.getId() == 1){
+                    iniciarIngresoResultados();
+                }
+
             }).start();
             
             lbMensajeSistema.setText("Cargando información de Ag.");
@@ -2460,6 +2754,10 @@ public class index extends javax.swing.JFrame {
         }
     }
 
+    private void actualizarCupoAnimales(){
+        myCupos =  (ArrayList) new CupoAnimal().getCupoAgencia(agencia.getId(), fechaHoy).clone();
+    }
+    
     TimerTask validarConeccion = new TimerTask() {
         public void run() {
             while (true) {
@@ -2523,18 +2821,26 @@ public class index extends javax.swing.JFrame {
                     for (JCheckBox sorteo : sorteos) {
                         minutos = 0;
                         String horaObtenido = sorteo.getName().toLowerCase().replace(" am", "").replace(" pm", "");
-                        String horaSorteo = fechaHoy + " " + new JugadasTicket().getHoradelSorteo(horaObtenido) + ":00:00";
+                        String minutosAgregados = sorteo.getToolTipText().equalsIgnoreCase("1")
+                                ? ":00:00"
+                                : ":00";
+                        String horaSorteo = fechaHoy + " " + new JugadasTicket().getHoradelSorteo(horaObtenido) + minutosAgregados;
+                        
+                        
+                        
                         Calendar mySorteo = Calendar.getInstance();
                         mySorteo.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK).parse(horaSorteo));
                         minutos = new tools().restarMinutos(myHora.getTime(), mySorteo.getTime());
 
-                        sorteo.setVisible(minutos < 3 ? false : true);//ORIgginAl
+                        
+                        sorteo.setVisible(minutos < agencia.getMinutosCierre() || minutos>1224? false : true);//ORIGINAL
                         //sorteo.setVisible(minutos < 3 ? true : true);
-                        for(String programa : programas){
-                                if(sorteo.isVisible()){
-                                    String sorteoxx = programa + " "+sorteo.getName();
-                            sorteosDisponibles.add(sorteoxx);
-                                }
+                        for(JCheckBox programa : programas.stream().filter(t-> t.getToolTipText().equals(sorteo.getToolTipText())).collect(Collectors.toList())){
+                            if(sorteo.isVisible()){
+                                String sorteoxx = programa.getText().replace(" ", "") + " "+sorteo.getName();
+                               
+                                sorteosDisponibles.add(sorteoxx);
+                            }
                         }
                     }
               //  }
@@ -2587,19 +2893,31 @@ public class index extends javax.swing.JFrame {
     }
 
     private void agregarSorteos() {
-        sorteos.add(c8am);
-        sorteos.add(c9am);
-        sorteos.add(c10am);
-        sorteos.add(c11am);
-        sorteos.add(c12pm);
-        sorteos.add(c1pm);
-        sorteos.add(c2pm);
-        sorteos.add(c3pm);
-        sorteos.add(c4pm);
-        sorteos.add(c5pm);
-        sorteos.add(c6pm);
-        sorteos.add(c7pm);
+        sorteos.add(c8am);c8am.setVisible(false);
+        sorteos.add(c9am);c9am.setVisible(false);
+        sorteos.add(c10am);c10am.setVisible(false);
+        sorteos.add(c11am);c11am.setVisible(false);
+        sorteos.add(c12pm);c12pm.setVisible(false);
+        sorteos.add(c1pm);c1pm.setVisible(false);
+        sorteos.add(c2pm);c2pm.setVisible(false);
+        sorteos.add(c3pm);c3pm.setVisible(false);
+        sorteos.add(c4pm);c4pm.setVisible(false);
+        sorteos.add(c5pm);c5pm.setVisible(false);
+        sorteos.add(c6pm);c6pm.setVisible(false);
+        sorteos.add(c7pm);c7pm.setVisible(false);
 
+        sorteos.add(c830am);c830am.setVisible(false);
+        sorteos.add(c930am);c930am.setVisible(false);
+        sorteos.add(c1030am);c1030am.setVisible(false);
+        sorteos.add(c1130am);c1130am.setVisible(false);
+        sorteos.add(c1230pm);c1230pm.setVisible(false);
+        sorteos.add(c130pm);c130pm.setVisible(false);
+        sorteos.add(c230pm);c230pm.setVisible(false);
+        sorteos.add(c330pm);c330pm.setVisible(false);
+        sorteos.add(c430pm);c430pm.setVisible(false);
+        sorteos.add(c530pm);c530pm.setVisible(false);
+        sorteos.add(c630pm);c630pm.setVisible(false);
+        sorteos.add(c730pm);c730pm.setVisible(false);
     }
 
     private void resetearBotones() {
@@ -2620,7 +2938,7 @@ public class index extends javax.swing.JFrame {
         if (true) {
             switch (numero) {
                 case 0:
-                    animal = "Delfin";
+                    animal = "Delfín";
                     break;
                 case -1:
                     animal = "Ballena";
@@ -2638,7 +2956,7 @@ public class index extends javax.swing.JFrame {
                     animal = "Alacrán";
                     break;
                 case 5:
-                    animal = "Leon";
+                    animal = "León";
                     break;
                 case 6:
                     animal = "Rana";
@@ -2650,7 +2968,7 @@ public class index extends javax.swing.JFrame {
                     animal = "Ratón";
                     break;
                 case 9:
-                    animal = "Aguila";
+                    animal = "Águila";
                     break;
                 case 10:
                     animal = "Tigre";
@@ -2763,17 +3081,17 @@ public class index extends javax.swing.JFrame {
         try {
             if (validarSorteos()) {
                 if (validarAnimal()) {
-
-                    for (JCheckBox sorteo : sorteos) {
-                        if (sorteo.isSelected() && sorteo.isShowing()) {//Usaremos solo el sorteo activo
+                    for (JCheckBox programa : programas.stream()
+                            .filter(t-> t.isSelected()).collect(Collectors.toList())) {
+                        for (JCheckBox sorteo : sorteos.stream().filter(t-> 
+                                programa.getToolTipText().equals(t.getToolTipText()) && t.isVisible() && t.isSelected()
+                            ).collect(Collectors.toList())) {
                             String monto = montoTxt.getText();
                             double montoDouble = Double.parseDouble(monto);
 
                             if (tablero == true) {//Varios animales
                                 String separador = Pattern.quote(" ");
                                 String[] programas = sorteo.getText().split(separador);
-                                for (String programa : programas) {
-                                    if (programa.equalsIgnoreCase("lottoactivo") || programa.equalsIgnoreCase("granjita")) {
                                         String programaYsorteo = programa + " " + sorteo.getName();
                                         programaYsorteo = programaYsorteo.replace("  ", " ");
                                         for (JToggleButton animal : animales) {
@@ -2787,18 +3105,12 @@ public class index extends javax.swing.JFrame {
                                                 CupoAnimal cupoJugada = myCupos
                                                         .stream()
                                                         .filter(t -> t.getFecha().equalsIgnoreCase(fechaHoy)
-                                                            && t.getPrograma().equalsIgnoreCase(programa)
-                                                            && t.getSorteo().equalsIgnoreCase(sorteo.getName().toLowerCase().replace(" ", ""))
+                                                            && t.getPrograma().equalsIgnoreCase(programa.getText().replace(" ", ""))
+                                                            && t.getSorteo().equalsIgnoreCase(sorteo.getName().toLowerCase())//.replace(" ", ""))
                                                         )
                                                         .findFirst().get();
-                                                        /*.orElse(
-                                                                insertCupo(
-                                                                        fechaHoy,
-                                                                        programa,
-                                                                         sorteo.getName().toLowerCase().replace(" ", ""),
-                                                                        cupoMaximo
-                                                                )
-                                                        );*/
+                                                        
+
 
                                                 double cupoAnimalJugado = cupoJugada.getCupoActual(animalJugado);
 
@@ -2849,36 +3161,35 @@ public class index extends javax.swing.JFrame {
 
                                             }
                                         }
-                                    }
-                                }
+                                
 
                             } else {// Solo un animal
                                 String separador = Pattern.quote(" ");
-                                String[] programas = sorteo.getText().split(separador);
-                                for (String programa : programas) {
-                                    if (programa.equalsIgnoreCase("lottoActivo") || programa.equalsIgnoreCase("granjita")) {
-     //////////////
-                                        String programaYsorteo = programa + " " + sorteo.getName();
+                                        String programaYsorteo = programa.getText().replace(" ", "") + " " + sorteo.getName();
                                         programaYsorteo = programaYsorteo.replace("  ", " ");
+                                        
                                         String animalSeleccionado = animalTxt.getText().equals("00") ? "-1" : animalTxt.getText();
                                         int anim = Integer.parseInt(animalSeleccionado);
+                                        animalSeleccionado = anim>=1 && anim<=9 && animalSeleccionado.length()==1? "0"+animalSeleccionado : animalSeleccionado;
                                         String animString = getAnimal(anim);
+                                        
                                         String animalJugado = animalSeleccionado.equals("-1") ? "00" : animalSeleccionado;
+                                        
                                         String jugada = animalJugado + "" + animString;
+                                        String sorteoUtilizar = sorteo.getName();//.replace(" ", ":30 ");
+                                        
+
                                         
                                         CupoAnimal cupoJugada = myCupos.stream()
                                                 .filter(t
                                                         -> t.getFecha().equalsIgnoreCase(fechaHoy)
-                                                && t.getPrograma().equalsIgnoreCase(programa)
-                                                && t.getSorteo().equalsIgnoreCase(sorteo.getName().toLowerCase().replace(" ", ""))
-                                                ).findFirst().get();/*.orElse(
-                                                        insertCupo(
-                                                                fechaHoy,
-                                                                programa,
-                                                                sorteo.getName().toLowerCase().replace(" ", ""),
-                                                                cupoMaximo
-                                                        )
-                                                );*/
+                                                && t.getPrograma().equalsIgnoreCase(programa.getText().replace(" ", ""))
+                                                && t.getSorteo().equalsIgnoreCase(sorteoUtilizar)//.replace(" ", ""))
+                                                ).findFirst()
+                                                .get();
+                                        
+                                        
+
                                         double cupoAnimalJugado = cupoJugada.getCupoActual(animalJugado);
                                         if (tabla.getRowCount() > 0) {//Ya existen jugadas
                                             boolean flag = false;
@@ -2928,12 +3239,14 @@ public class index extends javax.swing.JFrame {
                                         }
                                         
      ///////////
-                                    }
-                                }
+                                    
+                                
                             }
-                        }
+                        
 
+                    }    
                     }
+                    
                     limpiarJugada(true);
                 }
             }
@@ -2943,10 +3256,6 @@ public class index extends javax.swing.JFrame {
 
     }
 
-    private CupoAnimal insertCupo(String fecha, String programa, String sorteo, double monto) {
-        return new CupoAnimal().get(fecha, programa, sorteo, monto);
-
-    }
 
     private boolean validarSorteos() {
         boolean llave = false;
@@ -2957,7 +3266,7 @@ public class index extends javax.swing.JFrame {
             }
         }
         if (llave) {
-            if (checkGranjita.isSelected() || checkLotto.isSelected()) {
+            if (checkGranjita.isSelected() || checkLottoActivo.isSelected() || checkLottoRD.isSelected() || checkLottoInternacional.isSelected()) {
                 llave = true;
             } else {
                 llave = false;
@@ -3000,7 +3309,7 @@ public class index extends javax.swing.JFrame {
         animalTxt.setText("");
         animalTxt.setEnabled(true);
         animalTxt.requestFocus();
-        lbNumTicket.setText(myNumTicket+"");
+        lbNumTicket.setText(agencia.getNumTicket()+"");
     }
 
     private void borrarJugadas() {
@@ -3027,19 +3336,21 @@ public class index extends javax.swing.JFrame {
         totalTicketTxt.setText("0");
         modelo.setRowCount(0);
         totalTicket = 0.0;
-        animalesVendidos.clear();
+        
     }
 
     private void imprimir() {
 
         try {
             imprimiendo=true;
+            confirmarCuposDisponibles();
             double totalJugado = 0.0;
             ArrayList<JugadasTicket> jugadas = new ArrayList();
              
             //Procesando la información de las jugadas.    
             for (int i = 0; i < tabla.getRowCount(); i++) {
                 String sorteoJugadox = tabla.getValueAt(i, 0).toString();
+                
                 if (sorteosDisponibles.contains(sorteoJugadox)) {
                     Double montoJugado = Double.parseDouble(tabla.getValueAt(i, 2).toString());
                     if (montoJugado > 0) {
@@ -3047,27 +3358,40 @@ public class index extends javax.swing.JFrame {
                         String sorteox = tabla.getValueAt(i, 0).toString();
                         String[] sorteoYprograma = sorteox.split(separador);
                         String programa = sorteoYprograma[0];
-                        String sorteoJugado = sorteoYprograma[1] + sorteoYprograma[2].toLowerCase();
+                        String sorteoJugado = sorteoYprograma[1] +" "+ sorteoYprograma[2].toUpperCase();
                         String animalCompleto = tabla.getValueAt(i, 1).toString();
-                        String animalJugado = "";
+                        String animalJugado = tomarAnimal(animalCompleto);
 
-                        for (int j = 0; j < animalCompleto.length(); j++) {
-                            if (new tools().ComprobarNumeros(animalCompleto.substring(j, (j + 1)))) {
-                                animalJugado += animalCompleto.substring(j, (j + 1));
-                            } else {
-                                break;
-                            }
-                        }
+                        
 
-                        CupoAnimal temp = new CupoAnimal().get(fechaHoy, programa, sorteoJugado, cupoMaximo);
-
-                        animalesVendidos.add(new CupoAnimal(
-                                programa,
-                                sorteoJugado,
-                                fechaHoy,
-                                animalJugado,
-                                montoJugado
-                        ));
+                        animalesVendidos.add(
+                                animalesVendidos.stream()
+                                .filter(cupo ->
+                                        cupo.getPrograma().equals(programa) &&
+                                        cupo.getSorteo().equals(sorteoJugado) &&
+                                        cupo.getFecha().equals(fechaHoy)
+                                ).count()>0 
+                                        
+                                    ? animalesVendidos.stream()
+                                        .filter(cupo ->
+                                                cupo.getPrograma().equals(programa) &&
+                                                cupo.getSorteo().equals(sorteoJugado) &&
+                                                cupo.getFecha().equals(fechaHoy)
+                                        ).findFirst()
+                                        .get()
+                                        .setVendido(animalJugado, montoJugado)
+                                
+                                    : myCupos.stream()
+                                        .filter(cupo ->
+                                                cupo.getPrograma().equals(programa) &&
+                                                cupo.getSorteo().equals(sorteoJugado) &&
+                                                cupo.getFecha().equals(fechaHoy)
+                                        ).findFirst()
+                                        .get()
+                                        .setVendido(animalJugado, montoJugado)
+                                
+                        );
+                               
 
                         Float montoParseado = Float.parseFloat(tabla.getValueAt(i, 2).toString());
                         totalJugado += montoParseado;
@@ -3117,39 +3441,36 @@ public class index extends javax.swing.JFrame {
 
                     
 
-                    new Thread(() -> {//Actualizar los cupos de los animales que fueron seleccionados para la venta
-                        animalesVendidos.forEach(animal
-                                -> animal.setVendido(
-                                        animal.getAnimalVendido(),
-                                        animal.getMontoVendido()
-                                ).updateCupo()
-                        );
-                    }).start();
+                   
+                        
+                        
+                  
                     
                     new Imprimir().enviarImpresion(
                             espaciosPrevios,
                             agencia.getNombreAgencia(),
                             fechaHoy,
                             hora,
-                            String.valueOf(myNumTicket),
+                            String.valueOf(agencia.incrementarNumTicketLocal()),
                             serialTicket,
                             jugadas,
                             totalJugado
                     );//FIN IMPRESION
                     
-                    ++myNumTicket;
-                    datos.increaseTicket(
-                            myNumTicket,
-                            fechaHoy
-                    );
-                   
-                    
-                    
-
-                    resetearBotones();
-                    resetearSorteos();
-                    resetearJugadas();
                     limpiarJugada(false);
+                    resetearJugadas();       
+                    resetearSorteos();
+                    
+                     new Thread(() -> {//Actualizar los cupos de los animales que fueron seleccionados para la venta
+                        new CupoAnimal().actualizarCupo(procesarVendidos());
+                        actualizarCupoAnimales();
+                      }).start();
+ 
+                    
+                     
+                    
+                    
+                    
                     new rojerusan.RSNotifyFade(
                             "Ticket Impreso",
                             "Se realizó la impresión del ticket, en caso contrario contacte al Administrador.",
@@ -3157,8 +3478,11 @@ public class index extends javax.swing.JFrame {
                             RSNotifyFade.PositionNotify.BottomRight,
                             RSNotifyFade.TypeNotify.SUCCESS
                     ).setVisible(true);
+                    imprimiendo=false;
                 } else {
-                    //Imprimir error si no se logra insertar el ticket
+                    jugadas.clear();
+                    totalJugado = 0.0;
+                    JOptionPane.showMessageDialog(null, "No se ha podido generar el ticket, intente de nuevo");
                     imprimiendo=false;
                 }
             } else {
@@ -3219,86 +3543,8 @@ public class index extends javax.swing.JFrame {
     }
 
     private void crearCupos(boolean fromMenu) {
-
-      ArrayList<CupoAgencia>  cupos = (ArrayList) new CupoAgencia().getCupos(agencia.getId()).clone();
-
-        if (cupos.isEmpty()) {
-            for (String programa : programas) {
-                for (JCheckBox sorteo : sorteos) {
-                    String mySorteo = sorteo.getName().toLowerCase().replace(" ", "");
-                    myCupos.add(new CupoAnimal().get(
-                            fechaHoy,
-                            programa,
-                            mySorteo,
-                            cupoMaximo
-                    ));
-                }
-            }
-        } else {
-            for (CupoAgencia myCupo : cupos) {
-                cupoMaximo = (int) myCupo.getMonto();
-                int diasDiferencia =0;
-                Date fechaInicial = new Date();
-                Date fechaFinal = new Date();
-                Date myActualDate = new Date();
-                int fechaActualizado = 0;
-
-                try {
-                    fechaInicial = new SimpleDateFormat("yyyy-MM-dd").parse(myCupo.getFechaInicio());
-                    fechaFinal = new SimpleDateFormat("yyyy-MM-dd").parse(myCupo.getFechaFin());
-                    myActualDate = new SimpleDateFormat("yyyy-MM-dd").parse(fechaHoy);
-
-                    fechaActualizado = (int) new tools().getDiasDiferencia(myActualDate, fechaFinal);
-                    diasDiferencia = fechaActualizado >= 0
-                            ? (int) new tools().getDiasDiferencia(fechaInicial, fechaFinal) + 1
-                            : 1;
-
-                } catch (ParseException ex) {
-                    Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                
-                if (myCupo.getTipoCupo().equalsIgnoreCase("especifico")) {
-                    String fechaSeleccionada = new SimpleDateFormat("yyyy-MM-dd").format(fechaInicial);
-                        for (int i = 0; i < diasDiferencia; i++) {
-                            new CupoAnimal().updateCupoEspecifico(
-                                    fechaSeleccionada,
-                                    myCupo.getProgramas(),
-                                    myCupo.getSorteos(),
-                                    myCupo.getAnimales(),
-                                    myCupo.getMonto()
-                            );
-                        }
-                        myCupos = (ArrayList) new CupoAnimal().listarCupos(fechaHoy).clone();
-                         new CupoAgencia().deleteCupoTemporal(agencia.getId());
-                } else {//if (myCupo.getTipoCupo().equalsIgnoreCase("permanente o Especifico"))
-                    for (int i = 0; i < diasDiferencia; i++) {
-                        for (String programa : programas) {
-                            for (JCheckBox sorteo : sorteos) {
-                                String mySorteo = sorteo.getName().toLowerCase().replace(" ", "");
-                                myCupos.add(new CupoAnimal().get(
-                                        new SimpleDateFormat("yyyy-MM-dd").format(
-                                                fechaActualizado > 0
-                                                        ? fechaInicial
-                                                        : myActualDate
-                                        ),
-                                        programa,
-                                        mySorteo,
-                                        cupoMaximo
-                                ));
-                            }
-                        }
-                        fechaInicial = new tools().sumarDiasFechaDate(fechaInicial, 1);
-
-                    }
-                     myCupos = (ArrayList) new CupoAnimal().listarCupos(fechaHoy).clone();
-                }
-
-                if (myCupo.getTipoCupo().equalsIgnoreCase("temporal")) {
-                    new CupoAgencia().deleteCupoTemporal(agencia.getId());
-                }
-            }
-        }
+        actualizarCupoAnimales();
+      //myCupos = (ArrayList) new CupoAnimal().getCupoAgencia(agencia.getId(),fechaHoy).clone();
 
         lbMensajeSistema.setText("Cupos Cargados.");
         if (fromMenu) {
@@ -3312,121 +3558,24 @@ public class index extends javax.swing.JFrame {
         }
           System.out.println("cupos actualizados");
     }
+    
+    
 
         TimerTask actualizarCuposTT = new TimerTask() {
         public void run() {
-            ArrayList<CupoAgencia> cupos = (ArrayList) new CupoAgencia().getCupos(agencia.getId()).clone();
+            actualizarCupoAnimales();
+//             myCupos = (ArrayList) new CupoAnimal().getCupoAgencia(
+//                     agencia.getId(),
+//                     fechaHoy
+//             ).clone();
 
-            if (cupos.isEmpty()) {
-              //  System.out.println("isEmpty");
-                for (String programa : programas) {
-                    for (JCheckBox sorteo : sorteos) {
-                        String mySorteo = sorteo.getName().toLowerCase().replace(" ", "");
-                        myCupos.add(new CupoAnimal().get(
-                                fechaHoy,
-                                programa,
-                                mySorteo,
-                                cupoMaximo
-                        ));
-                    }
-                }
-            } else {
-                for (CupoAgencia myCupo : cupos) {
-                    cupoMaximo = (int) myCupo.getMonto();
-                    int diasDiferencia = 0;
-                    Date fechaInicial = new Date();
-                    Date fechaFinal = new Date();
-                    Date myActualDate = new Date();
-                    int fechaActualizado = 0;
-
-                    try {
-                        fechaInicial = new SimpleDateFormat("yyyy-MM-dd").parse(myCupo.getFechaInicio());
-                        fechaFinal = new SimpleDateFormat("yyyy-MM-dd").parse(myCupo.getFechaFin());
-                        myActualDate = new SimpleDateFormat("yyyy-MM-dd").parse(fechaHoy);
-
-                        fechaActualizado = (int) new tools().getDiasDiferencia(myActualDate, fechaFinal);
-                        diasDiferencia = fechaActualizado >= 0
-                                ? (int) new tools().getDiasDiferencia(fechaInicial, fechaFinal) + 1
-                                : 1;
-
-                    } catch (ParseException ex) {
-                        Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                    if (myCupo.getTipoCupo().equalsIgnoreCase("especifico")) {
-                        String separador = Pattern.quote(",");
-                        String [] sorteoSeparado = myCupo.getSorteos().split(separador);
-                        String [] animalSeparado = myCupo.getAnimales().split(separador);
-                        
-                        ArrayList<String> sortxs =new ArrayList();
-                        sortxs = new ArrayList<String>(Arrays.asList(sorteoSeparado));
-                        
-                        String fechaSeleccionada = new SimpleDateFormat("yyyy-MM-dd").format(fechaInicial);
-                        for (int i = 0; i < diasDiferencia; i++) {
-                            
-                            for (String programa : programas) {
-                                if (myCupo.getProgramas().equalsIgnoreCase("todos") || myCupo.equals(programa)) {
-                                    for (JCheckBox sorteo : sorteos) {
-                                        String sortx = sorteo.getText().replace(" ", "").toLowerCase();
-                                        if (myCupo.getSorteos().equalsIgnoreCase("todos") || sortxs.contains(sortx)) {
-                                                    new CupoAnimal().get(
-                                                     fechaSeleccionada,
-                                                     programa,
-                                                     sortx,
-                                                     agencia.getCupoAnimal()
-                                                     ); 
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            new CupoAnimal().updateCupoEspecifico(
-                                    fechaSeleccionada,
-                                    myCupo.getProgramas(),
-                                    myCupo.getSorteos(),
-                                    myCupo.getAnimales(),
-                                    myCupo.getMonto()
-                            );
-                            
-                            
-                            fechaSeleccionada = new tools().sumarDiasFecha(fechaSeleccionada, 1);
-                        }
-                         myCupos = (ArrayList) new CupoAnimal().listarCupos(fechaHoy).clone();
-                          new CupoAgencia().deleteCupoTemporal(agencia.getId());
-                    } else {//if (myCupo.getTipoCupo().equalsIgnoreCase("permanente o temporal"))
-                        String fechaSeleccionada = new SimpleDateFormat("yyyy-MM-dd").format(fechaInicial);
-                        for (int i = 0; i < diasDiferencia; i++) {
-                            for (String programa : programas) {
-                                for (JCheckBox sorteo : sorteos) {
-                                    String mySorteo = sorteo.getName().toLowerCase().replace(" ", "");
-                                   myCupos.add( new CupoAnimal().get(
-                                            fechaSeleccionada,
-                                            programa,
-                                            mySorteo,
-                                            cupoMaximo
-                                    ));
-                                }
-                            }
-                            fechaInicial = new tools().sumarDiasFechaDate(fechaInicial, 1);
-                              fechaSeleccionada = new tools().sumarDiasFecha(fechaSeleccionada, 1);
-                        }
-                         myCupos = (ArrayList) new CupoAnimal().listarCupos(fechaHoy).clone();
-                    }
-
-                    if (myCupo.getTipoCupo().equalsIgnoreCase("temporal")) {
-                        new CupoAgencia().deleteCupoTemporal(agencia.getId());
-                    }
-                }
-            }
-            System.out.println("cupos actualizados");
         }
-        
     };
         
     public ArrayList<JCheckBox> getSorteos(){
         return sorteos;
     }
-    public ArrayList<String> getProgramas(){
+    public ArrayList<JCheckBox> getProgramas(){
         return programas;
     }
     public ArrayList<CupoAnimal> getAnimalesVendidos(){
@@ -3444,5 +3593,105 @@ public class index extends javax.swing.JFrame {
     public DefaultTableModel getModel (){
         return modelo;
     }
+    
+    
+    private void iniciarIngresoResultados(){
+        ProcesarResultados pr = new ProcesarResultados();
+    }
+    
+    
+    private JSONArray procesarVendidos(){
+        JSONArray jsonCupos = new JSONArray();
+        JSONObject vendido = new JSONObject();
+        for(CupoAnimal cupo : animalesVendidos){
+            vendido = new JSONObject();
+            vendido.put("p_idx", cupo.getId());
+            vendido.put("p_animal_0", cupo.getAnimal_0());
+            vendido.put("p_animal_00", cupo.getAnimal_00());
+            vendido.put("p_animal_1", cupo.getAnimal_1());
+            vendido.put("p_animal_2", cupo.getAnimal_2());
+            vendido.put("p_animal_3", cupo.getAnimal_3());
+            vendido.put("p_animal_4", cupo.getAnimal_4());
+            vendido.put("p_animal_5", cupo.getAnimal_5());
+            vendido.put("p_animal_6", cupo.getAnimal_6());
+            vendido.put("p_animal_7", cupo.getAnimal_7());
+            vendido.put("p_animal_8", cupo.getAnimal_8());
+            vendido.put("p_animal_9", cupo.getAnimal_9());
+            vendido.put("p_animal_10", cupo.getAnimal_10());
+            vendido.put("p_animal_11", cupo.getAnimal_11());
+            vendido.put("p_animal_12", cupo.getAnimal_12());
+            vendido.put("p_animal_13", cupo.getAnimal_13());
+            vendido.put("p_animal_14", cupo.getAnimal_14());
+            vendido.put("p_animal_15", cupo.getAnimal_15());
+            vendido.put("p_animal_16", cupo.getAnimal_16());
+            vendido.put("p_animal_17", cupo.getAnimal_17());
+            vendido.put("p_animal_18", cupo.getAnimal_18());
+            vendido.put("p_animal_19", cupo.getAnimal_19());
+            vendido.put("p_animal_20", cupo.getAnimal_20());
+            vendido.put("p_animal_21", cupo.getAnimal_21());
+            vendido.put("p_animal_22", cupo.getAnimal_22());
+            vendido.put("p_animal_23", cupo.getAnimal_23());
+            vendido.put("p_animal_24", cupo.getAnimal_24());
+            vendido.put("p_animal_25", cupo.getAnimal_25());
+            vendido.put("p_animal_26", cupo.getAnimal_26());
+            vendido.put("p_animal_27", cupo.getAnimal_27());
+            vendido.put("p_animal_28", cupo.getAnimal_28());
+            vendido.put("p_animal_29", cupo.getAnimal_29());
+            vendido.put("p_animal_30", cupo.getAnimal_30());
+            vendido.put("p_animal_31", cupo.getAnimal_31());
+            vendido.put("p_animal_32", cupo.getAnimal_32());
+            vendido.put("p_animal_33", cupo.getAnimal_33());
+            vendido.put("p_animal_34", cupo.getAnimal_34());
+            vendido.put("p_animal_35", cupo.getAnimal_35());
+            vendido.put("p_animal_36", cupo.getAnimal_36());
+            jsonCupos.put(vendido);
+        }
+        animalesVendidos.clear();
+        return jsonCupos;
+    }
+
+    private void confirmarCuposDisponibles() {
+        actualizarCupoAnimales();
+        String separador = Pattern.quote(" ");
+        for(int i =0 ; i<tabla.getRowCount(); i++){
+            
+            String[] sorteoArray = tabla.getValueAt(i, 0).toString().split(separador);
+            String programa = sorteoArray [0];
+            String horaSorteo = sorteoArray [1] + " "+sorteoArray [2];
+            String jugada = tabla.getValueAt(i, 1).toString();
+            String animalJugado = tomarAnimal(jugada);
+            double montoJugada = Double.parseDouble(tabla.getValueAt(i, 2).toString());
+            double cupo = Double.parseDouble(tabla.getValueAt(i, 3).toString());
+            
+            CupoAnimal cupoJugada = myCupos
+                    .stream()
+                    .filter(t -> t.getFecha().equalsIgnoreCase(fechaHoy)
+                        && t.getPrograma().equalsIgnoreCase(programa)
+                        && t.getSorteo().equalsIgnoreCase(horaSorteo)
+                    ).findFirst()
+                    .get();
+
+            double cupoAnimalJugado = cupoJugada.getCupoActual(animalJugado);
+               if(montoJugada > cupoAnimalJugado){
+                   tabla.setValueAt(cupoAnimalJugado, i, 3);
+               }     
+        }
+    }
+
+    private String tomarAnimal(String animalCompleto) {
+        String animalJugado="";
+        for (int j = 0; j < animalCompleto.length(); j++) {
+            if (new tools().ComprobarNumeros(animalCompleto.substring(j, (j + 1)))) {
+                animalJugado += animalCompleto.substring(j, (j + 1));
+            } else {
+                break;
+            }
+        }
+        return animalJugado;
+    }
+    
+    
+    
+    
     
 }

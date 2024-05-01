@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -13,7 +14,7 @@ import javax.swing.JOptionPane;
 public class Agencia {
     
     
-    int id=-1,numTicket, cupoAnimal;
+    int id=-1,minutosCierre,numTicket, cupoAnimal;
     String serialPC, nombreAgencia,username,password,estado;
     double comision;
     
@@ -24,9 +25,10 @@ public class Agencia {
     public Agencia() {//Esto es un comentarios para hacer prueba
     }
 
-    public Agencia(int id, int numTicket, int cupoAnimal, String serialPC, String nombreAgencia, String nameUsuario, String contraseña, String estado, double comision) {
+    public Agencia(int id,int numTicket, int minutosCierre, int cupoAnimal, String serialPC, String nombreAgencia, String nameUsuario, String contraseña, String estado, double comision) {
         this.id = id;
-        this.numTicket = numTicket;
+        this.numTicket=numTicket;
+        this.minutosCierre = minutosCierre;
         this.cupoAnimal = cupoAnimal;
         this.serialPC = serialPC;
         this.nombreAgencia = nombreAgencia;
@@ -52,6 +54,7 @@ public class Agencia {
                     my = new Agencia(
                             rs.getInt("id"),
                             rs.getInt("numTicket"),
+                            rs.getInt("minutos_cierre"),
                             rs.getInt("cupoAnimal"),
                             rs.getString("serialPc"),
                             rs.getString("nombreAgencia"),
@@ -98,6 +101,9 @@ public class Agencia {
         return rsp;
     }
     
+    public int incrementarNumTicketLocal(){
+        return numTicket++;
+    }
     
     public boolean upSerial(String serialx, int idAgenciax){
          try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
@@ -115,7 +121,9 @@ public class Agencia {
             cerrar();
         }
     }
-    
+    public static void main(String[] args) {
+       
+    }
     
      private void cerrar() {
         try {
@@ -133,13 +141,19 @@ public class Agencia {
 
    
 
-     public void incrementarTicket(){
-         numTicket++;
-     }
+     
 
     @Override
     public String toString() {
-        return "Agencia{" + "id=" + id + ", numTicket=" + numTicket + ", cupoAnimal=" + cupoAnimal + ", serialPC=" + serialPC + ", nombreAgencia=" + nombreAgencia + ", username=" + username + ", password=" + password + ", estado=" + estado + ", comision=" + comision + '}';
+        return "Agencia{" + "id=" + id + ", numTicket=" + minutosCierre + ", cupoAnimal=" + cupoAnimal + ", serialPC=" + serialPC + ", nombreAgencia=" + nombreAgencia + ", username=" + username + ", password=" + password + ", estado=" + estado + ", comision=" + comision + '}';
+    }
+
+    public int getNumTicket() {
+        return numTicket;
+    }
+
+    public void setNumTicket(int numTicket) {
+        this.numTicket = numTicket;
     }
      
      
@@ -151,12 +165,12 @@ public class Agencia {
         this.id = id;
     }
 
-    public int getNumTicket() {
-        return numTicket;
+    public int getMinutosCierre() {
+        return minutosCierre;
     }
 
-    public void setNumTicket(int numTicket) {
-        this.numTicket = numTicket;
+    public void setMinutosCierre(int minutosCierre) {
+        this.minutosCierre = minutosCierre;
     }
 
     public int getCupoAnimal() {

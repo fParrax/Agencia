@@ -107,10 +107,8 @@ public class ConectarDBCloud {
 
             if (parts[0].length() == 4) { // si el primer valor recibido tiene 4 digitos entonces es el valor del Año, por lo que...
                 fechaFinal = parts[2] + "/" + parts[1] + "/" + parts[0];// cambiamos la posición de la fecha al preferido
-                // System.out.println("Fecha Recibida: "+fnac+"\nFecha Parseada: "+fechaFinal); // se imprime recibido y cambiado
             } else if (parts[0].length() == 2) {
                 fechaFinal = parts[0] + "/" + parts[1] + "/" + parts[2];// En este caso si el primer valor recibido tiene 2 digitos
-                //System.out.println("Fecha Recibida: "+fnac+"\nFecha Parseada: "+fechaFinal); // no hace falta cambiar la fecha pero lo obligamos y nos aseguramos
             }
 
         }
@@ -171,4 +169,34 @@ con.setCatalog("ag");
         return a;
     }
     
+     public  String tomarFechaCompleta() {
+        String fecha = "";
+        try (Connection conex = new ConectarDBCloud("ag").getCon()) {
+                
+            String sql = "select replace(NOW(),'/','-') as a";
+            PreparedStatement s = conex.prepareStatement(sql);
+            ResultSet rs = s.executeQuery();
+            while (rs.next()) {
+                fecha = rs.getString("a");
+            }
+            try {
+                if (s != null) {
+                    s.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ConectarDBCloud.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            Logger.getLogger(ConectarDBCloud.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+        return fecha;
+    }
+     
 }
+

@@ -95,7 +95,6 @@ public class tools {
     }
     
     public static void main(String[] args) {
-        System.out.println(getAnimalFromString("00Ballena"));
     }
 public  static String getAnimalFromString(String animal){
     String resultado="";
