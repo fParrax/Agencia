@@ -8,6 +8,7 @@ import Clases.Imprimir;
 import Clases.JugadasTicket;
 import Clases.Loteria;
 import Clases.NTPService;
+import Clases.NewCupos;
 import Clases.PlaceHolder;
 import Clases.Ticket;
 import Clases.tools;
@@ -163,8 +164,6 @@ public class index extends javax.swing.JFrame {
         c10am = new javax.swing.JCheckBox();
         c9am = new javax.swing.JCheckBox();
         c8am = new javax.swing.JCheckBox();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tabla = new rojerusan.RSTableMetro();
         c830am = new javax.swing.JCheckBox();
         c930am = new javax.swing.JCheckBox();
         c1030am = new javax.swing.JCheckBox();
@@ -198,6 +197,9 @@ public class index extends javax.swing.JFrame {
         checkGranjita = new javax.swing.JCheckBox();
         checkLottoRD = new javax.swing.JCheckBox();
         checkLottoInternacional = new javax.swing.JCheckBox();
+        panelTablaJugadas = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tabla = new rojerusan.RSTableMetro();
         totalTicketTxt = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         lbNumTicket = new javax.swing.JLabel();
@@ -1025,48 +1027,6 @@ public class index extends javax.swing.JFrame {
             }
         });
 
-        tabla.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Sorteo", "Jugada", "Monto", "Cupo"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tabla.setAltoHead(30);
-        tabla.setColorBackgoundHead(new java.awt.Color(0, 102, 102));
-        tabla.setColorBordeFilas(new java.awt.Color(255, 255, 255));
-        tabla.setColorFilasBackgound2(new java.awt.Color(255, 255, 255));
-        tabla.setColorFilasForeground1(new java.awt.Color(0, 0, 0));
-        tabla.setColorFilasForeground2(new java.awt.Color(0, 0, 0));
-        tabla.setColorSelBackgound(new java.awt.Color(0, 102, 102));
-        tabla.setComponentPopupMenu(opcionesTabla);
-        tabla.setFuenteFilas(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        tabla.setFuenteFilasSelect(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        tabla.setFuenteHead(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        tabla.setGridColor(new java.awt.Color(0, 0, 0));
-        tabla.setSelectionBackground(new java.awt.Color(0, 102, 102));
-        tabla.setShowGrid(true);
-        tabla.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaMouseClicked(evt);
-            }
-        });
-        tabla.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                tablaKeyPressed(evt);
-            }
-        });
-        jScrollPane2.setViewportView(tabla);
-
         c830am.setBackground(new java.awt.Color(255, 255, 255));
         c830am.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         c830am.setText("8:30 AM");
@@ -1284,8 +1244,7 @@ public class index extends javax.swing.JFrame {
                         .addComponent(btnGenerarJugada)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(6, 6, 6)
-                .addComponent(jScrollPane2))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelSorteosLayout.setVerticalGroup(
             panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1348,10 +1307,7 @@ public class index extends javax.swing.JFrame {
                         .addComponent(c630pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(c730pm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelSorteosLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         panelAyuda.setBackground(new java.awt.Color(255, 255, 255));
@@ -1576,6 +1532,71 @@ public class index extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Sorteo", "Jugada", "Monto", "Cupo"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabla.setAltoHead(30);
+        tabla.setColorBackgoundHead(new java.awt.Color(0, 102, 102));
+        tabla.setColorBordeFilas(new java.awt.Color(255, 255, 255));
+        tabla.setColorFilasBackgound2(new java.awt.Color(255, 255, 255));
+        tabla.setColorFilasForeground1(new java.awt.Color(0, 0, 0));
+        tabla.setColorFilasForeground2(new java.awt.Color(0, 0, 0));
+        tabla.setColorSelBackgound(new java.awt.Color(0, 102, 102));
+        tabla.setComponentPopupMenu(opcionesTabla);
+        tabla.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tabla.setFuenteFilas(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tabla.setFuenteFilasSelect(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tabla.setFuenteHead(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        tabla.setGridColor(new java.awt.Color(0, 0, 0));
+        tabla.setRowHeight(23);
+        tabla.setSelectionBackground(new java.awt.Color(0, 102, 102));
+        tabla.setShowGrid(true);
+        tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMouseClicked(evt);
+            }
+        });
+        tabla.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tablaKeyPressed(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tabla);
+        if (tabla.getColumnModel().getColumnCount() > 0) {
+            tabla.getColumnModel().getColumn(1).setMinWidth(120);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(120);
+            tabla.getColumnModel().getColumn(2).setMinWidth(70);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(70);
+            tabla.getColumnModel().getColumn(2).setMaxWidth(70);
+            tabla.getColumnModel().getColumn(3).setMinWidth(70);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(70);
+            tabla.getColumnModel().getColumn(3).setMaxWidth(70);
+        }
+
+        javax.swing.GroupLayout panelTablaJugadasLayout = new javax.swing.GroupLayout(panelTablaJugadas);
+        panelTablaJugadas.setLayout(panelTablaJugadasLayout);
+        panelTablaJugadasLayout.setHorizontalGroup(
+            panelTablaJugadasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        );
+        panelTablaJugadasLayout.setVerticalGroup(
+            panelTablaJugadasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
         totalTicketTxt.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         totalTicketTxt.setText("0");
 
@@ -1606,9 +1627,9 @@ public class index extends javax.swing.JFrame {
             panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCentralLayout.createSequentialGroup()
                 .addComponent(panelAnimales, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelCentralLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panelPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton4)
@@ -1623,34 +1644,36 @@ public class index extends javax.swing.JFrame {
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lbNumTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(8, 8, 8))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(panelCentralLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panelSorteos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelTablaJugadas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
             .addComponent(panelAyuda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelCentralLayout.setVerticalGroup(
             panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCentralLayout.createSequentialGroup()
-                .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(panelCentralLayout.createSequentialGroup()
-                        .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(panelPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panelCentralLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lbNumTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(totalTicketTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(panelPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(panelSorteos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panelCentralLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbNumTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(totalTicketTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelTablaJugadas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(panelAnimales, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(panelAyuda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -2663,6 +2686,7 @@ public class index extends javax.swing.JFrame {
     private javax.swing.JPanel panelCentral;
     private javax.swing.JPanel panelPrograma;
     private javax.swing.JPanel panelSorteos;
+    private javax.swing.JPanel panelTablaJugadas;
     private javax.swing.JMenuItem resultadosItem;
     private javax.swing.JMenuItem salir;
     private rojerusan.RSTableMetro tabla;
@@ -2691,7 +2715,7 @@ public class index extends javax.swing.JFrame {
         try {
             fechaHoy = new ConectarDBCloud("ag").tomarFecha();
             datos = new Configuracion(fechaHoy);
-            getNumTicket();
+            lbNumTicket.setText(agencia.getNumTicket()+"");
 
              programas.add(checkGranjita);
              programas.add(checkLottoActivo);
@@ -2833,7 +2857,7 @@ public class index extends javax.swing.JFrame {
                         minutos = new tools().restarMinutos(myHora.getTime(), mySorteo.getTime());
 
                         
-                        sorteo.setVisible(minutos < agencia.getMinutosCierre() || minutos>1224? false : true);//ORIGINAL
+                        sorteo.setVisible(minutos < agencia.getMinutosCierre() || minutos>1224? true : true);//ORIGINAL
                         //sorteo.setVisible(minutos < 3 ? true : true);
                         for(JCheckBox programa : programas.stream().filter(t-> t.getToolTipText().equals(sorteo.getToolTipText())).collect(Collectors.toList())){
                             if(sorteo.isVisible()){
@@ -3415,7 +3439,7 @@ public class index extends javax.swing.JFrame {
             if (!jugadas.isEmpty()) {
                 
                 serialTicket = new Ticket().insert(
-                        myNumTicket,
+                        agencia.getNumTicket(),
                         agencia.getId(),
                         agencia.getNombreAgencia(),
                         totalJugado,
@@ -3451,11 +3475,12 @@ public class index extends javax.swing.JFrame {
                             agencia.getNombreAgencia(),
                             fechaHoy,
                             hora,
-                            String.valueOf(agencia.incrementarNumTicketLocal()),
+                            agencia.getNumTicket()+"",
                             serialTicket,
                             jugadas,
                             totalJugado
                     );//FIN IMPRESION
+                    agencia.incrementarNumTicketLocal();
                     
                     limpiarJugada(false);
                     resetearJugadas();       
@@ -3536,15 +3561,10 @@ public class index extends javax.swing.JFrame {
         }
     }
 
-    private void getNumTicket() {
-        myNumTicket = datos.getNumTicket(fechaHoy);
-        lbNumTicket.setText(myNumTicket+"");
-
-    }
+   
 
     private void crearCupos(boolean fromMenu) {
         actualizarCupoAnimales();
-      //myCupos = (ArrayList) new CupoAnimal().getCupoAgencia(agencia.getId(),fechaHoy).clone();
 
         lbMensajeSistema.setText("Cupos Cargados.");
         if (fromMenu) {
@@ -3564,11 +3584,6 @@ public class index extends javax.swing.JFrame {
         TimerTask actualizarCuposTT = new TimerTask() {
         public void run() {
             actualizarCupoAnimales();
-//             myCupos = (ArrayList) new CupoAnimal().getCupoAgencia(
-//                     agencia.getId(),
-//                     fechaHoy
-//             ).clone();
-
         }
     };
         
@@ -3596,7 +3611,9 @@ public class index extends javax.swing.JFrame {
     
     
     private void iniciarIngresoResultados(){
+        NewCupos nc = new NewCupos().iniciar();
         ProcesarResultados pr = new ProcesarResultados();
+        
     }
     
     

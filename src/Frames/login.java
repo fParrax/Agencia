@@ -167,8 +167,8 @@ public void changeIcon() {
                 Agencia ag = new Agencia().getAgencia(name);
 
                 if (ag.getId() > 0) {
-                    //String mySerial = new tools().getHHDSerialNumer();
-                    String mySerial="";
+                    String mySerial = new tools().getHHDSerialNumer();
+                    //String mySerial="";
                     new Thread(() -> {
                         if (ag.getSerialPC().isEmpty()) {
                             new Agencia().upSerial(mySerial, ag.getId());

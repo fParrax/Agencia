@@ -53,7 +53,7 @@ public class Agencia {
             while (rs.next()) {
                     my = new Agencia(
                             rs.getInt("id"),
-                            rs.getInt("numTicket"),
+                            rs.getInt("numTicketx"),
                             rs.getInt("minutos_cierre"),
                             rs.getInt("cupoAnimal"),
                             rs.getString("serialPc"),
@@ -74,7 +74,43 @@ public class Agencia {
         return my;
     }
     
-    
+     public boolean haveCuposIngresados(String dia){
+        int rsp =0;
+        try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
+            sql = "call `sp.getCuposFromDay` (?)";
+            pst = con.prepareStatement(sql);
+            pst.setString(1,dia);
+            rs = pst.executeQuery();
+            while(rs.next()){
+                rsp = rs.getInt("cantidad");
+            }
+            
+            
+        } catch (Exception e) {
+            Logger.getLogger(Agencia.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, "Error con el manejo de base de datos, contacte con el adm.\n" + e);
+        } finally {
+            cerrar();
+        }
+        return rsp == 0 ? false : true;
+    }
+     
+     public boolean crearCupos(){
+        int rsp =0;
+        try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
+            sql = "call `sp.CrearCupos` ()";
+            pst = con.prepareStatement(sql);
+            rsp = pst.executeUpdate();
+            
+            
+        } catch (Exception e) {
+            Logger.getLogger(Agencia.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, "Error con el manejo de base de datos, contacte con el adm.\n" + e);
+        } finally {
+            cerrar();
+        }
+        return rsp < 1 ? false : true;
+    }
     
     public int insert(String nameAgenciax, String usernamex, String paswordx ,
             String seralPcx, int cupoAnimalx, int comisionx){

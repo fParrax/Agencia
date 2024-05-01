@@ -61,7 +61,7 @@ public class Resultado {
     }
     
     public static void main(String[] args) {
-        new ScrapResultados().getResultadosRD();
+    new ScrapResultados().getResultadosRD();
     }
     
     public ArrayList getResultados(String fecha01, String fecha02){

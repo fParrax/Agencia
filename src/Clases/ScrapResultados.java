@@ -152,8 +152,11 @@ public class ScrapResultados {
                     myResultado.addProperty("programa", "LottoInternacional");
                     myResultado.addProperty("horaSorteo", hora);
                     
+                    if(!animalString.equals("-")){
+                       resultados.add(myResultado);
+                    }
                     
-                    resultados.add(myResultado);
+                    
                    
                 }    
               }
@@ -236,17 +239,29 @@ public class ScrapResultados {
 
                  String numAnimal = separado[0];
                  int myAnimal = Integer.parseInt(numAnimal);
-                 numAnimal = myAnimal>=1 && myAnimal<=9 && numAnimal.length()==1? "0"+numAnimal:numAnimal;
+                 numAnimal = myAnimal>=1 && myAnimal<=9 && numAnimal.length()==1
+                         ? "0" + numAnimal
+                         :numAnimal;
                  String animalCompleto = numAnimal+getAnimal(numAnimal);               
                  
-                 String sorteo = separado[5]+" "+separado[6];
-                 System.out.println("Animal: "+animalCompleto+" sorteo: "+sorteo);
+                 String horaSorteo = separado[5]
+                     .substring(0,1)
+                     .equals("0")
+                     ? separado[5]
+                         .substring(
+                                 1,
+                                 separado[5].length()
+                         )
+                     :separado[5];
                  
+                 
+                 
+                 String sorteo = horaSorteo+" "+separado[6];
                  myResultado.addProperty("animal", animalCompleto);
                  myResultado.addProperty("programa", "LottoRD");
                  myResultado.addProperty("horaSorteo", sorteo);
-                    
-                    
+                 
+                 System.out.println("sorteo: "+sorteo);
                 resultados.add(myResultado);
              }
              
