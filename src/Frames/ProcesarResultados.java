@@ -238,6 +238,8 @@ public class ProcesarResultados extends javax.swing.JFrame {
                             rst.setPrograma(programa);
                             rst.setSorteo(sorteoUtilizar);
                             rst.setAnimal(animalResultado);
+                            System.out.println("Programa error: "+programa);
+                            System.out.println("animal error: "+animalResultado);
                             if (rst.insert() > 0) {
                                 
                                 resultadosAgregados.addProperty(sorteoUtilizar, sorteoUtilizar);
