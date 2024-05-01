@@ -54,7 +54,7 @@ public class CupoAgencia {
             InetAddress address = InetAddress.getByName("capsperu.dyndns.org");
             boolean reachable = address.isReachable(1000);
 
-            System.out.println("Is host reachable? " + reachable);
+            //System.out.println("Is host reachable? " + reachable);
         } catch (Exception e){
             e.printStackTrace();
         }

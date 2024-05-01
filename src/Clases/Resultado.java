@@ -60,6 +60,10 @@ public class Resultado {
         return rsp;
     }
     
+    public static void main(String[] args) {
+        new ScrapResultados().getResultadosRD();
+    }
+    
     public ArrayList getResultados(String fecha01, String fecha02){
         ArrayList<Resultado> resuls = new ArrayList();
         try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {

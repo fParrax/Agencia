@@ -167,7 +167,7 @@ JPanel myPanelRepetir = new JPanel();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-      int numTicket= Integer.parseInt(txtNumTicket.getText());
+       int numTicket= Integer.parseInt(txtNumTicket.getText());
         myTicket = new Ticket().getTicketByNum(
               myIndex.getAgencia().getId(),
               getFechaDesde(),
@@ -191,7 +191,17 @@ JPanel myPanelRepetir = new JPanel();
                 for (JCheckBox sorteo : sorteosDisponibles) {
                         String programaYsorteo = programa +" "+ sorteo.getName();
                         
-                        CupoAnimal cupoJugada = myIndex.getAnimalesVendidos().stream()
+                        
+                        CupoAnimal cupoJugada =  myIndex.myCupos
+                                                        .stream()
+                                                        .filter(t -> t.getFecha().equalsIgnoreCase(myIndex.fechaHoy)
+                                                            && t.getPrograma().equalsIgnoreCase(programa)
+                                                            && t.getSorteo().equalsIgnoreCase(sorteo.getName().toLowerCase())//.replace(" ", ""))
+                                                        )
+                                                        .findFirst().get();
+                        
+                        /*
+                         CupoAnimal cupoJugada = myIndex.getAnimalesVendidos().stream()
                                 .filter(t
                                         -> t.getFecha().equalsIgnoreCase(myIndex.fechaHoy)
                                 && t.getPrograma().equalsIgnoreCase(programa)
@@ -204,6 +214,8 @@ JPanel myPanelRepetir = new JPanel();
                                                 50
                                         )
                                 );
+                        */
+                       
 
                         double cupoAnimalJugado = cupoJugada.getCupoActual(animalJugado);
                         double totalJugada = montoDouble > cupoAnimalJugado
@@ -364,9 +376,6 @@ public String getFechaDesde() {
         scroll.setViewportView(myPanelRepetir);
     }
 
-    private CupoAnimal insertCupo(String fecha, String programa, String sorteo, double monto) {
-        return new CupoAnimal().get(fecha, programa, sorteo, monto);
-
-    }
+    
     
 }

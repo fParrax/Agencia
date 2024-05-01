@@ -115,13 +115,13 @@ public class SorteoRepetir extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void iniciar() {
-        for(String programa: myIndex.getProgramas()){
+        for(JCheckBox programa: myIndex.getProgramas()){
             for(JCheckBox sorteo:myIndex.getSorteos()){
             if(sorteo.isVisible()){
                 JCheckBox temp = new JCheckBox();    
                 temp.setText(programa +" "+ sorteo.getName());
                 temp.setName(sorteo.getName());
-                temp.setToolTipText(programa);
+                temp.setToolTipText(programa.getText().replace(" ", ""));
                 temp.setForeground(Color.white);
                  
                 sorteosSeleccionados.add(temp);

@@ -48,7 +48,6 @@ public class Actualizar extends Propiedades{
              
             Scanner scanner = new Scanner(myUrl.openStream()).useDelimiter("\\Z");
             contenido = scanner.next();
-            //System.out.println(contenido);
             return contenido;
         } catch (IOException ex) {
             Logger.getLogger(Actualizar.class.getName()).log(Level.SEVERE, null, ex);

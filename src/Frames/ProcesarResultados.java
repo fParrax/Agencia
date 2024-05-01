@@ -48,6 +48,10 @@ public class ProcesarResultados extends javax.swing.JFrame {
         mensajeEspera = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtIngresadosGranjita = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtIngresadosRD = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        txtIngresadosInternacional = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ingreso Automático de Resultados");
@@ -71,6 +75,18 @@ public class ProcesarResultados extends javax.swing.JFrame {
         txtIngresadosGranjita.setRows(5);
         jScrollPane2.setViewportView(txtIngresadosGranjita);
 
+        txtIngresadosRD.setEditable(false);
+        txtIngresadosRD.setColumns(10);
+        txtIngresadosRD.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        txtIngresadosRD.setRows(5);
+        jScrollPane3.setViewportView(txtIngresadosRD);
+
+        txtIngresadosInternacional.setEditable(false);
+        txtIngresadosInternacional.setColumns(10);
+        txtIngresadosInternacional.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        txtIngresadosInternacional.setRows(5);
+        jScrollPane4.setViewportView(txtIngresadosInternacional);
+
         javax.swing.GroupLayout panelCentralLayout = new javax.swing.GroupLayout(panelCentral);
         panelCentral.setLayout(panelCentralLayout);
         panelCentralLayout.setHorizontalGroup(
@@ -82,7 +98,12 @@ public class ProcesarResultados extends javax.swing.JFrame {
                     .addGroup(panelCentralLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelCentralLayout.setVerticalGroup(
@@ -93,7 +114,9 @@ public class ProcesarResultados extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -155,10 +178,14 @@ public class ProcesarResultados extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel mensajeEspera;
     private javax.swing.JPanel panelCentral;
     private javax.swing.JTextArea txtIngresadosGranjita;
+    private javax.swing.JTextArea txtIngresadosInternacional;
     private javax.swing.JTextArea txtIngresadosLottoActivo;
+    private javax.swing.JTextArea txtIngresadosRD;
     // End of variables declaration//GEN-END:variables
 
     
@@ -168,18 +195,75 @@ public class ProcesarResultados extends javax.swing.JFrame {
                 tiempoCorto = true;
                 mensajeEspera.setText("Aún no actualizan el día en TuAzar.com");
             } else {
-
-                JsonArray resultados = new ScrapResultados().getResultados();
-
+                String fechaServidor = horaActualServidor();    
+                JsonArray resultadosWEB = new ScrapResultados().getResultados();
+                resultadosWEB.addAll(new ScrapResultados().getResultadosInternacional());
+                resultadosWEB.addAll(new ScrapResultados().getResultadosRD());
+                
+                
+                resultadosCloud = (ArrayList) new Resultado().getResultados(fechaHoy, fechaHoy).clone();
                 mensajeEspera.setText("Buscando resultados");
-                for (JsonElement element : resultados) {
+                for (JsonElement element : resultadosWEB) {
                     JsonObject resultado = element.getAsJsonObject();
-                    String fechaServidor = horaActualServidor();
+                    String programa = resultado.get("programa").getAsString();
+                    
+                    
+                    if(resultado.get("programa").getAsString().equals("LottoRD") ||
+                            resultado.get("programa").getAsString().equals("LottoInternacional")){
+                        String sorteoUtilizar = resultado.get("programa").getAsString() +" "+ resultado.get("horaSorteo").getAsString();
+                        String animalResultado = resultado.get("animal").getAsString();
+                        if (!resultadosAgregados.has(sorteoUtilizar)) {
+                           System.out.println("Resultado no encontrado");
+                           
+                           Resultado rst = resultadosCloud.stream().filter(t
+                                -> t.getPrograma().equalsIgnoreCase(programa)
+                                && t.getAnimal().equalsIgnoreCase(animalResultado)
+                                && t.getSorteo().equalsIgnoreCase(sorteoUtilizar)
+                        ).findFirst().orElse(new Resultado());
+
+                        if (rst.getId() > 0) {//está en la base de datos pero aún no se agrega al registro Local
+
+                            resultadosAgregados.addProperty(sorteoUtilizar, sorteoUtilizar);
+                            
+                            if(programa.equalsIgnoreCase("lottord")){
+                                txtIngresadosRD.append(sorteoUtilizar + " -> " + animalResultado + "\n");
+                            } else if(programa.equalsIgnoreCase("lottointernacional")){
+                                txtIngresadosInternacional.append(sorteoUtilizar + " -> " + animalResultado + "\n");
+                            }
+                            
+                            
+                            System.out.println("Está en la BD pero no Local. Agregado Localmente:   "+sorteoUtilizar + " -> " + animalResultado);
+                        } else {
+                            rst.setFecha(fechaHoy);
+                            rst.setPrograma(programa);
+                            rst.setSorteo(sorteoUtilizar);
+                            rst.setAnimal(animalResultado);
+                            if (rst.insert() > 0) {
+                                
+                                resultadosAgregados.addProperty(sorteoUtilizar, sorteoUtilizar);
+
+                                if(programa.equalsIgnoreCase("lottord")){
+                                    txtIngresadosRD.append(sorteoUtilizar + " -> " + animalResultado + "\n");
+                                } else if(programa.equalsIgnoreCase("lottointernacional")){
+                                    txtIngresadosInternacional.append(sorteoUtilizar + " -> " + animalResultado + "\n");
+                                }
+                            System.out.println("Agregado en la red:    " +sorteoUtilizar + " -> " + animalResultado);       
+                            } else {
+                                mensajeEspera.setText("Error agregando resultado");
+                                System.out.println("Error agregando resultado");
+                            }
+                        }
+                        
+                       } 
+                    }else{
+                        
+                    
                     minutosDiferencia = minutosPostSorteo(element, fechaHoy, fechaServidor);
 
                     System.out.println("");
-                    String programa = resultado.get("programa").getAsString();
+                    
                     String animal = resultado.get("animal").getAsString();
+                        System.out.println("xxxxxxxxxxxx Animal: "+animal);
                     String animalResultado = animal + getAnimal(animal);
                     String sorteoUtilizar = sorteoUtilizar(programa, getHoradelSorteo(resultado.get("horaSorteo").getAsString()));
 
@@ -189,7 +273,7 @@ public class ProcesarResultados extends javax.swing.JFrame {
                         mensajeEspera.setText("Resultados encontrados");
                         System.out.println("Resultado no encontrado");
 
-                        resultadosCloud = (ArrayList) new Resultado().getResultados(fechaHoy, fechaHoy).clone();
+                        
                         Resultado rst = resultadosCloud.stream().filter(t
                                 -> t.getPrograma().equalsIgnoreCase(programa)
                                 && t.getAnimal().equalsIgnoreCase(animalResultado)
@@ -233,6 +317,7 @@ public class ProcesarResultados extends javax.swing.JFrame {
 
                     } else {
                         System.out.println("Ya se encontraba en el registro Local:    "+sorteoUtilizar + " -> " + animalResultado);
+                    }
                     }
 
                 }
@@ -328,120 +413,53 @@ public class ProcesarResultados extends javax.swing.JFrame {
 
         if (true) {
             switch (numero) {
-                case "0":
-                    animal = "Delfin";
-                    break;
-                case "00":
-                    animal = "Ballena";
-                    break;
-                case "1":
-                    animal = "Carnero";
-                    break;
-                case "2":
-                    animal = "Toro";
-                    break;
-                case "3":
-                    animal = "Ciempies";
-                    break;
-                case "4":
-                    animal = "Alacrán";
-                    break;
-                case "5":
-                    animal = "Leon";
-                    break;
-                case "6":
-                    animal = "Rana";
-                    break;
-                case "7":
-                    animal = "Perico";
-                    break;
-                case "8":
-                    animal = "Ratón";
-                    break;
-                case "9":
-                    animal = "Aguila";
-                    break;
-                case "10":
-                    animal = "Tigre";
-                    break;
-                case "11":
-                    animal = "Gato";
-                    break;
-                case "12":
-                    animal = "Caballo";
-                    break;
-                case "13":
-                    animal = "Mono";
-                    break;
-                case "14":
-                    animal = "Paloma";
-                    break;
-                case "15":
-                    animal = "Zorro";
-                    break;
-                case "16":
-                    animal = "Oso";
-                    break;
-                case "17":
-                    animal = "Pavo";
-                    break;
-                case "18":
-                    animal = "Burro";
-                    break;
-                case "19":
-                    animal = "Chivo";
-                    break;
-                case "20":
-                    animal = "Cochino";
-                    break;
-                case "21":
-                    animal = "Gallo";
-                    break;
-                case "22":
-                    animal = "Camello";
-                    break;
-                case "23":
-                    animal = "Cebra";
-                    break;
-                case "24":
-                    animal = "Iguana";
-                    break;
-                case "25":
-                    animal = "Gallina";
-                    break;
-                case "26":
-                    animal = "Vaca";
-                    break;
-                case "27":
-                    animal = "Perro";
-                    break;
-                case "28":
-                    animal = "Zamuro";
-                    break;
-                case "29":
-                    animal = "Elefante";
-                    break;
-                case "30":
-                    animal = "Caimán";
-                    break;
-                case "31":
-                    animal = "Lapa";
-                    break;
-                case "32":
-                    animal = "Ardilla";
-                    break;
-                case "33":
-                    animal = "Pescado";
-                    break;
-                case "34":
-                    animal = "Venado";
-                    break;
-                case "35":
-                    animal = "Jirafa";
-                    break;
-                case "36":
-                    animal = "Culebra";
-                    break;
+                case "0":animal = "Delfín";break;
+                case "00":animal = "Ballena";break;
+                case "01":animal = "Carnero";break;
+                case "1":animal = "Carnero";break;
+                case "02":animal = "Toro";break;
+                case "2":animal = "Toro";break;
+                case "03":animal = "Ciempies";break;
+                case "3":animal = "Ciempies";break;
+                case "04":animal = "Alacrán";break;
+                case "4":animal = "Alacrán";break;
+                case "05":animal = "León";break;
+                case "5":animal = "Leon";break;
+                case "06":animal = "Rana";break;
+                case "6":animal = "Rana";break;
+                case "07":animal = "Perico";break;
+                case "7":animal = "Perico";break;
+                case "08":animal = "Ratón";break;
+                case "8":animal = "Ratón";break;
+                case "09":animal = "Águila";break;
+                case "9":animal = "Águila";break;
+                case "10":animal = "Tigre";break;
+                case "11":animal = "Gato";break;
+                case "12":animal = "Caballo";break;
+                case "13":animal = "Mono";break;
+                case "14":animal = "Paloma";break;
+                case "15":animal = "Zorro";break;
+                case "16":animal = "Oso";break;
+                case "17":animal = "Pavo";break;
+                case "18":animal = "Burro";break;
+                case "19":animal = "Chivo";break;
+                case "20":animal = "Cochino";break;
+                case "21":animal = "Gallo";break;
+                case "22":animal = "Camello";break;
+                case "23":animal = "Cebra";break;
+                case "24":animal = "Iguana";break;
+                case "25":animal = "Gallina";break;
+                case "26":animal = "Vaca";break;
+                case "27":animal = "Perro";break;
+                case "28":animal = "Zamuro";break;
+                case "29":animal = "Elefante";break;
+                case "30":animal = "Caimán";break;
+                case "31":animal = "Lapa";break;
+                case "32":animal = "Ardilla";break;
+                case "33":animal = "Pescado";break;
+                case "34":animal = "Venado";break;
+                case "35":animal = "Jirafa";break;
+                case "36":animal = "Culebra";break;
             }
         }
         

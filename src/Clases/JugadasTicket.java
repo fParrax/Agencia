@@ -64,52 +64,53 @@ public class JugadasTicket {
     }
     
     
-    public int getHoradelSorteo(){
-        int rsp=0;
-        String separador = Pattern.quote(" ");
-        String [] horaArray = sorteo.split(separador);
-                int temp = Integer.parseInt(horaArray[1]);
+//    public int getHoradelSorteo(){
+//        int rsp=0;
+//        String separador = Pattern.quote(" ");
+//        String [] horaArray = sorteo.split(separador);
+//                int temp = Integer.parseInt(horaArray[1]);
+//                
+//                rsp = temp==1 //&& horaArray[2].equalsIgnoreCase("pm")
+//                    ?  13 
+//                    : temp==2 //&& horaArray[2].equalsIgnoreCase("pm")
+//                    ?  14
+//                    : temp==3 //&& horaArray[2].equalsIgnoreCase("pm")
+//                    ?  15
+//                    : temp==4 //&& horaArray[2].equalsIgnoreCase("pm")
+//                    ?  16
+//                    : temp==5 //&& horaArray[2].equalsIgnoreCase("pm")
+//                    ?  17
+//                    : temp==6 //&& horaArray[2].equalsIgnoreCase("pm")
+//                    ?  18
+//                    : temp==7 //&& horaArray[2].equalsIgnoreCase("pm")
+//                    ?  19
+//                    : temp ;
+//            
+//                
+//        
+//        return rsp;
+//    }
+     public String getHoradelSorteo(String hora){
+        String rsp="";
+        boolean tipo2 = hora.contains(":30");
+                String temp = hora.trim().replace(":30", "");
                 
-                rsp = temp==1 //&& horaArray[2].equalsIgnoreCase("pm")
-                    ?  13 
-                    : temp==2 //&& horaArray[2].equalsIgnoreCase("pm")
-                    ?  14
-                    : temp==3 //&& horaArray[2].equalsIgnoreCase("pm")
-                    ?  15
-                    : temp==4 //&& horaArray[2].equalsIgnoreCase("pm")
-                    ?  16
-                    : temp==5 //&& horaArray[2].equalsIgnoreCase("pm")
-                    ?  17
-                    : temp==6 //&& horaArray[2].equalsIgnoreCase("pm")
-                    ?  18
-                    : temp==7 //&& horaArray[2].equalsIgnoreCase("pm")
-                    ?  19
+                rsp = temp.equals("1") //&& horaArray[2].equalsIgnoreCase("pm")
+                    ?  "13" 
+                    : temp.equals("2") //&& horaArray[2].equalsIgnoreCase("pm")
+                    ?  "14"
+                    : temp.equals("3") //&& horaArray[2].equalsIgnoreCase("pm")
+                    ?  "15"
+                    : temp.equals("4") //&& horaArray[2].equalsIgnoreCase("pm")
+                    ?  "16"
+                    : temp.equals("5") //&& horaArray[2].equalsIgnoreCase("pm")
+                    ?  "17"
+                    : temp.equals("6") //&& horaArray[2].equalsIgnoreCase("pm")
+                    ?  "18"
+                    : temp.equals("7") //&& horaArray[2].equalsIgnoreCase("pm")
+                    ?  "19"
                     : temp ;
-            
-                
-        
-        return rsp;
-    }
-     public int getHoradelSorteo(String hora){
-        int rsp=0;
-                int temp = Integer.parseInt(hora.trim());
-                
-                rsp = temp==1 //&& horaArray[2].equalsIgnoreCase("pm")
-                    ?  13 
-                    : temp==2 //&& horaArray[2].equalsIgnoreCase("pm")
-                    ?  14
-                    : temp==3 //&& horaArray[2].equalsIgnoreCase("pm")
-                    ?  15
-                    : temp==4 //&& horaArray[2].equalsIgnoreCase("pm")
-                    ?  16
-                    : temp==5 //&& horaArray[2].equalsIgnoreCase("pm")
-                    ?  17
-                    : temp==6 //&& horaArray[2].equalsIgnoreCase("pm")
-                    ?  18
-                    : temp==7 //&& horaArray[2].equalsIgnoreCase("pm")
-                    ?  19
-                    : temp ;
-        return rsp;
+        return !tipo2?rsp:rsp+":30";
     }
     
     public int getId() {
