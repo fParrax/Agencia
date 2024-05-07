@@ -61,7 +61,15 @@ public class Resultado {
     }
     
     public static void main(String[] args) {
-    new ScrapResultados().getResultadosRD();
+        //new ScrapResultados().getResultadosRD();
+        ArrayList<Loteria> lots = new Loteria().getLoterias();
+        for(Loteria l : lots){
+            System.out.println("Grupo: "+l.getFkGrupoResultado()+" Loteria: "+l.getNombre()+ " sorteos: ");
+            for(HoraSorteo h : l.getSorteos()){
+                System.out.println(h.getHoraSorteo());
+            }
+        }
+        
     }
     
     public ArrayList getResultados(String fecha01, String fecha02){

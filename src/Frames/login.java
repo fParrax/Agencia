@@ -24,9 +24,7 @@ import javax.swing.JOptionPane;
  */
 public class login extends javax.swing.JFrame {
 
-    /**
-     * Creates new form login
-     */
+    String username="";
     public login() {
         initComponents();
         changeIcon();
@@ -182,7 +180,11 @@ public void changeIcon() {
                         if (ag.getPassword().equals(new EncriptadorAES().encriptar(pss))) {
                             this.dispose();
                             new index(ag).setVisible(true);
+                            new Agencia().updateUsername(name);
                             
+                            if(!username.equals(txtUsername.getText())){
+                                new Agencia().updateUsername(txtUsername.getText());
+                            }
                         } else {
                             JOptionPane.showMessageDialog(rootPane, "Contraseña Incorrecta");
                         }
@@ -287,7 +289,14 @@ private void testCon(){
 }
 
     private void iniciar() {   
-       // System.out.println( new tools().getHHDSerialNumer());
+        username = new Agencia().getUsernameFromLocalStorage();
+        if(username.isEmpty()){
+            
+        }else{
+          txtUsername.setText(username);  
+          txtPassword.requestFocus();
+        }
+        
     }
 
 }

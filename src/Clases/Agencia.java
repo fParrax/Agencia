@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 public class Agencia {
     
     
-    int id=-1,minutosCierre,numTicket, cupoAnimal;
+    int id=-1,minutosCierre,numTicket, cupoAnimal,jugadaMinima;
     String serialPC, nombreAgencia,username,password,estado;
     double comision;
     
@@ -25,10 +25,11 @@ public class Agencia {
     public Agencia() {//Esto es un comentarios para hacer prueba
     }
 
-    public Agencia(int id,int numTicket, int minutosCierre, int cupoAnimal, String serialPC, String nombreAgencia, String nameUsuario, String contraseña, String estado, double comision) {
+    public Agencia(int id,int numTicket, int minutosCierre,int jugadaMinima, int cupoAnimal, String serialPC, String nombreAgencia, String nameUsuario, String contraseña, String estado, double comision) {
         this.id = id;
         this.numTicket=numTicket;
         this.minutosCierre = minutosCierre;
+        this.jugadaMinima=jugadaMinima;
         this.cupoAnimal = cupoAnimal;
         this.serialPC = serialPC;
         this.nombreAgencia = nombreAgencia;
@@ -55,6 +56,7 @@ public class Agencia {
                             rs.getInt("id"),
                             rs.getInt("numTicketx"),
                             rs.getInt("minutos_cierre"),
+                            rs.getInt("jugadaMinima"),
                             rs.getInt("cupoAnimal"),
                             rs.getString("serialPc"),
                             rs.getString("nombreAgencia"),
@@ -157,6 +159,41 @@ public class Agencia {
             cerrar();
         }
     }
+    public String getUsernameFromLocalStorage(){
+        String rsp=""; 
+        try (java.sql.Connection con = new ConectarDBSQLLite().getCon()) {
+              sql = "select * from infoAgencia";
+            pst = con.prepareStatement(sql);
+            rs = pst.executeQuery();
+            while(rs.next()){
+                rsp = rs.getString("nameAgencia");
+            }
+         } catch (Exception e) {
+            
+             Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, "Error con el manejo de base de datos, contacte con el adm.\n" + e);
+        return "";
+         } finally {
+            cerrar();
+        }
+        return rsp;
+    }
+    
+     public void updateUsername(String username){
+        String rsp=""; 
+        try (java.sql.Connection con = new ConectarDBSQLLite().getCon()) {
+              sql = "update infoAgencia set nameAgencia=?";
+            pst = con.prepareStatement(sql);
+            pst.setString(1,username);
+            pst.executeUpdate();
+         } catch (Exception e) {
+            
+             Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, "Error con el manejo de base de datos, contacte con el adm.\n" + e);
+         } finally {
+            cerrar();
+        }
+    }
     public static void main(String[] args) {
        
     }
@@ -173,6 +210,14 @@ public class Agencia {
             Logger.getLogger(Agencia.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, ex, "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    public int getJugadaMinima() {
+        return jugadaMinima;
+    }
+
+    public void setJugadaMinima(int jugadaMinima) {
+        this.jugadaMinima = jugadaMinima;
     }
 
    

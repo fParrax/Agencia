@@ -366,19 +366,19 @@ public class ProcesarResultados extends javax.swing.JFrame {
         }
     }
       
-    private  String sorteoUtilizar(String programa, String horaSorteo){
+   private  String sorteoUtilizar(String programa, String horaSorteo){
         switch(horaSorteo){
-            case "09:00:00": return programa+" 9 AM";
-            case "10:00:00": return programa+" 10 AM";
-            case "11:00:00": return programa+" 11 AM";
-            case "12:00:00": return programa+" 12 PM";
-            case "13:00:00": return programa+" 1 PM";
-            case "14:00:00": return programa+" 2 PM";
-            case "15:00:00": return programa+" 3 PM";
-            case "16:00:00": return programa+" 4 PM";
-            case "17:00:00": return programa+" 5 PM";
-            case "18:00:00": return programa+" 6 PM";
-            case "19:00:00": return programa+" 7 PM";
+            case "09:00:00": return programa+" 9:00 AM";
+            case "10:00:00": return programa+" 10:00 AM";
+            case "11:00:00": return programa+" 11:00 AM";
+            case "12:00:00": return programa+" 12:00 PM";
+            case "13:00:00": return programa+" 1:00 PM";
+            case "14:00:00": return programa+" 2:00 PM";
+            case "15:00:00": return programa+" 3:00 PM";
+            case "16:00:00": return programa+" 4:00 PM";
+            case "17:00:00": return programa+" 5:00 PM";
+            case "18:00:00": return programa+" 6:00 PM";
+            case "19:00:00": return programa+" 7:00 PM";
             
             default: return "Granjita 8 AM";
         }
