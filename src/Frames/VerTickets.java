@@ -263,11 +263,11 @@ public class VerTickets extends javax.swing.JFrame {
 
             },
             new String [] {
-                "#", "Ticket", "Fecha y Hora", "Monto", "Premios", "Estado"
+                "#", "Ticket", "Monto", "Premios", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -311,11 +311,11 @@ public class VerTickets extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Sorteo", "Jugada", "Monto", "Premio", "Estado"
+                "Sorteo", "Jugada", "Monto", "Premio"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -344,9 +344,12 @@ public class VerTickets extends javax.swing.JFrame {
         });
         jScrollPane4.setViewportView(tablaJugadas);
         if (tablaJugadas.getColumnModel().getColumnCount() > 0) {
-            tablaJugadas.getColumnModel().getColumn(0).setMinWidth(130);
-            tablaJugadas.getColumnModel().getColumn(0).setPreferredWidth(130);
-            tablaJugadas.getColumnModel().getColumn(0).setMaxWidth(130);
+            tablaJugadas.getColumnModel().getColumn(2).setMinWidth(85);
+            tablaJugadas.getColumnModel().getColumn(2).setPreferredWidth(85);
+            tablaJugadas.getColumnModel().getColumn(2).setMaxWidth(85);
+            tablaJugadas.getColumnModel().getColumn(3).setMinWidth(85);
+            tablaJugadas.getColumnModel().getColumn(3).setPreferredWidth(85);
+            tablaJugadas.getColumnModel().getColumn(3).setMaxWidth(85);
         }
 
         jLabel3.setText("Total Vendido:");
@@ -364,7 +367,7 @@ public class VerTickets extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelResultadosLayout.createSequentialGroup()
                 .addGroup(panelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelResultadosLayout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(panelResultadosLayout.createSequentialGroup()
                         .addContainerGap()
@@ -377,8 +380,8 @@ public class VerTickets extends javax.swing.JFrame {
                         .addComponent(lbTotalAnulado, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(panelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelInfoTicket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
+                    .addComponent(panelInfoTicket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelResultadosLayout.setVerticalGroup(
@@ -453,11 +456,10 @@ public class VerTickets extends javax.swing.JFrame {
                     .collect(Collectors.toList());
             for (JugadasTicket jugada :jugadasSeleccionadas) {
                 modeloJugadas.addRow(new Object[]{
-                    jugada.getSorteo(),
+                    jugada.getSorteo().replace("LottoInternacional", "Internacional"),
                     jugada.getAnimal(),
                     jugada.getMonto(),
                     jugada.getEstado().equalsIgnoreCase("premiado")||jugada.getEstado().equalsIgnoreCase("pagado")?(jugada.getMonto()*30):0,
-                    jugada.getEstado()
                 });
             }
 
@@ -481,13 +483,21 @@ public class VerTickets extends javax.swing.JFrame {
             if (estado.equalsIgnoreCase("premiado")) {
                 if (ticket.getEstado().toLowerCase().contains("premiado") || ticket.getEstado().toLowerCase().contains("pagado")) {
                     modeloTickets.addRow(new Object[]{
-                        ticket.getId(), ticket.getNumTicket(), ticket.getFecha(), ticket.getTotalJugado(),ticket.getTotalPremio(), ticket.getEstado()
+                        ticket.getId(),
+                        ticket.getNumTicket(),
+                        ticket.getTotalJugado(),
+                        ticket.getTotalPremio(),
+                        ticket.getEstado()
                     });
                 } 
             }else{
                  if (ticket.getEstado().toLowerCase().contains(estado)) {
                         modeloTickets.addRow(new Object[]{
-                            ticket.getId(), ticket.getNumTicket(), ticket.getFecha(), ticket.getTotalJugado(),ticket.getTotalPremio(), ticket.getEstado()
+                            ticket.getId(),
+                            ticket.getNumTicket(),
+                            ticket.getTotalJugado(),
+                            ticket.getTotalPremio(),
+                            ticket.getEstado()
                         });
                     }
             }

@@ -261,7 +261,7 @@ public class ScrapResultados {
                  myResultado.addProperty("programa", "LottoRD");
                  myResultado.addProperty("horaSorteo", sorteo);
                  
-                 System.out.println("sorteo: "+sorteo);
+                 System.out.println(myResultado.toString());
                 resultados.add(myResultado);
              }
              

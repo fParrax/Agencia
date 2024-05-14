@@ -9,12 +9,14 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 public class GrupoResultado {
 
     int  numGrupo=0;
     String nombresLotterias;
+    ArrayList<String> loterias = new ArrayList();
     ArrayList<String> horasSorteo = new ArrayList();
     String sql;
     PreparedStatement pst;
@@ -28,6 +30,12 @@ public class GrupoResultado {
     public GrupoResultado( int numGrupo,String nombresLotterias) {
         this.numGrupo = numGrupo;
         this.nombresLotterias = nombresLotterias;
+        String separador = Pattern.quote(",");
+        String[] separado = nombresLotterias.split(separador);
+        loterias.clear();
+        for(String lot : separado){
+            loterias.add(lot);
+        }
     }
 
     
@@ -78,6 +86,15 @@ public class GrupoResultado {
        return arreglo;
     }
 
+    public ArrayList<String> getLoterias() {
+        return loterias;
+    }
+
+    public void setLoterias(ArrayList<String> loterias) {
+        this.loterias = loterias;
+    }
+
+    
     
     public boolean isEmpty(){
          return Float.compare(numGrupo, 0) == 0 ? true:false;

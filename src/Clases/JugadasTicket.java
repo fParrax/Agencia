@@ -93,7 +93,7 @@ public class JugadasTicket {
      public String getHoradelSorteo(String hora){
         String rsp="";
         boolean tipo2 = hora.contains(":30");
-                String temp = hora.trim().replace(":30", "");
+                String temp = hora.trim().replace(":30", "").replace(":00", "");
                 
                 rsp = temp.equals("1") //&& horaArray[2].equalsIgnoreCase("pm")
                     ?  "13" 
@@ -110,7 +110,7 @@ public class JugadasTicket {
                     : temp.equals("7") //&& horaArray[2].equalsIgnoreCase("pm")
                     ?  "19"
                     : temp ;
-        return !tipo2?rsp:rsp+":30";
+        return rsp.concat(tipo2 ? ":30":":00") ;
     }
     
     public int getId() {

@@ -1,17 +1,8 @@
 package Clases;
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.print.Doc;
 import javax.print.DocFlavor;
 import javax.print.DocPrintJob;
@@ -41,6 +32,8 @@ public class Imprimir {
         
         ArrayList<JugadasTicket> lotto = new ArrayList();
         ArrayList<JugadasTicket> granja = new ArrayList();
+        ArrayList<JugadasTicket> rd = new ArrayList();
+        ArrayList<JugadasTicket> internacional = new ArrayList();
         ArrayList<String> programasJugados = (ArrayList)jugadas
                 .stream()
                 .map(JugadasTicket::getPrograma)
@@ -54,8 +47,13 @@ public class Imprimir {
                         .stream()
                         .filter( t->t.getPrograma().equalsIgnoreCase(programa))
                         .collect(Collectors.toList());
-            }else{
+            }else if(programa.equalsIgnoreCase("granjita")){
                 granja  = (ArrayList) jugadas
+                        .stream()
+                        .filter( t->t.getPrograma().equalsIgnoreCase(programa))
+                        .collect(Collectors.toList());
+            }else if(programa.equalsIgnoreCase("lottord")){
+                rd  = (ArrayList) jugadas
                         .stream()
                         .filter( t->t.getPrograma().equalsIgnoreCase(programa))
                         .collect(Collectors.toList());
@@ -63,7 +61,9 @@ public class Imprimir {
             
         }
         
-        if (granja.containsAll(lotto) && Float.compare(lotto.size(),granja.size())==0) {
+        if (granja.containsAll(lotto) && granja.containsAll(rd) &&
+                Float.compare(lotto.size(),granja.size())==0 && 
+                Float.compare(rd.size(),granja.size())==0) {
             String separador = Pattern.quote(" ");
             String [] separado = new String[3];
             for (JugadasTicket jugada : granja) {

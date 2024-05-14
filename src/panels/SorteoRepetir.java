@@ -4,6 +4,7 @@
  */
 package panels;
 
+import Clases.JCheckBoxPrograma;
 import Clases.JugadasTicket;
 import Frames.index;
 import java.awt.Color;
@@ -115,19 +116,17 @@ public class SorteoRepetir extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void iniciar() {
-        for(JCheckBox programa: myIndex.getProgramas()){
-            for(JCheckBox sorteo:myIndex.getSorteos()){
+            for(JCheckBoxPrograma sorteo:myIndex.getSorteos()){
             if(sorteo.isVisible()){
                 JCheckBox temp = new JCheckBox();    
-                temp.setText(programa +" "+ sorteo.getName());
+                temp.setText(sorteo.getPrograma() +" "+ sorteo.getName());
                 temp.setName(sorteo.getName());
-                temp.setToolTipText(programa.getText().replace(" ", ""));
+                temp.setToolTipText(sorteo.getPrograma().replace(" ", ""));
                 temp.setForeground(Color.white);
                  
                 sorteosSeleccionados.add(temp);
                 panelSorteos.add(temp);
             }
-        }
         }
         
         

@@ -94,6 +94,14 @@ public class Loteria {
         return "Loteria{" + "fkGrupoResultado=" + fkGrupoResultado + ", nombre=" + nombre + '}';
     }
 
+    public ArrayList<HoraSorteo> getSorteos() {
+        return sorteos;
+    }
+
+    public void setSorteos(ArrayList<HoraSorteo> sorteos) {
+        this.sorteos = sorteos;
+    }
+
     
      
      

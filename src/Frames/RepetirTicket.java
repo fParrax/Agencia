@@ -1,10 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
+
 package Frames;
 
 import Clases.CupoAnimal;
+import Clases.JCheckBoxPrograma;
 import Clases.JugadasTicket;
 import Clases.ScrollSens;
 import Clases.Ticket;
@@ -186,9 +185,9 @@ JPanel myPanelRepetir = new JPanel();
                   String animalJugado = new tools().getAnimalFromString(jugadaRealizada.getAnimal());
                         String programa = jugadaRealizada.getPrograma();
                         
-                        ArrayList<JCheckBox> sorteosDisponibles = new ArrayList();
+                        ArrayList<JCheckBoxPrograma> sorteosDisponibles = new ArrayList();
                         sorteosDisponibles = (ArrayList)myIndex.getSorteos().stream().filter(t->t.isVisible()).collect(Collectors.toList());
-                for (JCheckBox sorteo : sorteosDisponibles) {
+                for (JCheckBoxPrograma sorteo : sorteosDisponibles) {
                         String programaYsorteo = programa +" "+ sorteo.getName();
                         
                         

@@ -200,8 +200,8 @@ public class ProcesarResultados extends javax.swing.JFrame {
                 resultadosWEB.addAll(new ScrapResultados().getResultadosInternacional());
                 resultadosWEB.addAll(new ScrapResultados().getResultadosRD());
                 
-                
-                resultadosCloud = (ArrayList) new Resultado().getResultados(fechaHoy, fechaHoy).clone();
+                resultadosCloud.clear();
+                resultadosCloud =  new Resultado().getResultados(fechaHoy, fechaHoy);
                 mensajeEspera.setText("Buscando resultados");
                 for (JsonElement element : resultadosWEB) {
                     JsonObject resultado = element.getAsJsonObject();
@@ -223,6 +223,7 @@ public class ProcesarResultados extends javax.swing.JFrame {
 
                         if (rst.getId() > 0) {//está en la base de datos pero aún no se agrega al registro Local
 
+                            if (!resultadosAgregados.has(sorteoUtilizar))
                             resultadosAgregados.addProperty(sorteoUtilizar, sorteoUtilizar);
                             
                             if(programa.equalsIgnoreCase("lottord")){
@@ -241,7 +242,7 @@ public class ProcesarResultados extends javax.swing.JFrame {
                             System.out.println("Programa error: "+programa);
                             System.out.println("animal error: "+animalResultado);
                             if (rst.insert() > 0) {
-                                
+                                if (!resultadosAgregados.has(sorteoUtilizar))
                                 resultadosAgregados.addProperty(sorteoUtilizar, sorteoUtilizar);
 
                                 if(programa.equalsIgnoreCase("lottord")){
@@ -284,6 +285,7 @@ public class ProcesarResultados extends javax.swing.JFrame {
 
                         if (rst.getId() > 0) {//está en la base de datos pero aún no se agrega al registro Local
 
+                            if (!resultadosAgregados.has(sorteoUtilizar))
                             resultadosAgregados.addProperty(sorteoUtilizar, sorteoUtilizar);
                             
                             if (programa.equalsIgnoreCase("granjita")) {
@@ -302,7 +304,7 @@ public class ProcesarResultados extends javax.swing.JFrame {
                             if (rst.insert() > 0) {
                                 //if(true){
                                 
-                                
+                                if (!resultadosAgregados.has(sorteoUtilizar))
                                 resultadosAgregados.addProperty(sorteoUtilizar, sorteoUtilizar);
 
                                 if (programa.equalsIgnoreCase("granjita")) {
@@ -366,19 +368,19 @@ public class ProcesarResultados extends javax.swing.JFrame {
         }
     }
       
-    private  String sorteoUtilizar(String programa, String horaSorteo){
+   private  String sorteoUtilizar(String programa, String horaSorteo){
         switch(horaSorteo){
-            case "09:00:00": return programa+" 9 AM";
-            case "10:00:00": return programa+" 10 AM";
-            case "11:00:00": return programa+" 11 AM";
-            case "12:00:00": return programa+" 12 PM";
-            case "13:00:00": return programa+" 1 PM";
-            case "14:00:00": return programa+" 2 PM";
-            case "15:00:00": return programa+" 3 PM";
-            case "16:00:00": return programa+" 4 PM";
-            case "17:00:00": return programa+" 5 PM";
-            case "18:00:00": return programa+" 6 PM";
-            case "19:00:00": return programa+" 7 PM";
+            case "09:00:00": return programa+" 9:00 AM";
+            case "10:00:00": return programa+" 10:00 AM";
+            case "11:00:00": return programa+" 11:00 AM";
+            case "12:00:00": return programa+" 12:00 PM";
+            case "13:00:00": return programa+" 1:00 PM";
+            case "14:00:00": return programa+" 2:00 PM";
+            case "15:00:00": return programa+" 3:00 PM";
+            case "16:00:00": return programa+" 4:00 PM";
+            case "17:00:00": return programa+" 5:00 PM";
+            case "18:00:00": return programa+" 6:00 PM";
+            case "19:00:00": return programa+" 7:00 PM";
             
             default: return "Granjita 8 AM";
         }
