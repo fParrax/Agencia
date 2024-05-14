@@ -200,8 +200,8 @@ public class ProcesarResultados extends javax.swing.JFrame {
                 resultadosWEB.addAll(new ScrapResultados().getResultadosInternacional());
                 resultadosWEB.addAll(new ScrapResultados().getResultadosRD());
                 
-                
-                resultadosCloud = (ArrayList) new Resultado().getResultados(fechaHoy, fechaHoy).clone();
+                resultadosCloud.clear();
+                resultadosCloud =  new Resultado().getResultados(fechaHoy, fechaHoy);
                 mensajeEspera.setText("Buscando resultados");
                 for (JsonElement element : resultadosWEB) {
                     JsonObject resultado = element.getAsJsonObject();
@@ -223,6 +223,7 @@ public class ProcesarResultados extends javax.swing.JFrame {
 
                         if (rst.getId() > 0) {//está en la base de datos pero aún no se agrega al registro Local
 
+                            if (!resultadosAgregados.has(sorteoUtilizar))
                             resultadosAgregados.addProperty(sorteoUtilizar, sorteoUtilizar);
                             
                             if(programa.equalsIgnoreCase("lottord")){
@@ -241,7 +242,7 @@ public class ProcesarResultados extends javax.swing.JFrame {
                             System.out.println("Programa error: "+programa);
                             System.out.println("animal error: "+animalResultado);
                             if (rst.insert() > 0) {
-                                
+                                if (!resultadosAgregados.has(sorteoUtilizar))
                                 resultadosAgregados.addProperty(sorteoUtilizar, sorteoUtilizar);
 
                                 if(programa.equalsIgnoreCase("lottord")){
@@ -284,6 +285,7 @@ public class ProcesarResultados extends javax.swing.JFrame {
 
                         if (rst.getId() > 0) {//está en la base de datos pero aún no se agrega al registro Local
 
+                            if (!resultadosAgregados.has(sorteoUtilizar))
                             resultadosAgregados.addProperty(sorteoUtilizar, sorteoUtilizar);
                             
                             if (programa.equalsIgnoreCase("granjita")) {
@@ -302,7 +304,7 @@ public class ProcesarResultados extends javax.swing.JFrame {
                             if (rst.insert() > 0) {
                                 //if(true){
                                 
-                                
+                                if (!resultadosAgregados.has(sorteoUtilizar))
                                 resultadosAgregados.addProperty(sorteoUtilizar, sorteoUtilizar);
 
                                 if (programa.equalsIgnoreCase("granjita")) {

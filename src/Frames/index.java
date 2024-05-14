@@ -2,7 +2,6 @@ package Frames;
 
 import Clases.Agencia;
 import Clases.ConectarDBCloud;
-import Clases.Configuracion;
 import Clases.CupoAnimal;
 import Clases.HoraSorteo;
 import Clases.Imprimir;
@@ -26,7 +25,6 @@ import java.net.InetAddress;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
@@ -40,7 +38,6 @@ import java.util.stream.Collectors;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -53,11 +50,13 @@ import rojerusan.RSNotifyFade;
 
 public class index extends javax.swing.JFrame {
 
+    int contadorCupos=0;
+     int mbCuota = 1024 * 1024; // 1 MB en bytes
+    
     
     VerTickets verTickets;
     verResultados verResul;
     verVentas vVentas;
-    public Configuracion datos;
     
     ArrayList<CupoAnimal> animalesVendidos = new ArrayList();
     ArrayList<JToggleButton> animalesTablero = new ArrayList();
@@ -65,21 +64,17 @@ public class index extends javax.swing.JFrame {
     ArrayList<JCheckBoxPrograma> sorteos = new ArrayList();
     
     ArrayList<String> sorteosDisponibles = new ArrayList();
-   ArrayList<CupoAnimal> myCupos = new ArrayList();
+    ArrayList<CupoAnimal> myCupos = new ArrayList();
 
     
     DefaultTableModel modelo;
     
 
     boolean tablero = false;
-    String programa = "LottoActivo";
     public double totalTicket = 0.0;
     long tInicio, tFinal;
-    int myNumTicket = 0;
-    int cupoMaximo = 20;
     int espaciosPrevios = 0;
     boolean isConnected = false;
-    boolean firstRun = true;
     boolean imprimiendo = false;
     private String myUrl = "c1046.gconex.com";
 
@@ -887,14 +882,14 @@ public class index extends javax.swing.JFrame {
             panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelSorteosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrollSorteos)
-                .addContainerGap())
+                .addComponent(scrollSorteos, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
         panelSorteosLayout.setVerticalGroup(
             panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelSorteosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrollSorteos, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrollSorteos, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
 
@@ -992,8 +987,8 @@ public class index extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRepetir)
                 .addGap(18, 18, 18)
-                .addComponent(lbMensajeSistema, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lbMensajeSistema)
+                .addContainerGap(60, Short.MAX_VALUE))
         );
         panelAyudaLayout.setVerticalGroup(
             panelAyudaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1075,7 +1070,7 @@ public class index extends javax.swing.JFrame {
         panelTablaJugadasLayout.setHorizontalGroup(
             panelTablaJugadasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTablaJugadasLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(138, 138, 138))
         );
@@ -1182,9 +1177,9 @@ public class index extends javax.swing.JFrame {
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(btnGenerarJugada)
-                .addGap(83, 83, 83)
+                .addGap(26, 26, 26)
                 .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(26, 26, 26))
         );
         panelMontosLayout.setVerticalGroup(
             panelMontosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1217,12 +1212,11 @@ public class index extends javax.swing.JFrame {
                 .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelSorteos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelMontos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelCentralLayout.createSequentialGroup()
-                        .addGap(9, 9, 9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(66, 66, 66)
+                        .addGap(51, 51, 51)
                         .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelCentralLayout.createSequentialGroup()
                                 .addComponent(jLabel3)
@@ -1233,29 +1227,34 @@ public class index extends javax.swing.JFrame {
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lbNumTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(panelTablaJugadas, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-            .addComponent(panelAyuda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(panelCentralLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelTablaJugadas, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(panelAyuda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         panelCentralLayout.setVerticalGroup(
             panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCentralLayout.createSequentialGroup()
                 .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelCentralLayout.createSequentialGroup()
-                        .addGap(7, 7, 7)
-                        .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(panelMontos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelCentralLayout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(panelMontos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(panelCentralLayout.createSequentialGroup()
+                                .addContainerGap()
                                 .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lbNumTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(totalTicketTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(totalTicketTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(panelSorteos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(panelTablaJugadas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(6, 6, 6))
@@ -1547,7 +1546,6 @@ public class index extends javax.swing.JFrame {
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
         if (modelo.getRowCount() > 0) {
             imprimir();
-
         } else {
             JOptionPane.showMessageDialog(rootPane, "No hay jugadas realizadas para imprimir");
         }
@@ -1953,14 +1951,22 @@ public class index extends javax.swing.JFrame {
     
     
     private void iniciar() {
-
+            double antes = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+            double despues = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+            System.out.println("iniciar Memoria Antes: "+antes+" Memoria usada: "+ (despues-antes)/mbCuota+" --- TOTAL: "+despues+" mbs");
+        
+            
         try {
+            lbMensajeSistema.setText("Cargando fecha del servidor");
             fechaHoy = new ConectarDBCloud("ag").tomarFecha();
-            datos = new Configuracion(fechaHoy);
+            verTickets = new VerTickets(this);
+            verResul = new verResultados(this);
+            vVentas = new verVentas(this);
+            
             lbNumTicket.setText(agencia.getNumTicket()+"");
 
             
-            lbMensajeSistema.setText("Cargando fecha del servidor");
+            
 
             lbMensajeSistema.setText("Cargando placeHolder");
             modelo = (DefaultTableModel) tabla.getModel();
@@ -1969,36 +1975,22 @@ public class index extends javax.swing.JFrame {
             new PlaceHolder("Serial", txtPagar);
             new PlaceHolder("# Ticket", txtAnular);
 
-            lbMensajeSistema.setText("Cargando Botones");
-            agregarBotones();
-            lbMensajeSistema.setText("Cargando sorteos");
             
-            lbMensajeSistema.setText("Cargando Cupos");
+            agregarBotones();
 
             animalTxt.requestFocus();
-
-            myHoraActual.setTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2022-01-01 00:00:00"));
-            myUltimaHora.setTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2022-01-01 00:00:00"));
             tInicio = System.currentTimeMillis();
-
-            
-            verTickets = new VerTickets(this);
-            verResul = new verResultados(this);
-            vVentas = new verVentas(this);
         
             prepararLoterias();
+           
             
             new Thread(()->{
-                //actualizarCupoAnimales();
-                  crearCupos(false);
                 new Timer().scheduleAtFixedRate(actualizarHoraTT, 0, 5000);
                 new Timer().scheduleAtFixedRate(desactivarSorteosTT, 0, 10000);
-                new Timer().scheduleAtFixedRate(validarConeccion, 0, 5000); 
-                new Timer().scheduleAtFixedRate(actualizarCuposTT, 0, 60000);
-               
+                new Timer().scheduleAtFixedRate(validarConeccion, 0, 5000); //Sin uso actualmente
                 
+                mantenerCuposActualizados();
                
-                actualizarCupoAnimales();
                 if(agencia.getId() == 1){
                     iniciarIngresoResultados();
                 }
@@ -2010,40 +2002,53 @@ public class index extends javax.swing.JFrame {
            
 
             lbMensajeSistema.setText("Sistema Listo. Esperando Novedades");
-        } catch (ParseException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(archivoMenu, ex);
         }
+        
+        
     }
 
-    private void actualizarCupoAnimales(){
-        myCupos =  (ArrayList) new CupoAnimal().getCupoAgencia(agencia.getId(), fechaHoy).clone();
-        //myCupos.forEach(t-> System.out.println(t.toString()));
+    private void getActualizacionCupos(){
+        
+        double beforeUsedMem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        System.out.println("Memoria Actual: "+beforeUsedMem/mbCuota+" mbs");
+        myCupos.clear();
+        myCupos =  new CupoAnimal().getCupoAgencia(agencia.getId(), fechaHoy);
+       
+        double afterUsedMem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        double memoryUsed = afterUsedMem - beforeUsedMem;
+        System.out.println("Memoria Totla: "+afterUsedMem/mbCuota+" mbs");
+        System.out.println("Memoria utilizada: " + memoryUsed/mbCuota + " mbs  --- cuposSize: "+myCupos.size());
+        
+        
+        contadorCupos = 0;
+        System.out.println("Cupos Actualizados");
     }
     
     TimerTask validarConeccion = new TimerTask() {
         public void run() {
-            while (true) {
+            
                 try {
-                    InetAddress address = InetAddress.getByName("c1046.gconex.com");
-                    isConnected = address.isReachable(1000);
+                    isConnected = InetAddress.getByName("c1046.gconex.com").isReachable(1000);
 
                     lbMensajeSistema.setText("Conexión Estable. Esperando Novedades");
                 } catch (IOException e) {
                     isConnected = false;
                     lbMensajeSistema.setText("Ups. Hay problemas de Conexión.");
                 }
-
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                }
-            }
+                
+           
+            
+            
         }
     };
 
     TimerTask actualizarHoraTT = new TimerTask() {
         public void run() {
+            
+            
             try {
 
                 String capturaHora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new NTPService().getNTPDate());
@@ -2068,20 +2073,25 @@ public class index extends javax.swing.JFrame {
             } catch (ParseException ex) {
                 Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
             }
+        
+        
         }
+        
+        
     };
 
     TimerTask desactivarSorteosTT = new TimerTask() {
         public void run() {
+            
+            
             try {
                 int minutos = 0;
                 sorteosDisponibles.clear();
                 String myHorax = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK).format(myUltimaHora.getTime());
                 Calendar myHora = Calendar.getInstance();
                 myHora.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK).parse(myHorax));
-                //if (myHora.get(Calendar.MINUTE) > 56 || firstRun) {
-                //    firstRun = false;
-                    for (JCheckBoxPrograma sorteo : sorteos) {
+
+                for (JCheckBoxPrograma sorteo : sorteos) {
                         minutos = 0;
                         String horaObtenido = sorteo.getName().toLowerCase().replace(" am", "").replace(" pm", "");
                         String minutosAgregados = ":00";
@@ -2093,26 +2103,39 @@ public class index extends javax.swing.JFrame {
                         mySorteo.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK).parse(horaSorteo));
                         minutos = new tools().restarMinutos(myHora.getTime(), mySorteo.getTime());
 
-                        
-                        sorteo.setVisible(minutos < agencia.getMinutosCierre() || minutos>1224? false : true);//ORIGINAL
-                        //sorteo.setVisible(minutos < 3 ? true : true);
-                        
-                        
-                        sorteosDisponibles.add(sorteo.getText());
-                        //System.out.println("Sorteo disponible agregado: "+sorteo.getText());// LottoInternacional 7:30 PM
+                        boolean visible = minutos < agencia.getMinutosCierre() || minutos>1224? false : true;
+                        sorteo.setVisible(visible);//ORIGINAL
+                        if(visible){
+                            sorteosDisponibles.add(sorteo.getText());
+                        }
                         
                         
                         
                         
+                        
+                }
+            //Quitando las jugadas realizadas pasadas de tiempo    
+                double monto =0;
+                for(int i=modelo.getRowCount()-1; i>=0; i--){
+                    String sorteo = modelo.getValueAt(i, 0). toString();
+                    if(!sorteosDisponibles.contains(sorteo)){
+                        modelo.removeRow(i);
+                    }else{
+                        monto += Double.parseDouble(modelo.getValueAt(i, 2).toString());
                     }
-              //  }
+
+                }totalTicket=monto;totalTicketTxt.setText(monto+"");
+            ////Quitando las jugadas realizadas pasadas de tiempo    
+             
             } catch (ParseException ex) {
                 Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+            
+            }
     };
 
     private void agregarBotones() {
+        lbMensajeSistema.setText("Cargando Botones");
         animalesTablero.add(a0);
         animalesTablero.add(a00);
         animalesTablero.add(a1);
@@ -2636,22 +2659,19 @@ public class index extends javax.swing.JFrame {
                 if (!serialTicket.equalsIgnoreCase("error")) {
                     
                     jugadas = (ArrayList) jugadas.stream()
-                            .sorted(Comparator.comparing(JugadasTicket::getPrograma)
-                            ).collect(Collectors.toList());
+                            .sorted(Comparator.comparing(JugadasTicket::getPrograma))
+                            .sorted(Comparator.comparing(JugadasTicket::getMonto))
+                            .sorted(Comparator.comparing(JugadasTicket::getSorteo))
+                            .collect(Collectors.toList());
                    
-                    jugadas = (ArrayList) jugadas.stream()
-                            .sorted(Comparator.comparing(JugadasTicket::getMonto)
-                            ).collect(Collectors.toList());
-                    
-                    jugadas = (ArrayList) jugadas.stream()
-                            .sorted(Comparator.comparing(JugadasTicket::getSorteo)
-                            ).collect(Collectors.toList());
+//                    jugadas = (ArrayList) jugadas.stream()
+//                            .sorted(Comparator.comparing(JugadasTicket::getMonto)
+//                            ).collect(Collectors.toList());
+//                    
+//                    jugadas = (ArrayList) jugadas.stream()
+//                            .sorted(Comparator.comparing(JugadasTicket::getSorteo)
+//                            ).collect(Collectors.toList());
                    
-
-                    
-
-                   
-                        
                         
                   
                     if(checkImprimirTicket.isSelected()){
@@ -2666,6 +2686,7 @@ public class index extends javax.swing.JFrame {
                             totalJugado
                         ); 
                     }
+                    
                     agencia.incrementarNumTicketLocal();
                     
                     limpiarJugada(false);
@@ -2674,11 +2695,11 @@ public class index extends javax.swing.JFrame {
                     
                      new Thread(() -> {//Actualizar los cupos de los animales que fueron seleccionados para la venta
                         new CupoAnimal().actualizarCupo(procesarVendidos());
-                        actualizarCupoAnimales();
+                        getActualizacionCupos();
                       }).start();
  
                     
-                     
+                     contadorCupos =0;
                     
                     
                     
@@ -2729,30 +2750,31 @@ public class index extends javax.swing.JFrame {
 
 
    
+    public void mantenerCuposActualizados() {
+        new Thread(() -> {
+             getActualizacionCupos();
+            while (true) {
+                for (; contadorCupos < 60; contadorCupos++) {
+                    try {
+                        double memoria = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+                        //System.out.println("Esperando " + contadorCupos + " / 60 --- Memoria actual: "+Double.parseDouble(memoria/mbCuota+"") );
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                if (Float.compare(contadorCupos, 59) > 0) {
+                    getActualizacionCupos();
+                    
+                }
 
-    private void crearCupos(boolean fromMenu) {
-        actualizarCupoAnimales();
-
-        lbMensajeSistema.setText("Cupos Cargados.");
-        if (fromMenu) {
-            new rojerusan.RSNotifyFade(
-                    "Cupos Actualizados",
-                    "Se actualizaron los cupos correctamente, recuerde debe ser cambiado primero por el administrador.",
-                    4,
-                    RSNotifyFade.PositionNotify.BottomRight,
-                    RSNotifyFade.TypeNotify.SUCCESS
-            ).setVisible(true);
-        }
-          System.out.println("cupos actualizados");
+            }
+        }).start();
     }
     
     
-
-        TimerTask actualizarCuposTT = new TimerTask() {
-        public void run() {
-            actualizarCupoAnimales();
-        }
-    };
+        
+        
         
     public ArrayList<JCheckBoxPrograma> getSorteos(){
         return sorteos;
@@ -2833,7 +2855,7 @@ public class index extends javax.swing.JFrame {
     }
 
     private void confirmarCuposDisponibles() {
-        actualizarCupoAnimales();
+        getActualizacionCupos();
         String separador = Pattern.quote(" ");
         for(int i =0 ; i<tabla.getRowCount(); i++){
             
@@ -2843,7 +2865,6 @@ public class index extends javax.swing.JFrame {
             String jugada = tabla.getValueAt(i, 1).toString();
             String animalJugado = tomarAnimal(jugada);
             double montoJugada = Double.parseDouble(tabla.getValueAt(i, 2).toString());
-            double cupo = Double.parseDouble(tabla.getValueAt(i, 3).toString());
             
             CupoAnimal cupoJugada = myCupos
                     .stream()
@@ -2873,13 +2894,14 @@ public class index extends javax.swing.JFrame {
     }
 
     private void prepararLoterias() {
-        new ScrollSens(scrollSorteos, 20);
+        new ScrollSens(scrollSorteos, 40);
         loterias = (ArrayList) new Loteria().getLoterias().clone();
         sorteos.clear();
         JPanel myPanel = new JPanel();
         myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
         myPanel.setBackground(Color.WHITE);
         myPanel.setBorder(BorderFactory.createEmptyBorder(2, 10, 0, 0)); // Agrega padding de 10 pixeles en todos los bordes
+        
         ItemListener itemListener = new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -2892,24 +2914,30 @@ public class index extends javax.swing.JFrame {
         JSeparator separator = new JSeparator();
         separator.setBackground(Color.BLACK);
         separator.setSize(120, 5);
-        for(Loteria loteria:loterias){myPanel.add(new JLabel("    "));
-            for(HoraSorteo horaSorteo : loteria.getSorteos()){++contador;
-                JCheckBoxPrograma  temp = new  JCheckBoxPrograma();
-                temp.setVisible(false);
-                temp.setToolTipText(loteria.getFkGrupoResultado()+"");
-                temp.addItemListener(itemListener);
-                temp.setFont(new Font("Segoe UI",Font.PLAIN,16));
-                temp.setSize(120, 22);
-                String completo = loteria.getNombre()+" "+horaSorteo.getHoraSorteo();
-                temp.setText(completo);
-                temp.setName(horaSorteo.getHoraSorteo());
-                temp.setPrograma(loteria.getNombre());
-                sorteos.add(temp);
-                myPanel.add(temp);
-                
+        for (Loteria loteria : loterias) {
+            myPanel.add(new JLabel("    "));
+            for (HoraSorteo horaSorteo : loteria.getSorteos()) {
+                ++contador;
+                if (loteria.getNombre().equals("LottoActivo") && horaSorteo.getHoraSorteo().equals("8:00 AM")) {
+
+                } else {
+                    JCheckBoxPrograma temp = new JCheckBoxPrograma();
+                    temp.setVisible(false);
+                    temp.setToolTipText(loteria.getFkGrupoResultado() + "");
+                    temp.addItemListener(itemListener);
+                    temp.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+                    temp.setSize(120, 22);
+                    String completo = loteria.getNombre() + " " + horaSorteo.getHoraSorteo();
+                    temp.setText(completo);
+                    temp.setName(horaSorteo.getHoraSorteo());
+                    temp.setPrograma(loteria.getNombre());
+                    sorteos.add(temp);
+                    myPanel.add(temp);
+                }
+
             }
-            
-        } 
+
+        }
         myPanel.add(new JLabel("    "));
         myPanel.add(new JLabel("    "));
         myPanel.setSize(200, 19*contador);
