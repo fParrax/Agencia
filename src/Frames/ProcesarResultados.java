@@ -381,8 +381,9 @@ public class ProcesarResultados extends javax.swing.JFrame {
             case "17:00:00": return programa+" 5:00 PM";
             case "18:00:00": return programa+" 6:00 PM";
             case "19:00:00": return programa+" 7:00 PM";
+            case "20:00:00": return programa+" 8:00 PM";
             
-            default: return "Granjita 8 AM";
+            default: return "Granjita 8:00 AM";
         }
         
     }

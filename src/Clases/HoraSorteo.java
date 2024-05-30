@@ -38,13 +38,13 @@ public class HoraSorteo {
   
      public ArrayList<HoraSorteo> getSorteos(){
         ArrayList<HoraSorteo> lista = new ArrayList();
-         sql = "call `sp.getLoteriasCompleto` ()";
+         sql = "call `sp.getGrupoResultado` ()";
         try ( Connection con = new ConectarDBCloud("ag").getCon()) {
             pst = con.prepareStatement(sql);
             rs = pst.executeQuery();
             while(rs.next()){
                 lista.add(new HoraSorteo(
-                       rs.getInt("num_grupo"),
+                       rs.getInt("numGrupo"),
                        rs.getString("horaSorteo")
                     )
                 );
@@ -62,6 +62,21 @@ public class HoraSorteo {
             }
         }
         return lista;
+    }
+     public static void main(String[] args) {
+        for(int i=2; i<37;i++){// "+i+"
+         
+            
+            
+            
+            System.out.println("CASE\n" +
+"				WHEN (cupoGrupero.maximo - cupoGrupero.animal_"+i+") < 0 THEN cupoAgencia.maximo\n" +
+"        WHEN (cupoGrupero.maximo - cupoGrupero.animal_"+i+") <= (cupoAgencia.maximo - cupoAgencia.animal_"+i+") THEN (cupoGrupero.maximo - cupoGrupero.animal_"+i+")\n" +
+"        WHEN cupoAgencia.animal_"+i+" <= cupoAgencia.maximo THEN cupoAgencia.animal_"+i+"\n" +
+"				ELSE (cupoAgencia.maximo - cupoAgencia.animal_"+i+")\n" +
+"END AS animal_"+i+", ");
+            
+        }
     }
 
     public String getHoraSorteo() {

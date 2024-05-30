@@ -1951,9 +1951,9 @@ public class index extends javax.swing.JFrame {
     
     
     private void iniciar() {
-            double antes = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-            double despues = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-            System.out.println("iniciar Memoria Antes: "+antes+" Memoria usada: "+ (despues-antes)/mbCuota+" --- TOTAL: "+despues+" mbs");
+            //double antes = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+            //double despues = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+            //System.out.println("iniciar Memoria Antes: "+antes+" Memoria usada: "+ (despues-antes)/mbCuota+" --- TOTAL: "+despues+" mbs");
         
             
         try {
@@ -2013,12 +2013,14 @@ public class index extends javax.swing.JFrame {
     private void getActualizacionCupos(){
         
         double beforeUsedMem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        System.out.println("Memoria Actual: "+beforeUsedMem/mbCuota+" mbs");
+        
         myCupos.clear();
         myCupos =  new CupoAnimal().getCupoAgencia(agencia.getId(), fechaHoy);
        
         double afterUsedMem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         double memoryUsed = afterUsedMem - beforeUsedMem;
+        
+        System.out.println("Memoria Actual: "+beforeUsedMem/mbCuota+" mbs");
         System.out.println("Memoria Totla: "+afterUsedMem/mbCuota+" mbs");
         System.out.println("Memoria utilizada: " + memoryUsed/mbCuota + " mbs  --- cuposSize: "+myCupos.size());
         
@@ -2048,31 +2050,35 @@ public class index extends javax.swing.JFrame {
     TimerTask actualizarHoraTT = new TimerTask() {
         public void run() {
             
+            myUltimaHora.setTime(new NTPService().getNTPDate());
+            myHoraActual.setTime(myUltimaHora.getTime());
+            jLabel3.setToolTipText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(myUltimaHora.getTime()));
             
-            try {
-
-                String capturaHora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new NTPService().getNTPDate());
-                myHoraActual.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(capturaHora));
-
-                        
-                if (myHoraActual.compareTo(myUltimaHora) >= 0) {
-                    tInicio = System.currentTimeMillis();
-                    myUltimaHora = myHoraActual;
-
-                    fechaHoy = fechaHoy.equals("2022-11-01")
-                            ? new SimpleDateFormat("yyyy-MM-dd").format(myUltimaHora.getTime())
-                            : fechaHoy;
-
-                } else {
-                    tFinal = System.currentTimeMillis();
-                    long dif = (tFinal - tInicio);
-                    myUltimaHora.add(Calendar.MILLISECOND, (int) dif);
-                    tInicio = System.currentTimeMillis();
-                }
-
-            } catch (ParseException ex) {
-                Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
+//            try {
+//
+//                String capturaHora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new NTPService().getNTPDate());
+//                myHoraActual.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(capturaHora));
+//
+//                        
+//                if (myHoraActual.compareTo(myUltimaHora) >= 0) {
+//                    tInicio = System.currentTimeMillis();
+//                    myUltimaHora = myHoraActual;
+//
+//                    fechaHoy = fechaHoy.equals("2022-11-01")
+//                            ? new SimpleDateFormat("yyyy-MM-dd").format(myUltimaHora.getTime())
+//                            : fechaHoy;
+//
+//                } else {
+//                    tFinal = System.currentTimeMillis();
+//                    long dif = (tFinal - tInicio);
+//                    myUltimaHora.add(Calendar.MILLISECOND, (int) dif);
+//                    tInicio = System.currentTimeMillis();
+//                }
+//
+//            } catch (ParseException ex) {
+//                Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+//            }
         
         
         }
@@ -2093,10 +2099,9 @@ public class index extends javax.swing.JFrame {
 
                 for (JCheckBoxPrograma sorteo : sorteos) {
                         minutos = 0;
-                        String horaObtenido = sorteo.getName().toLowerCase().replace(" am", "").replace(" pm", "");
+                        String horaObtenido = sorteo.getName().toLowerCase();
                         String minutosAgregados = ":00";
                         String horaSorteo = fechaHoy + " " + new JugadasTicket().getHoradelSorteo(horaObtenido) + minutosAgregados;
-                        
                         
                         
                         Calendar mySorteo = Calendar.getInstance();
@@ -2895,7 +2900,7 @@ public class index extends javax.swing.JFrame {
 
     private void prepararLoterias() {
         new ScrollSens(scrollSorteos, 40);
-        loterias = (ArrayList) new Loteria().getLoterias().clone();
+        loterias =  new Loteria().getLoterias();
         sorteos.clear();
         JPanel myPanel = new JPanel();
         myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
@@ -2916,7 +2921,9 @@ public class index extends javax.swing.JFrame {
         separator.setSize(120, 5);
         for (Loteria loteria : loterias) {
             myPanel.add(new JLabel("    "));
-            for (HoraSorteo horaSorteo : loteria.getSorteos()) {
+            for (HoraSorteo horaSorteo : loteria.getSorteos()) 
+            {
+                
                 ++contador;
                 if (loteria.getNombre().equals("LottoActivo") && horaSorteo.getHoraSorteo().equals("8:00 AM")) {
 
@@ -2940,8 +2947,11 @@ public class index extends javax.swing.JFrame {
         }
         myPanel.add(new JLabel("    "));
         myPanel.add(new JLabel("    "));
-        myPanel.setSize(200, 19*contador);
+        myPanel.setSize(200, 25*contador);
         scrollSorteos.setViewportView(myPanel);
+        
+        
+        
     }
 
     private boolean validarSorteos() {

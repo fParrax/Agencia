@@ -5,10 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import org.json.JSONArray;
@@ -38,6 +43,121 @@ public class CupoAnimal {
         this.montoVendido=montoVendido + getAnimal(animalVendido);
     }
 
+static class SortByHoraSorteo implements Comparator<JugadasTicket> {
+        @Override
+        public int compare(JugadasTicket a, JugadasTicket b) {
+            if( a.getHoraSorteoDouble2() - b.getHoraSorteoDouble2() < 0 ) return -1;
+            if( a.getHoraSorteoDouble2() - b.getHoraSorteoDouble2() > 0 ) return 1;
+            return 0;
+        }
+}
+static class SortByMonto implements Comparator<JugadasTicket> {
+        @Override
+        public int compare(JugadasTicket a, JugadasTicket b) {
+            if( a.getMonto() - b.getMonto() < 0 ) return -1;
+            if( a.getMonto() - b.getMonto() > 0 ) return 1;
+            return 0;
+        }
+} 
+static class SortByPrograma implements Comparator<JugadasTicket> {
+    @Override
+    public int compare(JugadasTicket a, JugadasTicket b) {
+        return a.getPrograma().compareTo(b.getPrograma());
+    }
+}
+
+
+    public static void main(String[] args) {
+
+        Ticket t = new Ticket().getTicketBySerial("45913");
+        
+
+        ArrayList<JugadasTicket> temp = new ArrayList();
+        
+         t.getJugadas().stream()
+                .collect(
+                Collectors.groupingBy(
+                            JugadasTicket::getHoraSorteoDouble,
+                   Collectors.groupingBy(JugadasTicket::getAnimal) 
+                        )
+                ).forEach((hora, mapaAnimales) -> {
+           
+                    mapaAnimales.forEach((animal, listaJugadas) -> {
+                        temp.addAll( 
+                          listaJugadas.stream()
+                            .sorted(Comparator.comparing(JugadasTicket::getPrograma))
+                            .collect( Collectors.toList())
+                        );
+                    });
+        });
+         
+        Collections.sort(temp, new SortByHoraSorteo());
+        //ArrayList<JugadasTicket> temp2 = (ArrayList)temp.stream().sorted(Comparator.comparing(JugadasTicket::getMonto)).collect(Collectors.toList());
+        
+        
+        
+        
+         String programaTemp="",programasAcumulados="",animalTemp="",animalesAcumulados="",horaTemp="", montoTemp="";
+        String separador = Pattern.quote(" ");
+        String textoGeneral="";
+        String textoAnimales="";
+        String textoProgramas="";
+        int contAnimales=0;
+        for(JugadasTicket jugada : temp){
+             System.out.println(jugada);
+             String horaActual = jugada.getSorteo().split(separador)[1]+" "+jugada.getSorteo().split(separador)[2];
+             String animalActual = jugada.getAnimal().substring(0, 5);
+             String programaActual =jugada.getPrograma().replace("LottoInternacional", "LottoInt.");
+             String montoActual = jugada.getMonto()+"";
+             if(horaTemp.isEmpty()){
+                   animalTemp = animalActual;
+                   contAnimales++;
+                   horaTemp = horaActual;
+                   programaTemp = programaActual;
+                   
+                   montoTemp = montoActual;
+                   
+                   programasAcumulados+=programaTemp;
+                   animalesAcumulados+=animalTemp;
+             }else{
+                 
+                 if(horaTemp.equals(horaActual)){//Si la segunda jugada es de la misma hora que la primera jugada y así.
+                     contAnimales++;
+                     programasAcumulados+= !programasAcumulados.contains(programaActual)?","+programaActual : "";
+                     
+                     if(montoTemp.equals(montoActual)){//Si el monto jugado es el mismo (acumularemos los animales por monto)
+                         animalesAcumulados+=","+animalActual;
+                         
+                     }else{//el monto jugado será diferente y empezaremos con más
+                         animalesAcumulados+= " x"+montoTemp;
+                         textoAnimales+=animalesAcumulados;
+                         
+                         
+                         animalesAcumulados=animalActual;
+                         montoTemp=montoActual;
+                     }
+                 }else{ // Lo que haremos cuando la hora del sorteo es Diferente (empezar de 0)
+                     
+                 }
+             }
+             
+         }
+        
+        
+//        new Imprimir().send(
+//                "Ag. Pruebas",
+//                "2024-05-15",
+//                "08:53:11",
+//                t.getNumTicket()+"",
+//                t.getSerial(),
+//                t.getJugadas(),
+//                t.getTotalJugado()
+//        );
+    }
+    
+    
+    
+    
     public ArrayList getCupoAgencia(int idAgencia,String fechax) {
         ArrayList<CupoAnimal> cupos = new ArrayList();
         String sql = "call `sp.getCuposAgencia` (?,?)";

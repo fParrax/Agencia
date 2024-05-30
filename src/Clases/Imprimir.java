@@ -1,6 +1,10 @@
 package Clases;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.print.Doc;
@@ -13,6 +17,86 @@ import javax.print.SimpleDoc;
 
 public class Imprimir {
 
+    String textoImprimir="";
+    
+    static class SortByHoraSorteo implements Comparator<JugadasTicket> {
+        @Override
+        public int compare(JugadasTicket a, JugadasTicket b) {
+            if( a.getHoraSorteoDouble2() - b.getHoraSorteoDouble2() < 0 ) return -1;
+            if( a.getHoraSorteoDouble2() - b.getHoraSorteoDouble2() > 0 ) return 1;
+            return 0;
+        }
+}
+    
+    static class SortByPrograma implements Comparator<JugadasTicket> {
+    @Override
+    public int compare(JugadasTicket a, JugadasTicket b) {
+        return a.getPrograma().compareTo(b.getPrograma());
+    }
+}
+
+
+
+    public void send(String nombreAgencia,String fecha, String hora, String numTicket,String serialTicket,ArrayList<JugadasTicket> jugadas, double total){
+        jugadas = ordenarJugadas(jugadas);
+        addInfo(nombreAgencia+" ");
+        addInfo(fecha+" ");
+        addInfo("TN:"+numTicket);
+        addInfo(" SN:"+serialTicket);
+        addSeparador();
+        
+        String programaTemp="",animalTemp="",horaTemp="";
+        
+        jugadas.forEach(jugada ->{
+            
+        });
+        
+        //ArrayList<JugadasTicket> jugadasRepetidas = jugadas.stream().filter(predicate)
+        
+        
+        
+        
+        //print(textoImprimir);
+        System.out.println(textoImprimir);
+        print("\n\n\n\n");
+    }
+    
+    private String addInfo(String valor){
+         return textoImprimir+=valor;
+    }
+    private void addSeparador(){
+        textoImprimir+="\n---------------------------\n";
+    }
+    
+    public ArrayList<JugadasTicket> ordenarJugadas ( ArrayList<JugadasTicket> jugadas){
+
+        ArrayList<JugadasTicket> temp = new ArrayList();
+        
+        jugadas.stream()
+            .collect(
+        Collectors.groupingBy(
+                        JugadasTicket::getHoraSorteoDouble, 
+               Collectors.groupingBy(JugadasTicket::getAnimal)    
+                    )
+            ).forEach((hora, mapaAnimales) -> { 
+           
+                mapaAnimales.forEach((sorteo, listaJugadas) -> {
+
+                    temp.addAll( 
+                      listaJugadas.stream()
+                            .sorted(Comparator.comparing(JugadasTicket::getPrograma))
+                            .collect( Collectors.toList())
+                    );
+
+                });
+        
+            });
+        
+        Collections.sort(temp, new SortByHoraSorteo());
+        
+        return temp;
+    }
+    
     public void enviarImpresion(int espaciosPrevios, String agencia, String fecha, String hora,
             String numTicket, String serial, ArrayList<JugadasTicket> jugadas, double total) {
 
@@ -146,12 +230,12 @@ public class Imprimir {
                 + "Total Bs: " + total;
 
         print(texto);
+        System.out.println(texto);
         print("\n\n\n\n");
     }
 
     private void print(String cadena) {
         DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
-//Aqui selecciona tu impresora, el ejemplo tomará la impresora predeterminada.
         PrintService service = PrintServiceLookup.lookupDefaultPrintService();
         DocPrintJob pj = service.createPrintJob();
         byte[] bytes = cadena.getBytes();
@@ -163,31 +247,5 @@ public class Imprimir {
         }
     }
 
-    private boolean isSamePlays(ArrayList<JugadasTicket> jugadas) {
-        ArrayList<JugadasTicket> lotto = new ArrayList();
-        ArrayList<JugadasTicket> granja = new ArrayList();
-        ArrayList<String> programasJugados = (ArrayList)jugadas
-                .stream()
-                .map(JugadasTicket::getPrograma)
-                .distinct()
-                .collect(Collectors.toList());
-        
-        for(String programa : programasJugados){
-            if(programa.equalsIgnoreCase("lottoactivo")){
-                lotto = (ArrayList) jugadas
-                        .stream()
-                        .filter( t->t.getPrograma().equalsIgnoreCase(programa))
-                        .collect(Collectors.toList());
-            }else{
-                granja  = (ArrayList) jugadas
-                        .stream()
-                        .filter( t->t.getPrograma().equalsIgnoreCase(programa))
-                        .collect(Collectors.toList());
-            }
-            
-        }
-        
-
-        return false;
-    }
+   
 }

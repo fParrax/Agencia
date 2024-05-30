@@ -41,7 +41,7 @@ public class Loteria {
   
      public ArrayList<Loteria> getLoterias(){
         ArrayList<Loteria> lista = new ArrayList();
-        ArrayList<HoraSorteo> mySorteos = (ArrayList)new HoraSorteo().getSorteos().clone();
+        ArrayList<HoraSorteo> mySorteos = new HoraSorteo().getSorteos();
          sql = "call `sp.getLoterias` ()";
         try ( Connection con = new ConectarDBCloud("ag").getCon()) {
             pst = con.prepareStatement(sql);

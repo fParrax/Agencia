@@ -3,6 +3,7 @@ package Clases;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -91,9 +92,16 @@ public class JugadasTicket {
 //        return rsp;
 //    }
      public String getHoradelSorteo(String hora){
+        //
+        String tipoHora = hora.contains("am") ? "am" : "pm" ;
+        
+        
+        hora = hora.replace(" am", "").replace(" pm", "");
         String rsp="";
+        String separador = Pattern.quote(":");
+        String[] separado = hora.split(separador);
         boolean tipo2 = hora.contains(":30");
-                String temp = hora.trim().replace(":30", "").replace(":00", "");
+                String temp = separado[0];
                 
                 rsp = temp.equals("1") //&& horaArray[2].equalsIgnoreCase("pm")
                     ?  "13" 
@@ -109,8 +117,12 @@ public class JugadasTicket {
                     ?  "18"
                     : temp.equals("7") //&& horaArray[2].equalsIgnoreCase("pm")
                     ?  "19"
+                    : temp.equals("8") && tipoHora.equalsIgnoreCase("pm")//&& horaArray[2].equalsIgnoreCase("pm")
+                    ?  "20"
+                    : temp.equals("9") && tipoHora.equalsIgnoreCase("pm")  //&& horaArray[2].equalsIgnoreCase("pm")
+                    ?  "21"
                     : temp ;
-        return rsp.concat(tipo2 ? ":30":":00") ;
+        return rsp.concat(":"+separado[1]) ;
     }
     
     public int getId() {
@@ -140,6 +152,27 @@ public class JugadasTicket {
     public String getSorteo() {
         return sorteo;
     }
+    public String getHoraSorteo() {
+        String sep = Pattern.quote(" ");
+        
+        return sorteo.split(sep)[1]+" "+sorteo.split(sep)[2];
+        //return sorteo.split(sep)[0];
+    }
+    public String getHoraSorteoDouble(){
+        String sep = Pattern.quote(" ");
+        this.sorteo = this.sorteo.replace(":", ".");
+        return Double.parseDouble(sorteo.split(sep)[1])+"";
+    }
+public double getHoraSorteoDouble2(){
+        String sep = Pattern.quote(" ");
+        this.sorteo = this.sorteo.replace(":", ".");
+        return Double.parseDouble(sorteo.split(sep)[1]);
+    }
+
+
+
+
+
 
     public void setSorteo(String sorteo) {
         this.sorteo = sorteo;

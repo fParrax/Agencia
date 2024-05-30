@@ -23,7 +23,7 @@ public class NTPService {
      static private final Logger LOGGER = Logger.getLogger("mx.hash.ejemplontp.NTPService");
  
     public  Date getNTPDate() {
-        String[] hosts = new String[]{"cronos.cenam.mx", "2.mx.pool.ntp.org"};
+        String[] hosts = new String[]{"time.windows.com","cronos.cenam.mx", "2.mx.pool.ntp.org","ntp.ubuntu.com","time-a.nist.gov"};
  
         Date fechaRecibida;
         NTPUDPClient cliente = new NTPUDPClient();
@@ -47,16 +47,5 @@ public class NTPService {
         return new Date();
     }
     
-    public static void main(String[] args) {
-        try(Connection con = new ConectarDBSQLLite().getCon()) {
-            String sql ="select * from cupos";
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-            while(rs.next()){
-                System.out.println(rs.getString("id"));
-            }
-        } catch (Exception e) {
-        }
-    }
-    
+   
 }
