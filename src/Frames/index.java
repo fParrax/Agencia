@@ -1991,9 +1991,7 @@ public class index extends javax.swing.JFrame {
                 
                 mantenerCuposActualizados();
                
-                if(agencia.getId() == 1){
-                    iniciarIngresoResultados();
-                }
+                
 
             }).start();
             
@@ -2020,9 +2018,9 @@ public class index extends javax.swing.JFrame {
         double afterUsedMem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         double memoryUsed = afterUsedMem - beforeUsedMem;
         
-        System.out.println("Memoria Actual: "+beforeUsedMem/mbCuota+" mbs");
-        System.out.println("Memoria Totla: "+afterUsedMem/mbCuota+" mbs");
-        System.out.println("Memoria utilizada: " + memoryUsed/mbCuota + " mbs  --- cuposSize: "+myCupos.size());
+        //System.out.println("Memoria Actual: "+beforeUsedMem/mbCuota+" mbs");
+        //System.out.println("Memoria Totla: "+afterUsedMem/mbCuota+" mbs");
+        //System.out.println("Memoria utilizada: " + memoryUsed/mbCuota + " mbs  --- cuposSize: "+myCupos.size());
         
         
         contadorCupos = 0;
@@ -2658,7 +2656,7 @@ public class index extends javax.swing.JFrame {
                         totalJugado,
                         jugadas
                 );
-                
+                System.out.println("");
                 
                 
                 if (!serialTicket.equalsIgnoreCase("error")) {
@@ -2668,16 +2666,7 @@ public class index extends javax.swing.JFrame {
                             .sorted(Comparator.comparing(JugadasTicket::getMonto))
                             .sorted(Comparator.comparing(JugadasTicket::getSorteo))
                             .collect(Collectors.toList());
-                   
-//                    jugadas = (ArrayList) jugadas.stream()
-//                            .sorted(Comparator.comparing(JugadasTicket::getMonto)
-//                            ).collect(Collectors.toList());
-//                    
-//                    jugadas = (ArrayList) jugadas.stream()
-//                            .sorted(Comparator.comparing(JugadasTicket::getSorteo)
-//                            ).collect(Collectors.toList());
-                   
-                        
+                 
                   
                     if(checkImprimirTicket.isSelected()){
                        new Imprimir().enviarImpresion(
